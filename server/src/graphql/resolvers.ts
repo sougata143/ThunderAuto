@@ -5,6 +5,7 @@ import { IUser, User } from '../models/User'
 import { createRedisClient } from '../config/redis'
 import { logger } from '../utils/logger'
 import { nanoid } from 'nanoid'
+import { userResolvers } from './resolvers/user.resolver'
 
 // Get the Car model
 // const Car = mongoose.model<ICar>('Car')
@@ -42,6 +43,7 @@ interface IReview {
 
 export const resolvers = {
   Query: {
+    ...userResolvers.Query,
     me: (_: unknown, __: unknown, { user }: IContext) => {
       return user
     },
@@ -140,6 +142,7 @@ export const resolvers = {
   },
 
   Mutation: {
+    ...userResolvers.Mutation,
     registerUser: async (_: unknown, { input }: { input: { email: string, password: string, name: string } }) => {
       try {
         const user = await User.create({
