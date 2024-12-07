@@ -25,3 +25,22 @@
 2024-12-07T03:25:23.199Z [[32minfo[39m]: 📦 Connected to MongoDB
 2024-12-07T03:25:23.213Z [[32minfo[39m]: 🔄 Connected to Redis
 2024-12-07T03:25:23.301Z [[32minfo[39m]: 🐰 Connected to RabbitMQ
+2024-12-07T03:28:53.090Z [[32minfo[39m]: 📦 Connected to MongoDB
+2024-12-07T03:28:53.113Z [[32minfo[39m]: 🔄 Connected to Redis
+2024-12-07T03:28:53.348Z [[32minfo[39m]: 🐰 Connected to RabbitMQ
+2024-12-07T03:29:30.094Z [[32minfo[39m]: 📦 Connected to MongoDB
+2024-12-07T03:29:30.106Z [[32minfo[39m]: 🔄 Connected to Redis
+2024-12-07T03:29:30.208Z [[32minfo[39m]: 🐰 Connected to RabbitMQ
+2024-12-07T03:29:30.299Z [[32minfo[39m]: 🚀 Server running on port 4000
+2024-12-07T03:29:30.300Z [[32minfo[39m]: 🎯 GraphQL endpoint: http://localhost:4000/graphql
+2024-12-07T03:29:44.028Z [[32minfo[39m]: 📦 Connected to MongoDB
+2024-12-07T03:29:44.059Z [[32minfo[39m]: 🔄 Connected to Redis
+2024-12-07T03:29:44.184Z [[32minfo[39m]: 🐰 Connected to RabbitMQ
+2024-12-07T03:30:01.093Z [[32minfo[39m]: 📦 Connected to MongoDB
+2024-12-07T03:30:01.175Z [[32minfo[39m]: 🔄 Connected to Redis
+2024-12-07T03:30:03.006Z [[32minfo[39m]: 🐰 Connected to RabbitMQ
+2024-12-07T03:30:16.647Z [[32minfo[39m]: 📦 Connected to MongoDB
+2024-12-07T03:30:16.661Z [[32minfo[39m]: 🔄 Connected to Redis
+2024-12-07T03:30:16.978Z [[32minfo[39m]: 🐰 Connected to RabbitMQ
+2024-12-07T03:30:17.078Z [[32minfo[39m]: 🚀 Server running on port 4000
+2024-12-07T03:30:17.078Z [[32minfo[39m]: 🎯 GraphQL endpoint: http://localhost:4000/graphql

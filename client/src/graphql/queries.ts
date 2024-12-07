@@ -179,3 +179,120 @@ export const SEARCH_CARS = gql`
     }
   }
 `
+
+export const GET_ME = gql`
+  query GetMe {
+    me {
+      id
+      name
+      email
+      role
+      isGuest
+      lastLogin
+      preferences {
+        theme
+        notifications
+        language
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`
+
+export const REGISTER = gql`
+  mutation Register($input: RegisterInput!) {
+    register(input: $input) {
+      token
+      user {
+        id
+        name
+        email
+        role
+        isGuest
+        preferences {
+          theme
+          notifications
+          language
+        }
+      }
+    }
+  }
+`
+
+export const LOGIN = gql`
+  mutation Login($input: LoginInput!) {
+    login(input: $input) {
+      token
+      user {
+        id
+        name
+        email
+        role
+        isGuest
+        preferences {
+          theme
+          notifications
+          language
+        }
+      }
+    }
+  }
+`
+
+export const CREATE_GUEST_USER = gql`
+  mutation CreateGuestUser {
+    createGuestUser {
+      token
+      user {
+        id
+        name
+        email
+        role
+        isGuest
+        preferences {
+          theme
+          notifications
+          language
+        }
+      }
+    }
+  }
+`
+
+export const UPGRADE_GUEST_USER = gql`
+  mutation UpgradeGuestUser($input: RegisterInput!) {
+    upgradeGuestUser(input: $input) {
+      token
+      user {
+        id
+        name
+        email
+        role
+        isGuest
+        preferences {
+          theme
+          notifications
+          language
+        }
+      }
+    }
+  }
+`
+
+export const UPDATE_USER = gql`
+  mutation UpdateUser($input: UpdateUserInput!) {
+    updateUser(input: $input) {
+      id
+      name
+      email
+      role
+      isGuest
+      preferences {
+        theme
+        notifications
+        language
+      }
+    }
+  }
+`
