@@ -1,0 +1,72 @@
+type User {
+  id: ID!
+  name: String!
+  email: String!
+  role: UserRole!
+  isGuest: Boolean!
+  lastLogin: DateTime
+  preferences: UserPreferences!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type UserPreferences {
+  theme: Theme!
+  notifications: Boolean!
+  language: String!
+}
+
+enum UserRole {
+  guest
+  user
+  admin
+}
+
+enum Theme {
+  light
+  dark
+}
+
+extend type Query {
+  me: User
+  user(id: ID!): User
+  users: [User!]!
+}
+
+extend type Mutation {
+  updateUserPreferences(theme: Theme, notifications: Boolean, language: String): User!
+  updateUserRole(userId: ID!, role: UserRole!): User!
+  registerUser(input: RegisterUserInput!): User!
+  loginUser(input: LoginUserInput!): AuthPayload!
+  createGuestUser: User!
+  upgradeGuestUser(input: RegisterUserInput!): User!
+  updateUser(input: UpdateUserInput!): User!
+}
+
+input RegisterUserInput {
+  email: String!
+  password: String!
+  name: String!
+}
+
+input LoginUserInput {
+  email: String!
+  password: String!
+}
+
+input UpdateUserInput {
+  name: String
+  email: String
+  preferences: UserPreferencesInput
+}
+
+input UserPreferencesInput {
+  theme: Theme
+  notifications: Boolean
+  language: String
+}
+
+type AuthPayload {
+  token: String!
+  user: User!
+}

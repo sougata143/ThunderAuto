@@ -1,18 +1,53 @@
 import { AuthService } from '../services/auth.service'
-import { Car } from '../models/Car'
-import { Review } from '../models/Review'
-import { User } from '../models/User'
+import { ICar, Car } from '../models/Car'
+import mongoose from 'mongoose'
+import { IUser, User } from '../models/User'
 import { createRedisClient } from '../config/redis'
 import { logger } from '../utils/logger'
+import { nanoid } from 'nanoid'
+
+// Get the Car model
+// const Car = mongoose.model<ICar>('Car')
+
+interface CarFilter {
+  make?: string
+  model?: string
+  year?: number
+  engineType?: string
+  transmission?: string
+  fuelType?: string
+  minPrice?: number
+  maxPrice?: number
+}
+
+interface ReviewInput {
+  carId: string
+  rating: number
+  comment: string
+}
+
+interface IContext {
+  user: IUser | null
+}
+
+interface IReview {
+  user: {
+    id: string
+    name: string
+  }
+  rating: number
+  comment: string
+  createdAt: Date
+}
 
 export const resolvers = {
   Query: {
-    me: (_, __, { user }) => {
+    me: (_: unknown, __: unknown, { user }: IContext) => {
       return user
     },
-    cars: async (_, { filter = {}, limit = 20, offset = 0 }) => {
+    cars: async (_: unknown, { filter = {}, limit = 20, offset = 0 }: { filter: CarFilter, limit: number, offset: number }) => {
       try {
-        const query: any = {}
+        const query: Record<string, any> = {}
         
         if (filter.make) query.make = new RegExp(filter.make, 'i')
         if (filter.model) query.model = new RegExp(filter.model, 'i')
@@ -33,11 +68,11 @@ export const resolvers = {
           .limit(limit)
       } catch (error) {
         logger.error('Error fetching cars:', error)
-        throw new Error('Failed to fetch cars')
+        throw error
       }
     },
 
-    car: async (_, { id }) => {
+    car: async (_: unknown, { id }: { id: string }) => {
       try {
         const redis = await createRedisClient()
         const cacheKey = `car:${id}`
@@ -54,42 +89,29 @@ export const resolvers = {
           throw new Error('Car not found')
         }
 
-        // Cache for 1 hour
-        await redis.setex(cacheKey, 3600, JSON.stringify(car))
+        // Cache the result
+        await redis.set(cacheKey, JSON.stringify(car), 'EX', 3600)
         return car
       } catch (error) {
         logger.error('Error fetching car:', error)
-        throw new Error('Failed to fetch car')
+        throw error
       }
     },
 
-    compareCars: async (_, { ids }) => {
+    compareCars: async (_: unknown, { ids }: { ids: string[] }) => {
       try {
-        const redis = await createRedisClient()
-        const cacheKey = `compare:${ids.sort().join(',')}`
-        
-        // Try to get from cache
-        const cachedCars = await redis.get(cacheKey)
-        if (cachedCars) {
-          return JSON.parse(cachedCars)
-        }
-        
-        // Get from database
         const cars = await Car.find({ _id: { $in: ids } })
-        if (!cars || cars.length !== ids.length) {
+        if (cars.length !== ids.length) {
           throw new Error('One or more cars not found')
         }
-
-        // Cache for 1 hour
-        await redis.setex(cacheKey, 3600, JSON.stringify(cars))
         return cars
       } catch (error) {
         logger.error('Error comparing cars:', error)
-        throw new Error('Failed to compare cars')
+        throw error
       }
     },
 
-    searchCars: async (_, { query }) => {
+    searchCars: async (_: unknown, { query }: { query: string }) => {
       try {
         const searchRegex = new RegExp(query, 'i')
         return await Car.find({
@@ -97,81 +119,136 @@ export const resolvers = {
             { make: searchRegex },
             { model: searchRegex },
             { engineType: searchRegex },
-            { transmission: searchRegex },
-            { fuelType: searchRegex }
+            { transmission: searchRegex }
           ]
-        }).limit(20)
+        })
       } catch (error) {
         logger.error('Error searching cars:', error)
-        throw new Error('Failed to search cars')
+        throw error
       }
     },
 
-    reviews: async (_, { carId }) => {
+    reviews: async (_: unknown, { carId }: { carId: string }) => {
       try {
-        return await Review.find({ car: carId })
-          .populate('user')
-          .sort({ createdAt: -1 })
+        const car = await Car.findById(carId).populate('reviews.user')
+        return car?.reviews || []
       } catch (error) {
         logger.error('Error fetching reviews:', error)
-        throw new Error('Failed to fetch reviews')
+        throw error
       }
     }
   },
 
   Mutation: {
-    register: async (_, { input }) => {
-      return AuthService.registerUser(input.name, input.email, input.password)
+    registerUser: async (_: unknown, { input }: { input: { email: string, password: string, name: string } }) => {
+      try {
+        const user = await User.create({
+          email: input.email,
+          password: input.password,
+          name: input.name,
+          role: 'user',
+          isGuest: false
+        })
+        return {
+          token: AuthService.generateToken(user),
+          user
+        }
+      } catch (error) {
+        logger.error('Error registering user:', error)
+        throw error
+      }
     },
 
-    login: async (_, { input }) => {
-      return AuthService.loginUser(input.email, input.password)
+    loginUser: async (_: unknown, { input }: { input: { email: string, password: string } }) => {
+      try {
+        const user = await User.findOne({ email: input.email })
+        if (!user) {
+          throw new Error('User not found')
+        }
+
+        const isValid = await user.comparePassword(input.password)
+        if (!isValid) {
+          throw new Error('Invalid password')
+        }
+
+        return {
+          token: AuthService.generateToken(user),
+          user
+        }
+      } catch (error) {
+        logger.error('Error logging in:', error)
+        throw error
+      }
     },
 
     createGuestUser: async () => {
-      return AuthService.createGuestUser()
+      try {
+        const user = await User.create({
+          name: `Guest_${nanoid(6)}`,
+          email: `guest_${nanoid(8)}@temp.com`,
+          role: 'guest',
+          isGuest: true
+        })
+        return {
+          token: AuthService.generateToken(user),
+          user
+        }
+      } catch (error) {
+        logger.error('Error creating guest user:', error)
+        throw error
+      }
     },
 
-    upgradeGuestUser: async (_, { input }, { user }) => {
+    upgradeGuestUser: async (_: unknown, { input }: { input: { email: string, password: string, name: string } }, { user }: IContext) => {
       if (!user || !user.isGuest) {
         throw new Error('Only guest users can be upgraded')
       }
-      return AuthService.upgradeGuestUser(user.id, input.name, input.email, input.password)
+
+      try {
+        user.email = input.email
+        user.password = input.password
+        user.name = input.name
+        user.isGuest = false
+        user.role = 'user'
+
+        await user.save()
+
+        return {
+          token: AuthService.generateToken(user),
+          user
+        }
+      } catch (error) {
+        logger.error('Error upgrading guest user:', error)
+        throw error
+      }
     },
 
-    updateUser: async (_, { input }, { user }) => {
+    updateUser: async (_: unknown, { input }: { input: Partial<IUser> }, { user }: IContext) => {
       if (!user) {
-        throw new Error('Authentication required')
+        throw new Error('Not authenticated')
       }
 
       try {
-        if (input.email) {
-          const existingUser = await User.findOne({ email: input.email })
-          if (existingUser && existingUser.id !== user.id) {
-            throw new Error('Email already in use')
-          }
+        const updatedUser = await User.findByIdAndUpdate(
+          user._id,
+          { $set: input },
+          { new: true }
+        )
+
+        if (!updatedUser) {
+          throw new Error('User not found')
         }
 
-        Object.assign(user, input)
-        if (input.preferences) {
-          Object.assign(user.preferences, input.preferences)
-        }
-
-        await user.save()
-        return user
+        return updatedUser
       } catch (error) {
         logger.error('Error updating user:', error)
         throw error
       }
     },
 
-    createReview: async (_, { input }, { user }) => {
+    createReview: async (_: unknown, { input }: { input: ReviewInput }, { user }: IContext) => {
       if (!user) {
-        throw new Error('Authentication required')
-      }
-
-      if (user.isGuest) {
-        throw new Error('Guest users cannot create reviews')
+        throw new Error('Not authenticated')
       }
 
       try {
@@ -180,15 +257,23 @@ export const resolvers = {
           throw new Error('Car not found')
         }
 
-        const review = await Review.create({
-          car: input.carId,
+        const userId = (user as IUser & { _id: mongoose.Types.ObjectId })._id
+
+        const review: IReview = {
           user: {
-            id: user.id,
+            id: userId.toString(),
             name: user.name
           },
           rating: input.rating,
-          comment: input.comment
-        })
+          comment: input.comment,
+          createdAt: new Date()
+        }
+
+        if (!car.reviews) {
+          car.reviews = []
+        }
+        car.reviews.push(review)
+        await car.save()
 
         return review
       } catch (error) {
@@ -197,61 +282,74 @@ export const resolvers = {
       }
     },
 
-    updateReview: async (_, { id, rating, comment }, { user }) => {
+    updateReview: async (_: unknown, { id, rating, comment }: { id: string, rating: number, comment: string }, { user }: IContext) => {
       if (!user) {
-        throw new Error('Authentication required')
+        throw new Error('Not authenticated')
       }
 
-      const review = await Review.findOne({ _id: id, user: user.id })
-      if (!review) {
-        throw new Error('Review not found or unauthorized')
+      try {
+        const car = await Car.findOne({ 'reviews._id': id })
+        if (!car) {
+          throw new Error('Review not found')
+        }
+
+        const userId = (user as IUser & { _id: mongoose.Types.ObjectId })._id
+
+        const review = car.reviews.find(r => r.user.id === id)
+        if (!review || review.user.id !== userId.toString()) {
+          throw new Error('Not authorized to update this review')
+        }
+
+        review.rating = rating
+        review.comment = comment
+        await car.save()
+
+        return review
+      } catch (error) {
+        logger.error('Error updating review:', error)
+        throw error
       }
-
-      if (rating) review.rating = rating
-      if (comment) review.comment = comment
-
-      await review.save()
-
-      // Update car's average rating
-      const reviews = await Review.find({ car: review.car })
-      const avgRating = reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length
-      await Car.findByIdAndUpdate(review.car, { rating: avgRating })
-
-      return await review.populate('user')
     },
 
-    deleteReview: async (_, { id }, { user }) => {
+    deleteReview: async (_: unknown, { id }: { id: string }, { user }: IContext) => {
       if (!user) {
-        throw new Error('Authentication required')
+        throw new Error('Not authenticated')
       }
 
-      const review = await Review.findOne({ _id: id, user: user.id })
-      if (!review) {
-        throw new Error('Review not found or unauthorized')
+      try {
+        const car = await Car.findOne({ 'reviews._id': id })
+        if (!car) {
+          throw new Error('Review not found')
+        }
+
+        const userId = (user as IUser & { _id: mongoose.Types.ObjectId })._id
+
+        const reviewIndex = car.reviews.findIndex(r => r.user.id === id)
+        if (reviewIndex === -1 || car.reviews[reviewIndex].user.id !== userId.toString()) {
+          throw new Error('Not authorized to delete this review')
+        }
+
+        const review = car.reviews[reviewIndex]
+        car.reviews.splice(reviewIndex, 1)
+        await car.save()
+
+        return review
+      } catch (error) {
+        logger.error('Error deleting review:', error)
+        throw error
       }
-
-      await review.deleteOne()
-
-      // Update car's average rating
-      const reviews = await Review.find({ car: review.car })
-      const avgRating = reviews.length 
-        ? reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length
-        : 0
-      await Car.findByIdAndUpdate(review.car, { rating: avgRating })
-
-      return true
     }
   },
 
   Car: {
-    reviews: async (parent) => {
-      return await Review.find({ car: parent.id }).populate('user')
+    reviews: async (parent: ICar) => {
+      return parent.reviews || []
     }
   },
 
   Review: {
-    user: async (parent) => {
-      return await User.findById(parent.user)
+    user: async (parent: IReview) => {
+      return parent.user
     }
   }
 }

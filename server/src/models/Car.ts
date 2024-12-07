@@ -1,16 +1,25 @@
-import mongoose, { Schema, Document } from 'mongoose'
+import mongoose, { Document, Model } from 'mongoose'
 
-export interface ICar extends Document {
+export interface ICar extends mongoose.Document {
   make: string
-  model: string
+  carModel: string
   year: number
   price: number
-  images: string[]
+  images: {
+    url: string
+    isFeatured: boolean
+    caption?: string
+    uploadedBy: mongoose.Types.ObjectId
+    uploadedAt: Date
+  }[]
   rating: number
   engineType: string
   transmission: string
   power: number
   acceleration: number
+  status: 'draft' | 'published' | 'archived'
+  createdBy: mongoose.Types.ObjectId
+  lastUpdatedBy: mongoose.Types.ObjectId
   specs: {
     engine: {
       displacement: number
@@ -50,10 +59,17 @@ export interface ICar extends Document {
       weight: number
       distribution: string
     }
+    transmission: {
+      type: string
+      gears: number
+      clutchType: string
+      driveType: string
+      differential: string
+    }
     fuel: {
-      tankCapacity: number
       fuelType: string
       fuelSystem: string
+      tankCapacity: number
       cityMPG: number
       highwayMPG: number
       combinedMPG: number
@@ -109,25 +125,38 @@ export interface ICar extends Document {
   }>
 }
 
-const CarSchema: Schema = new Schema({
-  make: { type: String, required: true },
-  model: { type: String, required: true },
-  year: { type: Number, required: true },
+const carSchema = new mongoose.Schema({
+  make: { type: String, required: true, index: true },
+  carModel: { type: String, required: true, index: true },
+  year: { type: Number, required: true, index: true },
   price: { type: Number, required: true },
-  images: [{ type: String }],
+  images: [{
+    url: { type: String, required: true },
+    isFeatured: { type: Boolean, default: false },
+    caption: String,
+    uploadedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+    uploadedAt: { type: Date, default: Date.now }
+  }],
   rating: { type: Number, default: 0 },
   engineType: { type: String, required: true },
   transmission: { type: String, required: true },
   power: { type: Number, required: true },
   acceleration: { type: Number, required: true },
+  status: {
+    type: String,
+    enum: ['draft', 'published', 'archived'],
+    default: 'draft'
+  },
+  createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  lastUpdatedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   specs: {
     engine: {
       displacement: { type: Number, required: true },
       cylinders: { type: Number, required: true },
       configuration: { type: String, required: true },
       fuelInjection: { type: String, required: true },
-      turbocharger: { type: Boolean, default: false },
-      supercharger: { type: Boolean, default: false },
+      turbocharger: { type: Boolean, required: true },
+      supercharger: { type: Boolean, required: true },
       compression: { type: String, required: true },
       valvesPerCylinder: { type: Number, required: true }
     },
@@ -159,10 +188,17 @@ const CarSchema: Schema = new Schema({
       weight: { type: Number, required: true },
       distribution: { type: String, required: true }
     },
+    transmission: {
+      type: { type: String, required: true },
+      gears: { type: Number, required: true },
+      clutchType: { type: String, required: true },
+      driveType: { type: String, required: true },
+      differential: { type: String, required: true }
+    },
     fuel: {
-      tankCapacity: { type: Number, required: true },
       fuelType: { type: String, required: true },
       fuelSystem: { type: String, required: true },
+      tankCapacity: { type: Number, required: true },
       cityMPG: { type: Number, required: true },
       highwayMPG: { type: Number, required: true },
       combinedMPG: { type: Number, required: true },
@@ -179,23 +215,23 @@ const CarSchema: Schema = new Schema({
     },
     safety: {
       airbags: { type: String, required: true },
-      abs: { type: Boolean, default: true },
-      stabilityControl: { type: Boolean, default: true },
-      tractionControl: { type: Boolean, default: true },
-      parkingSensors: { type: Boolean, default: false },
+      abs: { type: Boolean, required: true },
+      stabilityControl: { type: Boolean, required: true },
+      tractionControl: { type: Boolean, required: true },
+      parkingSensors: { type: Boolean, required: true },
       camera: { type: String, required: true },
-      blindSpotMonitoring: { type: Boolean, default: false },
-      laneDepartureWarning: { type: Boolean, default: false },
-      collisionWarning: { type: Boolean, default: false },
-      nightVision: { type: Boolean, default: false }
+      blindSpotMonitoring: { type: Boolean, required: true },
+      laneDepartureWarning: { type: Boolean, required: true },
+      collisionWarning: { type: Boolean, required: true },
+      nightVision: { type: Boolean, required: true }
     },
     technology: {
       connectivity: [{ type: String }],
       smartphone: [{ type: String }],
       navigation: { type: String, required: true },
       headlightType: { type: String, required: true },
-      adaptiveCruiseControl: { type: Boolean, default: false },
-      keylessEntry: { type: Boolean, default: true },
+      adaptiveCruiseControl: { type: Boolean, required: true },
+      keylessEntry: { type: Boolean, required: true },
       startSystem: { type: String, required: true },
       driverAssistance: [{ type: String }]
     },
@@ -209,20 +245,23 @@ const CarSchema: Schema = new Schema({
   },
   reviews: [{
     user: {
-      id: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+      id: { type: String, required: true },
       name: { type: String, required: true }
     },
-    rating: { type: Number, required: true, min: 1, max: 5 },
-    comment: { type: String },
+    rating: { type: Number, required: true },
+    comment: { type: String, required: true },
     createdAt: { type: Date, default: Date.now }
   }]
+}, {
+  timestamps: true
 })
 
 // Add indexes for better query performance
-CarSchema.index({ make: 1, model: 1, year: 1 })
-CarSchema.index({ price: 1 })
-CarSchema.index({ engineType: 1 })
-CarSchema.index({ transmission: 1 })
-CarSchema.index({ 'specs.engine.fuelType': 1 })
+carSchema.index({ make: 1, carModel: 1 })
+carSchema.index({ year: 1 })
+carSchema.index({ price: 1 })
+carSchema.index({ status: 1 })
+carSchema.index({ createdAt: -1 })
 
-export const Car = mongoose.model<ICar>('Car', CarSchema)
+// Create and export the Car model
+export const Car = mongoose.model<ICar>('Car', carSchema)

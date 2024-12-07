@@ -1,0 +1,24 @@
+scalar DateTime
+scalar Upload
+
+enum CarStatus {
+  draft
+  published
+  archived
+}
+
+type CarImage {
+  url: String!
+  isFeatured: Boolean!
+  caption: String
+  uploadedBy: User!
+  uploadedAt: DateTime!
+}
+
+type Query {
+  _empty: String
+}
+
+type Mutation {
+  _empty: String
+}
