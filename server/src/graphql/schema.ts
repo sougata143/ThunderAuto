@@ -47,7 +47,24 @@ export const typeDefs = `#graphql
     id: ID!
     name: String!
     email: String!
+    role: String!
+    isGuest: Boolean!
+    lastLogin: String
+    preferences: UserPreferences!
+    createdAt: String!
+    updatedAt: String!
     reviews: [Review]
+  }
+
+  type UserPreferences {
+    theme: String!
+    notifications: Boolean!
+    language: String!
+  }
+
+  type AuthResponse {
+    user: User!
+    token: String!
   }
 
   input CarFilter {
@@ -61,12 +78,28 @@ export const typeDefs = `#graphql
     fuelType: String
   }
 
-  type Query {
-    cars(filter: CarFilter, limit: Int, offset: Int): [Car]!
-    car(id: ID!): Car
-    compareCars(ids: [ID!]!): [Car]!
-    searchCars(query: String!): [Car]!
-    reviews(carId: ID!): [Review]!
+  input RegisterInput {
+    name: String!
+    email: String!
+    password: String!
+  }
+
+  input LoginInput {
+    email: String!
+    password: String!
+  }
+
+  input UpdateUserInput {
+    name: String
+    email: String
+    password: String
+    preferences: UserPreferencesInput
+  }
+
+  input UserPreferencesInput {
+    theme: String
+    notifications: Boolean
+    language: String
   }
 
   input CreateReviewInput {
@@ -75,7 +108,21 @@ export const typeDefs = `#graphql
     comment: String
   }
 
+  type Query {
+    me: User
+    cars(filter: CarFilter, limit: Int, offset: Int): [Car]!
+    car(id: ID!): Car
+    compareCars(ids: [ID!]!): [Car]!
+    searchCars(query: String!): [Car]!
+    reviews(carId: ID!): [Review]!
+  }
+
   type Mutation {
+    register(input: RegisterInput!): AuthResponse!
+    login(input: LoginInput!): AuthResponse!
+    createGuestUser: AuthResponse!
+    upgradeGuestUser(input: RegisterInput!): AuthResponse!
+    updateUser(input: UpdateUserInput!): User!
     createReview(input: CreateReviewInput!): Review!
     updateReview(id: ID!, rating: Int, comment: String): Review!
     deleteReview(id: ID!): Boolean!

@@ -8,6 +8,7 @@ import { resolvers } from './graphql/resolvers'
 import { createRedisClient } from './config/redis'
 import { setupMessageQueue } from './config/messageQueue'
 import { logger } from './utils/logger'
+import { authMiddleware, AuthRequest } from './middleware/auth.middleware'
 
 async function startServer() {
   const app = express()
@@ -33,7 +34,14 @@ async function startServer() {
   // Middleware
   app.use(cors())
   app.use(express.json())
-  app.use('/graphql', expressMiddleware(server))
+  app.use(authMiddleware)
+  
+  // GraphQL endpoint with context
+  app.use('/graphql', expressMiddleware(server, {
+    context: async ({ req }: { req: AuthRequest }) => ({
+      user: req.user
+    })
+  }))
   
   // Start Express Server
   const PORT = process.env.PORT || 4000
