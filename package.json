@@ -1,0 +1,30 @@
+{
+  "name": "thunderauto",
+  "version": "1.0.0",
+  "description": "Modern car specifications website",
+  "private": true,
+  "workspaces": [
+    "client",
+    "server"
+  ],
+  "scripts": {
+    "dev:client": "cd client && npm run dev",
+    "dev:server": "cd server && npm run dev",
+    "dev": "concurrently \"npm run dev:client\" \"npm run dev:server\"",
+    "build": "npm run build --workspaces",
+    "test": "npm run test --workspaces",
+    "lint": "npm run lint --workspaces"
+  },
+  "keywords": [
+    "cars",
+    "specifications",
+    "automotive"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.2.3"
+  }
+}
