@@ -22,3 +22,6 @@
 2024-12-07T03:22:59.373Z [[32minfo[39m]: 🚀 Server running on port 4000
 2024-12-07T03:22:59.373Z [[32minfo[39m]: 🎯 GraphQL endpoint: http://localhost:4000/graphql
 2024-12-07T03:23:38.826Z [[31merror[39m]: Error fetching cars: Cannot read properties of undefined (reading 'find')
+2024-12-07T03:25:23.199Z [[32minfo[39m]: 📦 Connected to MongoDB
+2024-12-07T03:25:23.213Z [[32minfo[39m]: 🔄 Connected to Redis
+2024-12-07T03:25:23.301Z [[32minfo[39m]: 🐰 Connected to RabbitMQ

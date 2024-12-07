@@ -213,9 +213,16 @@ const CarSchema: Schema = new Schema({
       name: { type: String, required: true }
     },
     rating: { type: Number, required: true, min: 1, max: 5 },
-    comment: { type: String, required: true },
+    comment: { type: String },
     createdAt: { type: Date, default: Date.now }
   }]
 })
 
-export default mongoose.model<ICar>('Car', CarSchema)
+// Add indexes for better query performance
+CarSchema.index({ make: 1, model: 1, year: 1 })
+CarSchema.index({ price: 1 })
+CarSchema.index({ engineType: 1 })
+CarSchema.index({ transmission: 1 })
+CarSchema.index({ 'specs.engine.fuelType': 1 })
+
+export const Car = mongoose.model<ICar>('Car', CarSchema)
