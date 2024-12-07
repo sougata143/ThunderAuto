@@ -42,12 +42,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     onCompleted: (data) => {
       if (data?.me) {
         setUser(data.me)
+      } else {
+        // If no user data, clear the token
+        localStorage.removeItem('token')
+        setToken(null)
+        setUser(null)
       }
     },
-    onError: () => {
+    onError: (error) => {
+      console.error('Auth error:', error)
+      // Clear token on auth errors
       localStorage.removeItem('token')
       setToken(null)
       setUser(null)
+      client.clearStore() // Clear Apollo cache
     },
   })
 
@@ -109,7 +117,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     localStorage.removeItem('token')
     setToken(null)
     setUser(null)
-    client.resetStore()
+    client.clearStore() // Clear Apollo cache on logout
+    setError(null)
   }
 
   return (

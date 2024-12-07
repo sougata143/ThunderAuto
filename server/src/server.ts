@@ -10,6 +10,8 @@ import { typeDefs } from './graphql/schema';
 import { resolvers } from './graphql/resolvers';
 import { IContext } from './types/context';
 import { authMiddleware, AuthRequest } from './middleware/auth.middleware';
+import { authDirectiveTransformer } from './graphql/directives/auth.directive';
+import { makeExecutableSchema } from '@graphql-tools/schema';
 
 dotenv.config();
 
@@ -18,8 +20,7 @@ const httpServer = http.createServer(app);
 
 // Create Apollo Server
 const server = new ApolloServer<IContext>({
-  typeDefs,
-  resolvers,
+  schema: authDirectiveTransformer(makeExecutableSchema({ typeDefs, resolvers })),
   plugins: [ApolloServerPluginDrainHttpServer({ httpServer })]
 });
 

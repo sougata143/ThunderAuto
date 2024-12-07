@@ -246,77 +246,127 @@ export const CREATE_CAR = gql`
 `
 
 export const UPDATE_CAR = gql`
-  mutation UpdateCar($id: ID!, $input: CarInput!) {
-    admin {
-      updateCar(id: $id, input: $input) {
-        id
-        make
-        carModel
-        year
-        price
-        engineType
-        transmission
-        power
-        acceleration
-        status
-        images {
-          url
-          isFeatured
-          caption
-          uploadedBy {
-            id
-            firstName
-            lastName
-          }
-          uploadedAt
+  mutation UpdateCar($id: ID!, $input: CarUpdateInput!) {
+    updateCar(id: $id, input: $input) {
+      id
+      make
+      carModel
+      year
+      price
+      engineType
+      transmission
+      power
+      acceleration
+      status
+      fullName
+      specs {
+        engine {
+          displacement
+          cylinders
+          configuration
+          fuelInjection
+          turbocharger
+          supercharger
+          compression
+          valvesPerCylinder
         }
-        specs {
-          engine {
-            displacement
-            cylinders
-            configuration
-            fuelInjection
-            turbocharger
-            supercharger
-            compression
-            valvesPerCylinder
-          }
-          performance {
-            powerToWeight
-            topSpeed
-            acceleration060
-            acceleration0100
-            quarterMile
-            brakingDistance60_0
-          }
-          chassis {
-            bodyType
-            platform
-            frontSuspension
-            rearSuspension
-            frontBrakes
-            rearBrakes
-            wheelSize
-            tireSize
-          }
-          dimensions {
-            length
-            width
-            height
-            wheelbase
-            groundClearance
-            dragCoefficient
-            weight
-            distribution
-          }
+        performance {
+          powerToWeight
+          topSpeed
+          acceleration060
+          acceleration0100
+          quarterMile
+          brakingDistance60_0
         }
-        lastUpdatedBy {
-          id
-          firstName
-          lastName
+        chassis {
+          bodyType
+          platform
+          frontSuspension
+          rearSuspension
+          frontBrakes
+          rearBrakes
+          wheelSize
+          tireSize
         }
-        updatedAt
+        dimensions {
+          length
+          width
+          height
+          wheelbase
+          groundClearance
+          dragCoefficient
+          weight
+          distribution
+        }
+        transmission {
+          type
+          gears
+          clutchType
+          driveType
+          differential
+        }
+        fuel {
+          fuelType
+          fuelSystem
+          tankCapacity
+          cityMPG
+          highwayMPG
+          combinedMPG
+          emissionClass
+        }
+        interior {
+          seatingCapacity
+          doors
+          trunkCapacity
+          infotainmentScreen
+          soundSystem
+          climateZones
+          upholsteryMaterial
+        }
+        safety {
+          airbags
+          abs
+          stabilityControl
+          tractionControl
+          parkingSensors
+          camera
+          blindSpotMonitoring
+          laneDepartureWarning
+          collisionWarning
+          nightVision
+        }
+        technology {
+          connectivity
+          smartphone
+          navigation
+          headlightType
+          adaptiveCruiseControl
+          keylessEntry
+          startSystem
+          driverAssistance
+        }
+        warranty {
+          basic
+          powertrain
+          corrosion
+          roadside
+          maintenance
+        }
+        features {
+          safety
+          comfort
+          technology
+          exterior
+          interior
+        }
       }
+      lastUpdatedBy {
+        id
+        firstName
+        lastName
+        email
+      }
+      updatedAt
     }
   }
 `

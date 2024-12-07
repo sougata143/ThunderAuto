@@ -1,4 +1,5 @@
 import mongoose, { Document, Model } from 'mongoose'
+import { IUser } from './User'
 
 export interface ICar extends mongoose.Document {
   make: string
@@ -9,7 +10,7 @@ export interface ICar extends mongoose.Document {
     url: string
     isFeatured: boolean
     caption?: string
-    uploadedBy: mongoose.Types.ObjectId
+    uploadedBy: mongoose.Types.ObjectId | IUser
     uploadedAt: Date
   }[]
   rating: number
@@ -17,9 +18,9 @@ export interface ICar extends mongoose.Document {
   transmission: string
   power: number
   acceleration: number
-  status: 'draft' | 'published' | 'archived'
-  createdBy: mongoose.Types.ObjectId
-  lastUpdatedBy: mongoose.Types.ObjectId
+  status: 'DRAFT' | 'PUBLISHED' | 'ARCHIVED'
+  createdBy: mongoose.Types.ObjectId | IUser
+  lastUpdatedBy: mongoose.Types.ObjectId | IUser
   specs: {
     engine: {
       displacement: number
@@ -152,8 +153,8 @@ const carSchema = new mongoose.Schema({
   acceleration: { type: Number, required: true },
   status: {
     type: String,
-    enum: ['draft', 'published', 'archived'],
-    default: 'draft'
+    enum: ['DRAFT', 'PUBLISHED', 'ARCHIVED'],
+    default: 'DRAFT'
   },
   createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   lastUpdatedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },

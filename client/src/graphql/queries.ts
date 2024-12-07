@@ -276,6 +276,14 @@ export const GET_CAR_BY_ID = gql`
       price
       images {
         url
+        isFeatured
+        caption
+        uploadedBy {
+          id
+          firstName
+          lastName
+        }
+        uploadedAt
       }
       rating
       engineType
@@ -284,6 +292,18 @@ export const GET_CAR_BY_ID = gql`
       acceleration
       status
       fullName
+      createdAt
+      updatedAt
+      createdBy {
+        id
+        firstName
+        lastName
+      }
+      lastUpdatedBy {
+        id
+        firstName
+        lastName
+      }
       specs {
         engine {
           displacement

@@ -24,7 +24,7 @@ input CarSpecsInput {
   performance: PerformanceInput!
   chassis: ChassisInput!
   dimensions: DimensionsInput!
-  transmission: TransmissionInput!
+  transmission: TransmissionSpecsInput!
   fuel: FuelInput!
   interior: InteriorInput!
   safety: SafetyInput!
@@ -75,7 +75,7 @@ input DimensionsInput {
   distribution: String!
 }
 
-input TransmissionInput {
+input TransmissionSpecsInput {
   type: String!
   gears: Int!
   clutchType: String!

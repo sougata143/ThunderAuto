@@ -1,7 +1,8 @@
-import mongoose from 'mongoose'
+import mongoose, { Document } from 'mongoose'
 import { ICar } from '../../models/Car'
 import { Car } from '../../models/Car'
 import { IContext } from '../../types/context'
+import { IUser } from '../../models/User'
 
 interface CarFilters {
   make?: string
@@ -118,6 +119,25 @@ interface CarInput {
   }
 }
 
+interface PopulatedUserDocument extends Document {
+  _id: mongoose.Types.ObjectId;
+  email: string;
+  firstName: string;
+  lastName: string;
+  role: 'GUEST' | 'USER' | 'ADMIN';
+}
+
+// Type guard to check if a value is a populated User document
+function isPopulatedUser(value: any): value is PopulatedUserDocument {
+  return value && 
+         value instanceof Document && 
+         typeof (value as any).firstName === 'string' &&
+         typeof (value as any).lastName === 'string' &&
+         typeof (value as any).email === 'string' &&
+         typeof (value as any).role === 'string' &&
+         value._id instanceof mongoose.Types.ObjectId;
+}
+
 export const carResolvers = {
   Query: {
     cars: async (_: unknown, filters: CarFilters, { user }: IContext) => {
@@ -229,6 +249,45 @@ export const carResolvers = {
     }
   },
 
+  Mutation: {
+    updateCar: async (_: unknown, { id, input }: { id: string; input: any }, context: IContext) => {
+      try {
+        // Validate ID format
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+          throw new Error('Invalid car ID format');
+        }
+
+        // Check if car exists
+        const existingCar = await Car.findById(id);
+        if (!existingCar) {
+          throw new Error('Car not found');
+        }
+
+        // Update the car with the new input
+        const updatedCar = await Car.findByIdAndUpdate(
+          id,
+          {
+            ...input,
+            lastUpdatedBy: context.user?.id,
+            updatedAt: new Date(),
+          },
+          { new: true, runValidators: true }
+        )
+          .populate('createdBy', 'firstName lastName email')
+          .populate('lastUpdatedBy', 'firstName lastName email');
+
+        if (!updatedCar) {
+          throw new Error('Failed to update car');
+        }
+
+        return updatedCar;
+      } catch (error) {
+        console.error('Error updating car:', error);
+        throw error;
+      }
+    },
+  },
+
   Car: {
     // Resolver for computing any derived fields
     fullName: (parent: ICar) => {
@@ -245,15 +304,57 @@ export const carResolvers = {
         uploadedBy: parent.populated('images.uploadedBy') 
           ? image.uploadedBy 
           : { _id: image.uploadedBy }
-      }))
+      }));
     },
 
     // Resolver for handling reviews
     reviews: async (parent: ICar) => {
-      if (!parent.populated('reviews.user.id')) {
-        await parent.populate('reviews.user.id', 'firstName lastName email')
+      if (!parent.populated('reviews.user')) {
+        await parent.populate('reviews.user');
       }
-      return parent.reviews
+      return parent.reviews;
+    },
+
+    // Resolver for createdBy
+    createdBy: async (parent: ICar) => {
+      if (!parent.populated('createdBy')) {
+        await parent.populate<{ createdBy: PopulatedUserDocument }>('createdBy');
+      }
+      
+      const userDoc = parent.createdBy;
+      if (!isPopulatedUser(userDoc)) {
+        throw new Error('User data not properly populated');
+      }
+
+      const user = userDoc.toObject();
+      return {
+        id: user._id.toString(),
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        role: user.role
+      };
+    },
+
+    // Resolver for lastUpdatedBy
+    lastUpdatedBy: async (parent: ICar) => {
+      if (!parent.populated('lastUpdatedBy')) {
+        await parent.populate<{ lastUpdatedBy: PopulatedUserDocument }>('lastUpdatedBy');
+      }
+      
+      const userDoc = parent.lastUpdatedBy;
+      if (!isPopulatedUser(userDoc)) {
+        throw new Error('User data not properly populated');
+      }
+
+      const user = userDoc.toObject();
+      return {
+        id: user._id.toString(),
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        role: user.role
+      };
     }
   }
 }
