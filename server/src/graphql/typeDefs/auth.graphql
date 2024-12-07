@@ -1,0 +1,48 @@
+enum UserRole {
+  GUEST
+  USER
+  ADMIN
+}
+
+enum Theme {
+  LIGHT
+  DARK
+}
+
+type AuthPayload {
+  token: String!
+  user: User!
+}
+
+type User {
+  id: ID!
+  email: String!
+  firstName: String!
+  lastName: String!
+  role: UserRole!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+extend type UserPreferences {
+  theme: Theme!
+  notifications: Boolean!
+  language: String!
+}
+
+input LoginInput {
+  email: String!
+  password: String!
+}
+
+input RegisterInput {
+  email: String!
+  password: String!
+  firstName: String!
+  lastName: String!
+}
+
+extend type Mutation {
+  login(input: LoginInput!): AuthPayload!
+  register(input: RegisterInput!): AuthPayload!
+}

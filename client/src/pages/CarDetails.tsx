@@ -1,182 +1,157 @@
-import { useState } from 'react'
-import { useParams } from 'react-router-dom'
-import { useQuery } from '@apollo/client'
-import { StarIcon } from '@heroicons/react/20/solid'
-import { GET_CAR_DETAILS } from '../graphql/queries'
-import { SpecificationGrid } from '../components/SpecificationCard'
-import { getCarSpecifications } from '../utils/carSpecifications'
-import ReviewForm from '../components/ReviewForm'
-import FavoriteButton from '../components/FavoriteButton'
+import React from 'react';
+import { useParams } from 'react-router-dom';
+import { useQuery } from '@apollo/client';
+import { GET_CAR_BY_ID } from '../graphql/queries';
+import Loading from '../components/Loading';
+import ErrorMessage from '../components/ErrorMessage';
 
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(' ')
-}
-
-export default function CarDetails() {
-  const { id } = useParams<{ id: string }>()
-  const [selectedImage, setSelectedImage] = useState(0)
-  const { loading, error, data, refetch } = useQuery(GET_CAR_DETAILS, {
+const CarDetails: React.FC = () => {
+  const { id } = useParams<{ id: string }>();
+  const { loading, error, data } = useQuery(GET_CAR_BY_ID, {
     variables: { id },
-  })
+  });
 
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center min-h-screen">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
-      </div>
-    )
-  }
+  if (loading) return <Loading />;
+  if (error) return <ErrorMessage message={error.message} />;
+  if (!data?.car) return <div>Car not found</div>;
 
-  if (error || !data?.car) {
-    return (
-      <div className="text-center py-12">
-        <p className="text-red-500">Error loading car details. Please try again later.</p>
-      </div>
-    )
-  }
-
-  const { car } = data
-  const specifications = getCarSpecifications(car)
+  const { car } = data;
 
   return (
-    <div className="bg-white">
-      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+    <div className="container mx-auto px-4 py-8">
+      <div className="bg-white rounded-lg shadow-lg overflow-hidden">
         {/* Car Header */}
-        <div className="lg:grid lg:grid-cols-2 lg:items-start lg:gap-x-8">
-          {/* Image Gallery */}
-          <div className="flex flex-col">
-            <div className="aspect-h-3 aspect-w-4 overflow-hidden rounded-lg">
-              <img
-                src={car.images[selectedImage] || '/placeholder-car.jpg'}
-                alt={`${car.make} ${car.model}`}
-                className="h-full w-full object-cover object-center"
-              />
-            </div>
-            <div className="mt-4 grid grid-cols-4 gap-4">
-              {car.images.map((image: string, idx: number) => (
-                <button
-                  key={idx}
-                  onClick={() => setSelectedImage(idx)}
-                  className={classNames(
-                    'relative aspect-h-3 aspect-w-4 overflow-hidden rounded-lg',
-                    selectedImage === idx ? 'ring-2 ring-blue-500' : 'ring-1 ring-gray-200'
-                  )}
-                >
-                  <img
-                    src={image}
-                    alt={`${car.make} ${car.model}`}
-                    className="h-full w-full object-cover object-center"
-                  />
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Car Info */}
-          <div className="mt-10 lg:mt-0">
-            <h1 className="text-3xl font-bold tracking-tight text-gray-900">
-              {car.year} {car.make} {car.model}
-            </h1>
-
-            <div className="mt-4 flex items-center justify-between">
-              <p className="text-3xl tracking-tight text-gray-900">
-                ${car.price?.toLocaleString()}
-              </p>
-              <FavoriteButton carId={car.id} isFavorited={false} />
-            </div>
-
-            {/* Rating */}
-            <div className="mt-4">
-              <div className="flex items-center">
-                <div className="flex items-center">
-                  {[0, 1, 2, 3, 4].map((rating) => (
-                    <StarIcon
-                      key={rating}
-                      className={classNames(
-                        car.rating > rating ? 'text-yellow-400' : 'text-gray-300',
-                        'h-5 w-5 flex-shrink-0'
-                      )}
-                      aria-hidden="true"
-                    />
-                  ))}
-                </div>
-                <p className="ml-3 text-sm text-gray-700">
-                  {car.rating.toFixed(1)} out of 5 stars
-                </p>
-              </div>
-            </div>
-
-            {/* Quick Specs */}
-            <div className="mt-8 border-t border-gray-200 pt-8">
-              <h2 className="text-lg font-medium text-gray-900">Quick Specifications</h2>
-              <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
-                <div className="flex justify-between border-b border-gray-200 py-2">
-                  <span className="text-sm text-gray-500">Engine</span>
-                  <span className="text-sm font-medium text-gray-900">{car.engineType}</span>
-                </div>
-                <div className="flex justify-between border-b border-gray-200 py-2">
-                  <span className="text-sm text-gray-500">Power</span>
-                  <span className="text-sm font-medium text-gray-900">{car.power} hp</span>
-                </div>
-                <div className="flex justify-between border-b border-gray-200 py-2">
-                  <span className="text-sm text-gray-500">Transmission</span>
-                  <span className="text-sm font-medium text-gray-900">{car.transmission}</span>
-                </div>
-                <div className="flex justify-between border-b border-gray-200 py-2">
-                  <span className="text-sm text-gray-500">0-60 mph</span>
-                  <span className="text-sm font-medium text-gray-900">{car.acceleration}s</span>
-                </div>
-              </div>
-            </div>
+        <div className="relative h-96">
+          <img
+            src={car.images[0]?.url || '/placeholder-car.jpg'}
+            alt={car.fullName}
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-6">
+            <h1 className="text-4xl font-bold text-white">{car.fullName}</h1>
+            <p className="text-xl text-gray-200">Year: {car.year}</p>
           </div>
         </div>
 
-        {/* Detailed Specifications */}
-        <div className="mt-16">
-          <h2 className="text-2xl font-bold tracking-tight text-gray-900 mb-8">
-            Detailed Specifications
-          </h2>
-          <SpecificationGrid specifications={specifications} />
+        {/* Basic Info */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
+          <InfoCard title="Price" value={`$${car.price.toLocaleString()}`} />
+          <InfoCard title="Rating" value={`${car.rating}/5`} />
+          <InfoCard title="Engine Type" value={car.engineType} />
+          <InfoCard title="Transmission" value={car.transmission} />
+          <InfoCard title="Power" value={`${car.power} hp`} />
+          <InfoCard title="Acceleration" value={`${car.acceleration} s (0-60)`} />
+        </div>
+
+        {/* Detailed Specs */}
+        <div className="p-6">
+          <h2 className="text-2xl font-bold mb-4">Detailed Specifications</h2>
+          
+          {/* Engine */}
+          <SpecSection title="Engine">
+            <SpecGrid>
+              <SpecItem label="Displacement" value={`${car.specs.engine.displacement}L`} />
+              <SpecItem label="Cylinders" value={car.specs.engine.cylinders} />
+              <SpecItem label="Configuration" value={car.specs.engine.configuration} />
+              <SpecItem label="Fuel Injection" value={car.specs.engine.fuelInjection} />
+              <SpecItem label="Turbocharger" value={car.specs.engine.turbocharger ? "Yes" : "No"} />
+              <SpecItem label="Supercharger" value={car.specs.engine.supercharger ? "Yes" : "No"} />
+            </SpecGrid>
+          </SpecSection>
+
+          {/* Performance */}
+          <SpecSection title="Performance">
+            <SpecGrid>
+              <SpecItem label="Power to Weight" value={`${car.specs.performance.powerToWeight} hp/ton`} />
+              <SpecItem label="Top Speed" value={`${car.specs.performance.topSpeed} mph`} />
+              <SpecItem label="0-60 mph" value={`${car.specs.performance.acceleration060} s`} />
+              <SpecItem label="Quarter Mile" value={`${car.specs.performance.quarterMile} s`} />
+            </SpecGrid>
+          </SpecSection>
+
+          {/* Dimensions */}
+          <SpecSection title="Dimensions">
+            <SpecGrid>
+              <SpecItem label="Length" value={`${car.specs.dimensions.length} mm`} />
+              <SpecItem label="Width" value={`${car.specs.dimensions.width} mm`} />
+              <SpecItem label="Height" value={`${car.specs.dimensions.height} mm`} />
+              <SpecItem label="Wheelbase" value={`${car.specs.dimensions.wheelbase} mm`} />
+              <SpecItem label="Weight" value={`${car.specs.dimensions.weight} kg`} />
+            </SpecGrid>
+          </SpecSection>
+
+          {/* Interior */}
+          <SpecSection title="Interior">
+            <SpecGrid>
+              <SpecItem label="Seating Capacity" value={car.specs.interior.seatingCapacity} />
+              <SpecItem label="Trunk Capacity" value={`${car.specs.interior.trunkCapacity}L`} />
+              <SpecItem label="Infotainment" value={car.specs.interior.infotainmentScreen} />
+              <SpecItem label="Sound System" value={car.specs.interior.soundSystem} />
+              <SpecItem label="Climate Zones" value={car.specs.interior.climateZones} />
+            </SpecGrid>
+          </SpecSection>
+
+          {/* Safety */}
+          <SpecSection title="Safety">
+            <SpecGrid>
+              <SpecItem label="Airbags" value={car.specs.safety.airbags} />
+              <SpecItem label="ABS" value={car.specs.safety.abs ? "Yes" : "No"} />
+              <SpecItem label="Stability Control" value={car.specs.safety.stabilityControl ? "Yes" : "No"} />
+              <SpecItem label="Parking Sensors" value={car.specs.safety.parkingSensors ? "Yes" : "No"} />
+              <SpecItem label="Camera System" value={car.specs.safety.camera} />
+            </SpecGrid>
+          </SpecSection>
         </div>
 
         {/* Reviews Section */}
-        <div className="mt-16">
-          <h2 className="text-2xl font-bold tracking-tight text-gray-900 mb-8">
-            Reviews
-          </h2>
-          <div className="space-y-8">
-            <ReviewForm carId={car.id} onSuccess={() => refetch()} />
-            {car.reviews.map((review: any) => (
-              <div key={review.id} className="bg-white shadow sm:rounded-lg p-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h4 className="text-lg font-medium text-gray-900">{review.user.name}</h4>
-                    <div className="mt-1 flex items-center">
-                      {[0, 1, 2, 3, 4].map((rating) => (
-                        <StarIcon
-                          key={rating}
-                          className={classNames(
-                            review.rating > rating ? 'text-yellow-400' : 'text-gray-300',
-                            'h-5 w-5 flex-shrink-0'
-                          )}
-                          aria-hidden="true"
-                        />
-                      ))}
-                    </div>
-                  </div>
-                  <span className="text-sm text-gray-500">
-                    {new Date(review.createdAt).toLocaleDateString()}
-                  </span>
-                </div>
-                <p className="mt-4 text-gray-600">{review.comment}</p>
+        <div className="p-6 bg-gray-50">
+          <h2 className="text-2xl font-bold mb-4">Reviews</h2>
+          {car.reviews.map((review: any) => (
+            <div key={review.id} className="mb-4 p-4 bg-white rounded-lg shadow">
+              <div className="flex items-center mb-2">
+                <span className="font-semibold mr-2">
+                  {review.user.firstName} {review.user.lastName}
+                </span>
+                <span className="text-yellow-500">{'★'.repeat(Math.round(review.rating))}</span>
               </div>
-            ))}
-            {car.reviews.length === 0 && (
-              <p className="text-center text-gray-500">No reviews yet. Be the first to review!</p>
-            )}
-          </div>
+              <p className="text-gray-600">{review.comment}</p>
+              <p className="text-sm text-gray-400 mt-2">
+                {new Date(review.createdAt).toLocaleDateString()}
+              </p>
+            </div>
+          ))}
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
+
+// Helper Components
+const InfoCard: React.FC<{ title: string; value: string | number }> = ({ title, value }) => (
+  <div className="bg-gray-50 p-4 rounded-lg">
+    <h3 className="text-gray-500 text-sm">{title}</h3>
+    <p className="text-xl font-semibold">{value}</p>
+  </div>
+);
+
+const SpecSection: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
+  <div className="mb-8">
+    <h3 className="text-xl font-semibold mb-4">{title}</h3>
+    {children}
+  </div>
+);
+
+const SpecGrid: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    {children}
+  </div>
+);
+
+const SpecItem: React.FC<{ label: string; value: string | number | boolean }> = ({ label, value }) => (
+  <div className="flex justify-between p-2 bg-gray-50 rounded">
+    <span className="text-gray-600">{label}</span>
+    <span className="font-medium">{value}</span>
+  </div>
+);
+
+export default CarDetails;

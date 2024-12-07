@@ -6,6 +6,9 @@ import { createRedisClient } from '../config/redis'
 import { logger } from '../utils/logger'
 import { nanoid } from 'nanoid'
 import { userResolvers } from './resolvers/user.resolver'
+import { adminResolvers } from './resolvers/admin.resolver'
+import { carResolvers } from './resolvers/car.resolver'
+import bcryptjs from 'bcryptjs'
 
 // Get the Car model
 // const Car = mongoose.model<ICar>('Car')
@@ -34,7 +37,8 @@ interface IContext {
 interface IReview {
   user: {
     id: string
-    name: string
+    firstName: string
+    lastName: string
   }
   rating: number
   comment: string
@@ -44,30 +48,34 @@ interface IReview {
 export const resolvers = {
   Query: {
     ...userResolvers.Query,
+    ...adminResolvers.Query,
+    ...carResolvers.Query,
     me: (_: unknown, __: unknown, { user }: IContext) => {
       return user
     },
     cars: async (_: unknown, { filter = {}, limit = 20, offset = 0 }: { filter: CarFilter, limit: number, offset: number }) => {
       try {
-        const query: Record<string, any> = {}
-        
-        if (filter.make) query.make = new RegExp(filter.make, 'i')
-        if (filter.model) query.model = new RegExp(filter.model, 'i')
+        const query: any = {}
+
+        if (filter.make) query.make = filter.make
+        if (filter.model) query.model = filter.model
         if (filter.year) query.year = filter.year
         if (filter.engineType) query.engineType = filter.engineType
         if (filter.transmission) query.transmission = filter.transmission
-        if (filter.fuelType) query.fuelType = filter.fuelType
-        
+        if (filter.fuelType) query.specs = { ...query.specs, fuel: { fuelType: filter.fuelType } }
+
         if (filter.minPrice || filter.maxPrice) {
           query.price = {}
           if (filter.minPrice) query.price.$gte = filter.minPrice
           if (filter.maxPrice) query.price.$lte = filter.maxPrice
         }
 
-        return await Car.find(query)
-          .sort({ createdAt: -1 })
+        const cars = await Car.find(query)
           .skip(offset)
           .limit(limit)
+          .sort({ createdAt: -1 })
+
+        return cars
       } catch (error) {
         logger.error('Error fetching cars:', error)
         throw error
@@ -76,23 +84,10 @@ export const resolvers = {
 
     car: async (_: unknown, { id }: { id: string }) => {
       try {
-        const redis = await createRedisClient()
-        const cacheKey = `car:${id}`
-        
-        // Try to get from cache
-        const cachedCar = await redis.get(cacheKey)
-        if (cachedCar) {
-          return JSON.parse(cachedCar)
-        }
-        
-        // Get from database
         const car = await Car.findById(id)
         if (!car) {
           throw new Error('Car not found')
         }
-
-        // Cache the result
-        await redis.set(cacheKey, JSON.stringify(car), 'EX', 3600)
         return car
       } catch (error) {
         logger.error('Error fetching car:', error)
@@ -116,14 +111,15 @@ export const resolvers = {
     searchCars: async (_: unknown, { query }: { query: string }) => {
       try {
         const searchRegex = new RegExp(query, 'i')
-        return await Car.find({
+        const cars = await Car.find({
           $or: [
             { make: searchRegex },
-            { model: searchRegex },
+            { carModel: searchRegex },
             { engineType: searchRegex },
             { transmission: searchRegex }
           ]
         })
+        return cars
       } catch (error) {
         logger.error('Error searching cars:', error)
         throw error
@@ -132,8 +128,11 @@ export const resolvers = {
 
     reviews: async (_: unknown, { carId }: { carId: string }) => {
       try {
-        const car = await Car.findById(carId).populate('reviews.user')
-        return car?.reviews || []
+        const car = await Car.findById(carId)
+        if (!car) {
+          throw new Error('Car not found')
+        }
+        return car.reviews || []
       } catch (error) {
         logger.error('Error fetching reviews:', error)
         throw error
@@ -143,14 +142,16 @@ export const resolvers = {
 
   Mutation: {
     ...userResolvers.Mutation,
-    registerUser: async (_: unknown, { input }: { input: { email: string, password: string, name: string } }) => {
+    ...adminResolvers.Mutation,
+    admin: () => ({}),
+    registerUser: async (parent: unknown, { input }: { input: { email: string, password: string, firstName: string, lastName: string } }) => {
       try {
         const user = await User.create({
           email: input.email,
           password: input.password,
-          name: input.name,
-          role: 'user',
-          isGuest: false
+          firstName: input.firstName,
+          lastName: input.lastName,
+          role: 'USER'
         })
         return {
           token: AuthService.generateToken(user),
@@ -162,16 +163,19 @@ export const resolvers = {
       }
     },
 
-    loginUser: async (_: unknown, { input }: { input: { email: string, password: string } }) => {
+    loginUser: async (parent: unknown, { input }: { input: { email: string, password: string } }) => {
       try {
         const user = await User.findOne({ email: input.email })
         if (!user) {
           throw new Error('User not found')
         }
 
-        const isValid = await user.comparePassword(input.password)
-        if (!isValid) {
-          throw new Error('Invalid password')
+        // Skip password check for guest users
+        if (user.role !== 'GUEST') {
+          const isValid = await user.comparePassword(input.password)
+          if (!isValid) {
+            throw new Error('Invalid password')
+          }
         }
 
         return {
@@ -184,13 +188,14 @@ export const resolvers = {
       }
     },
 
-    createGuestUser: async () => {
+    createGuestUser: async (parent: unknown, args: unknown) => {
       try {
         const user = await User.create({
-          name: `Guest_${nanoid(6)}`,
+          firstName: `Guest_${nanoid(6)}`,
+          lastName: `Guest_${nanoid(6)}`,
           email: `guest_${nanoid(8)}@temp.com`,
-          role: 'guest',
-          isGuest: true
+          password: await bcryptjs.hash('guest', 10),
+          role: 'GUEST'
         })
         return {
           token: AuthService.generateToken(user),
@@ -202,17 +207,17 @@ export const resolvers = {
       }
     },
 
-    upgradeGuestUser: async (_: unknown, { input }: { input: { email: string, password: string, name: string } }, { user }: IContext) => {
-      if (!user || !user.isGuest) {
+    upgradeGuestUser: async (parent: unknown, { input }: { input: { email: string, password: string, firstName: string, lastName: string } }, { user }: IContext) => {
+      if (!user || user.role !== 'GUEST') {
         throw new Error('Only guest users can be upgraded')
       }
 
       try {
         user.email = input.email
         user.password = input.password
-        user.name = input.name
-        user.isGuest = false
-        user.role = 'user'
+        user.firstName = input.firstName
+        user.lastName = input.lastName
+        user.role = 'USER'
 
         await user.save()
 
@@ -226,7 +231,7 @@ export const resolvers = {
       }
     },
 
-    updateUser: async (_: unknown, { input }: { input: Partial<IUser> }, { user }: IContext) => {
+    updateUser: async (parent: unknown, { input }: { input: Partial<IUser> }, { user }: IContext) => {
       if (!user) {
         throw new Error('Not authenticated')
       }
@@ -249,7 +254,7 @@ export const resolvers = {
       }
     },
 
-    createReview: async (_: unknown, { input }: { input: ReviewInput }, { user }: IContext) => {
+    createReview: async (parent: unknown, { input }: { input: ReviewInput }, { user }: IContext) => {
       if (!user) {
         throw new Error('Not authenticated')
       }
@@ -262,10 +267,11 @@ export const resolvers = {
 
         const userId = (user as IUser & { _id: mongoose.Types.ObjectId })._id
 
-        const review: IReview = {
+        const review = {
           user: {
             id: userId.toString(),
-            name: user.name
+            firstName: user.firstName,
+            lastName: user.lastName
           },
           rating: input.rating,
           comment: input.comment,
@@ -278,6 +284,11 @@ export const resolvers = {
         car.reviews.push(review)
         await car.save()
 
+        // Update car rating
+        const totalRating = car.reviews.reduce((sum, r) => sum + r.rating, 0)
+        car.rating = totalRating / car.reviews.length
+        await car.save()
+
         return review
       } catch (error) {
         logger.error('Error creating review:', error)
@@ -285,7 +296,7 @@ export const resolvers = {
       }
     },
 
-    updateReview: async (_: unknown, { id, rating, comment }: { id: string, rating: number, comment: string }, { user }: IContext) => {
+    updateReview: async (parent: unknown, { id, rating, comment }: { id: string, rating: number, comment: string }, { user }: IContext) => {
       if (!user) {
         throw new Error('Not authenticated')
       }
@@ -298,7 +309,7 @@ export const resolvers = {
 
         const userId = (user as IUser & { _id: mongoose.Types.ObjectId })._id
 
-        const review = car.reviews.find(r => r.user.id === id)
+        const review = car.reviews.find(r => r.user.id === userId.toString())
         if (!review || review.user.id !== userId.toString()) {
           throw new Error('Not authorized to update this review')
         }
@@ -314,7 +325,7 @@ export const resolvers = {
       }
     },
 
-    deleteReview: async (_: unknown, { id }: { id: string }, { user }: IContext) => {
+    deleteReview: async (parent: unknown, { id }: { id: string }, { user }: IContext) => {
       if (!user) {
         throw new Error('Not authenticated')
       }
@@ -327,7 +338,7 @@ export const resolvers = {
 
         const userId = (user as IUser & { _id: mongoose.Types.ObjectId })._id
 
-        const reviewIndex = car.reviews.findIndex(r => r.user.id === id)
+        const reviewIndex = car.reviews.findIndex(r => r.user.id === userId.toString())
         if (reviewIndex === -1 || car.reviews[reviewIndex].user.id !== userId.toString()) {
           throw new Error('Not authorized to delete this review')
         }
@@ -345,6 +356,7 @@ export const resolvers = {
   },
 
   Car: {
+    ...carResolvers.Car,
     reviews: async (parent: ICar) => {
       return parent.reviews || []
     }

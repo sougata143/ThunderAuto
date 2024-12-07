@@ -8,13 +8,14 @@ type CarImage {
 
 input CarInput {
   make: String!
-  model: String!
+  carModel: String!
   year: Int!
   price: Float!
   engineType: String!
   transmission: String!
   power: Float!
   acceleration: Float!
+  status: String
   specs: CarSpecsInput!
 }
 
@@ -160,6 +161,14 @@ enum CarStatus {
 type DeleteCarResponse {
   success: Boolean!
   message: String!
+}
+
+type AdminQuery {
+  adminCars: [Car!]!
+}
+
+extend type Query {
+  admin: AdminQuery!
 }
 
 extend type Mutation {

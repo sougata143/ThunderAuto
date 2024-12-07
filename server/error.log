@@ -49,3 +49,17 @@
 2024-12-07T04:57:36.668Z [[31merror[39m]: Error logging in: Invalid password
 2024-12-07T04:58:49.618Z [[31merror[39m]: Error logging in: Invalid password
 2024-12-07T04:59:07.061Z [[31merror[39m]: Error logging in: Invalid password
+2024-12-07T05:03:42.703Z [[31merror[39m]: Failed to start server: Query.users defined in resolvers, but not in schema
+2024-12-07T05:03:42.704Z [[31merror[39m]: Failed to start server: Query.users defined in resolvers, but not in schema
+2024-12-07T05:03:42.706Z [[31merror[39m]: Failed to start server: Query.users defined in resolvers, but not in schema
+2024-12-07T05:18:51.357Z [[31merror[39m]: Failed to start server: Query.adminCars defined in resolvers, but not in schema
+2024-12-07T05:18:51.368Z [[31merror[39m]: Failed to start server: Query.adminCars defined in resolvers, but not in schema
+2024-12-07T05:18:51.389Z [[31merror[39m]: Failed to start server: Query.adminCars defined in resolvers, but not in schema
+2024-12-07T05:20:00.438Z [[31merror[39m]: Failed to start server: Query.adminCars defined in resolvers, but not in schema
+2024-12-07T05:20:00.442Z [[31merror[39m]: Failed to start server: Query.adminCars defined in resolvers, but not in schema
+2024-12-07T05:20:00.452Z [[31merror[39m]: Failed to start server: Query.adminCars defined in resolvers, but not in schema
+2024-12-07T05:21:00.668Z [[31merror[39m]: Failed to start server: Mutation.createCar defined in resolvers, but not in schema
+2024-12-07T05:21:00.654Z [[31merror[39m]: Failed to start server: Mutation.createCar defined in resolvers, but not in schema
+2024-12-07T05:21:00.690Z [[31merror[39m]: Failed to start server: Mutation.createCar defined in resolvers, but not in schema
+2024-12-07T07:35:58.823Z [[31merror[39m]: Error logging in: Invalid password
+2024-12-07T07:42:13.600Z [[31merror[39m]: Error logging in: Invalid password

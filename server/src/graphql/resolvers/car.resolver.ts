@@ -1,5 +1,6 @@
+import mongoose from 'mongoose'
 import { ICar } from '../../models/Car'
-import Car from '../../models/Car'
+import { Car } from '../../models/Car'
 import { IContext } from '../../types/context'
 
 interface CarFilters {
@@ -136,8 +137,8 @@ export const carResolvers = {
         }
 
         const cars = await Car.find(query)
-          .populate('createdBy', 'name email')
-          .populate('lastUpdatedBy', 'name email')
+          .populate('createdBy', 'firstName lastName email')
+          .populate('lastUpdatedBy', 'firstName lastName email')
           .sort({ createdAt: -1 })
         return cars
       } catch (error) {
@@ -148,26 +149,43 @@ export const carResolvers = {
 
     car: async (_: unknown, { id }: { id: string }, _context: IContext) => {
       try {
-        const car = await Car.findById(id)
-          .populate('createdBy', 'name email')
-          .populate('lastUpdatedBy', 'name email')
+        console.log('Fetching car with ID:', id);
         
-        if (!car) {
-          throw new Error('Car not found')
+        // Validate ID format
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+          console.error('Invalid car ID format:', id);
+          throw new Error('Invalid car ID format');
         }
 
-        return car
+        const car = await Car.findById(id)
+          .populate('createdBy', 'firstName lastName email')
+          .populate('lastUpdatedBy', 'firstName lastName email');
+        
+        console.log('Found car:', JSON.stringify(car, null, 2));
+        
+        if (!car) {
+          console.error('Car not found with ID:', id);
+          throw new Error('Car not found');
+        }
+
+        // Ensure required fields are present
+        if (!car.make || !car.carModel || !car.year) {
+          console.error('Car data is incomplete:', car);
+          throw new Error('Car data is incomplete');
+        }
+
+        return car;
       } catch (error) {
-        console.error('Error fetching car:', error)
-        throw error
+        console.error('Error fetching car:', error);
+        throw error;
       }
     },
 
     carsByMake: async (_: unknown, { make }: { make: string }, _context: IContext) => {
       try {
         const cars = await Car.find({ make })
-          .populate('createdBy', 'name email')
-          .populate('lastUpdatedBy', 'name email')
+          .populate('createdBy', 'firstName lastName email')
+          .populate('lastUpdatedBy', 'firstName lastName email')
           .sort({ year: -1 })
         return cars
       } catch (error) {
@@ -179,8 +197,8 @@ export const carResolvers = {
     carsByYear: async (_: unknown, { year }: { year: number }, _context: IContext) => {
       try {
         const cars = await Car.find({ year })
-          .populate('createdBy', 'name email')
-          .populate('lastUpdatedBy', 'name email')
+          .populate('createdBy', 'firstName lastName email')
+          .populate('lastUpdatedBy', 'firstName lastName email')
           .sort({ make: 1, model: 1 })
         return cars
       } catch (error) {
@@ -200,8 +218,8 @@ export const carResolvers = {
             { transmission: searchRegex }
           ]
         })
-          .populate('createdBy', 'name email')
-          .populate('lastUpdatedBy', 'name email')
+          .populate('createdBy', 'firstName lastName email')
+          .populate('lastUpdatedBy', 'firstName lastName email')
           .sort({ createdAt: -1 })
         return cars
       } catch (error) {
@@ -213,7 +231,12 @@ export const carResolvers = {
 
   Car: {
     // Resolver for computing any derived fields
-    fullName: (parent: ICar) => `${parent.year} ${parent.make} ${parent.model}`,
+    fullName: (parent: ICar) => {
+      if (!parent.make || !parent.carModel || !parent.year) {
+        throw new Error('Required fields for fullName are missing');
+      }
+      return `${parent.year} ${parent.make} ${parent.carModel}`;
+    },
     
     // Resolver for handling the images array
     images: (parent: ICar) => {
@@ -228,7 +251,7 @@ export const carResolvers = {
     // Resolver for handling reviews
     reviews: async (parent: ICar) => {
       if (!parent.populated('reviews.user.id')) {
-        await parent.populate('reviews.user.id', 'name email')
+        await parent.populate('reviews.user.id', 'firstName lastName email')
       }
       return parent.reviews
     }

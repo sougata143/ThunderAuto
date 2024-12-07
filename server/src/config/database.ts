@@ -1,18 +1,24 @@
-import mongoose from 'mongoose'
-import { logger } from '../utils/logger'
+import mongoose from 'mongoose';
+import { config } from 'dotenv';
+import { logger } from '../utils/logger.js';
 
-export async function connectDB() {
-  const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/thunderauto'
-  
+config();
+
+export const connectDB = async (uri?: string) => {
   try {
-    await mongoose.connect(MONGODB_URI)
-    logger.info('📦 Connected to MongoDB')
-  } catch (error) {
-    logger.error('MongoDB connection error:', error)
-    process.exit(1)
+    const mongoURI = uri || process.env.MONGODB_URI;
+    if (!mongoURI) {
+      throw new Error('MongoDB URI is not defined');
+    }
+    
+    await mongoose.connect(mongoURI);
+    logger.info('📦 Connected to MongoDB');
+  } catch (err) {
+    logger.error('Error connecting to MongoDB:', err);
+    process.exit(1);
   }
   
   mongoose.connection.on('error', (error) => {
-    logger.error('MongoDB connection error:', error)
-  })
-}
+    logger.error('MongoDB connection error:', error);
+  });
+};

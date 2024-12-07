@@ -31,6 +31,7 @@ type CarSpecs {
   safety: Safety!
   technology: Technology!
   warranty: Warranty!
+  features: Features!
 }
 
 type Engine {
@@ -135,6 +136,14 @@ type Warranty {
   maintenance: String!
 }
 
+type Features {
+  safety: [String!]!
+  comfort: [String!]!
+  technology: [String!]!
+  exterior: [String!]!
+  interior: [String!]!
+}
+
 type Review {
   id: ID!
   user: ReviewUser!
@@ -145,7 +154,8 @@ type Review {
 
 type ReviewUser {
   id: ID!
-  name: String!
+  firstName: String!
+  lastName: String!
 }
 
 input CarFilter {

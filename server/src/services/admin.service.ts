@@ -1,20 +1,22 @@
-import { ICar } from '../models/Car'
-import Car from '../models/Car'
-import { IUser } from '../models/User'
-import { UserInputError, AuthenticationError } from 'apollo-server-express'
+import { ICar, Car } from '../models/Car'
+import { IUser, User } from '../models/User'
+import { GraphQLError } from 'graphql'
 import { uploadToCloudinary, deleteFromCloudinary } from '../utils/cloudinary'
 import { Stream } from 'stream'
+import mongoose from 'mongoose'
 
 export class AdminService {
   static async createCar(carData: Partial<ICar>, adminUser: IUser) {
-    if (!adminUser || adminUser.role !== 'admin') {
-      throw new AuthenticationError('Only admin users can create cars')
+    if (!adminUser || adminUser.role !== 'ADMIN') {
+      throw new GraphQLError('Only admin users can create cars', {
+        extensions: { code: 'FORBIDDEN' }
+      })
     }
 
     const car = new Car({
       ...carData,
-      createdBy: adminUser._id,
-      lastUpdatedBy: adminUser._id,
+      createdBy: adminUser._id as mongoose.Types.ObjectId,
+      lastUpdatedBy: adminUser._id as mongoose.Types.ObjectId,
       status: 'draft'
     })
 
@@ -23,18 +25,22 @@ export class AdminService {
   }
 
   static async updateCar(carId: string, carData: Partial<ICar>, adminUser: IUser) {
-    if (!adminUser || adminUser.role !== 'admin') {
-      throw new AuthenticationError('Only admin users can update cars')
+    if (!adminUser || adminUser.role !== 'ADMIN') {
+      throw new GraphQLError('Only admin users can update cars', {
+        extensions: { code: 'FORBIDDEN' }
+      })
     }
 
     const car = await Car.findById(carId)
     if (!car) {
-      throw new UserInputError('Car not found')
+      throw new GraphQLError('Car not found', {
+        extensions: { code: 'NOT_FOUND' }
+      })
     }
 
     Object.assign(car, {
       ...carData,
-      lastUpdatedBy: adminUser._id
+      lastUpdatedBy: adminUser._id as mongoose.Types.ObjectId
     })
 
     await car.save()
@@ -43,7 +49,7 @@ export class AdminService {
 
   static async uploadCarImage(
     carId: string,
-    image: {
+    file: {
       createReadStream: () => Stream
       filename: string
       mimetype: string
@@ -52,20 +58,24 @@ export class AdminService {
     isFeatured: boolean,
     adminUser: IUser
   ) {
-    if (!adminUser || adminUser.role !== 'admin') {
-      throw new AuthenticationError('Only admin users can upload car images')
+    if (!adminUser || adminUser.role !== 'ADMIN') {
+      throw new GraphQLError('Only admin users can upload car images', {
+        extensions: { code: 'FORBIDDEN' }
+      })
     }
 
     const car = await Car.findById(carId)
     if (!car) {
-      throw new UserInputError('Car not found')
+      throw new GraphQLError('Car not found', {
+        extensions: { code: 'NOT_FOUND' }
+      })
     }
 
     // Upload image to Cloudinary
-    const stream = image.createReadStream()
+    const stream = file.createReadStream()
     const result = await uploadToCloudinary(stream, {
       folder: `cars/${carId}`,
-      public_id: `${Date.now()}-${image.filename}`,
+      public_id: `${Date.now()}-${file.filename}`,
       allowed_formats: ['jpg', 'jpeg', 'png', 'webp'],
       transformation: [
         { width: 1200, height: 800, crop: 'fill' },
@@ -78,7 +88,7 @@ export class AdminService {
       url: result.secure_url,
       caption,
       isFeatured,
-      uploadedBy: adminUser._id,
+      uploadedBy: adminUser._id as mongoose.Types.ObjectId,
       uploadedAt: new Date()
     })
 
@@ -95,19 +105,25 @@ export class AdminService {
   }
 
   static async deleteCarImage(carId: string, imageUrl: string, adminUser: IUser) {
-    if (!adminUser || adminUser.role !== 'admin') {
-      throw new AuthenticationError('Only admin users can delete car images')
+    if (!adminUser || adminUser.role !== 'ADMIN') {
+      throw new GraphQLError('Only admin users can delete car images', {
+        extensions: { code: 'FORBIDDEN' }
+      })
     }
 
     const car = await Car.findById(carId)
     if (!car) {
-      throw new UserInputError('Car not found')
+      throw new GraphQLError('Car not found', {
+        extensions: { code: 'NOT_FOUND' }
+      })
     }
 
     // Find image in car
     const imageIndex = car.images.findIndex(img => img.url === imageUrl)
     if (imageIndex === -1) {
-      throw new UserInputError('Image not found')
+      throw new GraphQLError('Image not found', {
+        extensions: { code: 'NOT_FOUND' }
+      })
     }
 
     // Delete from Cloudinary
@@ -121,29 +137,37 @@ export class AdminService {
   }
 
   static async updateCarStatus(carId: string, status: 'draft' | 'published' | 'archived', adminUser: IUser) {
-    if (!adminUser || adminUser.role !== 'admin') {
-      throw new AuthenticationError('Only admin users can update car status')
+    if (!adminUser || adminUser.role !== 'ADMIN') {
+      throw new GraphQLError('Only admin users can update car status', {
+        extensions: { code: 'FORBIDDEN' }
+      })
     }
 
     const car = await Car.findById(carId)
     if (!car) {
-      throw new UserInputError('Car not found')
+      throw new GraphQLError('Car not found', {
+        extensions: { code: 'NOT_FOUND' }
+      })
     }
 
     car.status = status
-    car.lastUpdatedBy = adminUser._id
+    car.lastUpdatedBy = adminUser._id as mongoose.Types.ObjectId
     await car.save()
     return car
   }
 
   static async deleteCar(carId: string, adminUser: IUser) {
-    if (!adminUser || adminUser.role !== 'admin') {
-      throw new AuthenticationError('Only admin users can delete cars')
+    if (!adminUser || adminUser.role !== 'ADMIN') {
+      throw new GraphQLError('Only admin users can delete cars', {
+        extensions: { code: 'FORBIDDEN' }
+      })
     }
 
     const car = await Car.findById(carId)
     if (!car) {
-      throw new UserInputError('Car not found')
+      throw new GraphQLError('Car not found', {
+        extensions: { code: 'NOT_FOUND' }
+      })
     }
 
     // Delete all images from Cloudinary

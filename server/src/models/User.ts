@@ -1,85 +1,78 @@
-import mongoose from 'mongoose'
+import mongoose, { Document, Schema } from 'mongoose'
 import bcrypt from 'bcryptjs'
 
-export interface IUser extends mongoose.Document {
-  name: string
-  email: string
-  password?: string
-  role: 'guest' | 'user' | 'admin'
-  isGuest: boolean
-  lastLogin: Date
+export interface IUser extends Document {
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+  role: 'GUEST' | 'USER' | 'ADMIN';
   preferences: {
-    theme: 'light' | 'dark'
-    notifications: boolean
-    language: string
-  }
-  comparePassword(candidatePassword: string): Promise<boolean>
+    theme: string;
+    notifications: boolean;
+    language: string;
+  };
+  createdAt: Date;
+  updatedAt: Date;
+  comparePassword(candidatePassword: string): Promise<boolean>;
 }
 
-const userSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
-    trim: true,
-  },
+const userSchema = new Schema<IUser>({
   email: {
     type: String,
     required: true,
     unique: true,
     trim: true,
-    lowercase: true,
+    lowercase: true
   },
   password: {
     type: String,
-    required: function(this: IUser) {
-      return !this.isGuest
-    },
-    minlength: 8,
+    required: true
+  },
+  firstName: {
+    type: String,
+    required: true,
+    trim: true
+  },
+  lastName: {
+    type: String,
+    required: true,
+    trim: true
   },
   role: {
     type: String,
-    enum: ['guest', 'user', 'admin'],
-    default: 'user',
-  },
-  isGuest: {
-    type: Boolean,
-    default: false,
-  },
-  lastLogin: {
-    type: Date,
-    default: Date.now,
+    enum: ['GUEST', 'USER', 'ADMIN'],
+    default: 'USER'
   },
   preferences: {
     theme: {
       type: String,
-      enum: ['light', 'dark'],
-      default: 'light',
+      default: 'light'
     },
     notifications: {
       type: Boolean,
-      default: true,
+      default: true
     },
     language: {
       type: String,
-      default: 'en',
-    },
-  },
-}, {
-  timestamps: true,
-})
-
-// Hash password before saving (only for non-guest users)
-userSchema.pre('save', async function(next) {
-  if (this.isModified('password') && !this.isGuest && this.password) {
-    this.password = await bcrypt.hash(this.password, 10)
+      default: 'en'
+    }
   }
-  next()
-})
+}, {
+  timestamps: true
+});
+
+// Hash password before saving
+userSchema.pre('save', async function(next) {
+  if (this.isModified('password')) {
+    this.password = await bcrypt.hash(this.password, 10);
+  }
+  next();
+});
 
 // Method to compare password
-userSchema.methods.comparePassword = async function(candidatePassword: string) {
-  if (this.isGuest) return false
-  return this.password ? bcrypt.compare(candidatePassword, this.password) : false
-}
+userSchema.methods.comparePassword = async function(candidatePassword: string): Promise<boolean> {
+  return bcrypt.compare(candidatePassword, this.password);
+};
 
-export const User = mongoose.model<IUser>('User', userSchema)
+export const User = mongoose.model<IUser>('User', userSchema);

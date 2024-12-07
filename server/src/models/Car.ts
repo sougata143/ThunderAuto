@@ -113,11 +113,19 @@ export interface ICar extends mongoose.Document {
       roadside: string
       maintenance: string
     }
+    features: {
+      safety: string[]
+      comfort: string[]
+      technology: string[]
+      exterior: string[]
+      interior: string[]
+    }
   }
   reviews: Array<{
     user: {
       id: string
-      name: string
+      firstName: string
+      lastName: string
     }
     rating: number
     comment: string
@@ -241,12 +249,20 @@ const carSchema = new mongoose.Schema({
       corrosion: { type: String, required: true },
       roadside: { type: String, required: true },
       maintenance: { type: String, required: true }
+    },
+    features: {
+      safety: [{ type: String }],
+      comfort: [{ type: String }],
+      technology: [{ type: String }],
+      exterior: [{ type: String }],
+      interior: [{ type: String }]
     }
   },
   reviews: [{
     user: {
       id: { type: String, required: true },
-      name: { type: String, required: true }
+      firstName: { type: String, required: true },
+      lastName: { type: String, required: true }
     },
     rating: { type: Number, required: true },
     comment: { type: String, required: true },
