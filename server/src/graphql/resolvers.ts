@@ -49,10 +49,9 @@ export const resolvers = {
         if (!car) {
           throw new Error('Car not found')
         }
-        
-        // Cache the result
-        await redis.set(cacheKey, JSON.stringify(car), 'EX', 3600) // Cache for 1 hour
-        
+
+        // Cache for 1 hour
+        await redis.setex(cacheKey, 3600, JSON.stringify(car))
         return car
       } catch (error) {
         logger.error('Error fetching car:', error)
@@ -62,7 +61,24 @@ export const resolvers = {
 
     compareCars: async (_, { ids }) => {
       try {
-        return await Car.find({ _id: { $in: ids } })
+        const redis = await createRedisClient()
+        const cacheKey = `compare:${ids.sort().join(',')}`
+        
+        // Try to get from cache
+        const cachedCars = await redis.get(cacheKey)
+        if (cachedCars) {
+          return JSON.parse(cachedCars)
+        }
+        
+        // Get from database
+        const cars = await Car.find({ _id: { $in: ids } })
+        if (!cars || cars.length !== ids.length) {
+          throw new Error('One or more cars not found')
+        }
+
+        // Cache for 1 hour
+        await redis.setex(cacheKey, 3600, JSON.stringify(cars))
+        return cars
       } catch (error) {
         logger.error('Error comparing cars:', error)
         throw new Error('Failed to compare cars')

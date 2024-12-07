@@ -8,3 +8,17 @@
 2024-12-07T03:09:51.805Z [[32minfo[39m]: 🐰 Connected to RabbitMQ
 2024-12-07T03:09:51.838Z [[32minfo[39m]: 🚀 Server running on port 4000
 2024-12-07T03:09:51.838Z [[32minfo[39m]: 🎯 GraphQL endpoint: http://localhost:4000/graphql
+2024-12-07T03:20:27.592Z [[32minfo[39m]: 📦 Connected to MongoDB
+2024-12-07T03:20:27.598Z [[32minfo[39m]: 🔄 Connected to Redis
+2024-12-07T03:20:27.715Z [[32minfo[39m]: 🐰 Connected to RabbitMQ
+2024-12-07T03:20:27.753Z [[32minfo[39m]: 🚀 Server running on port 4000
+2024-12-07T03:20:27.753Z [[32minfo[39m]: 🎯 GraphQL endpoint: http://localhost:4000/graphql
+2024-12-07T03:22:10.563Z [[32minfo[39m]: 📦 Connected to MongoDB
+2024-12-07T03:22:10.573Z [[32minfo[39m]: 🔄 Connected to Redis
+2024-12-07T03:22:10.671Z [[32minfo[39m]: 🐰 Connected to RabbitMQ
+2024-12-07T03:22:59.305Z [[32minfo[39m]: 📦 Connected to MongoDB
+2024-12-07T03:22:59.310Z [[32minfo[39m]: 🔄 Connected to Redis
+2024-12-07T03:22:59.339Z [[32minfo[39m]: 🐰 Connected to RabbitMQ
+2024-12-07T03:22:59.373Z [[32minfo[39m]: 🚀 Server running on port 4000
+2024-12-07T03:22:59.373Z [[32minfo[39m]: 🎯 GraphQL endpoint: http://localhost:4000/graphql
+2024-12-07T03:23:38.826Z [[31merror[39m]: Error fetching cars: Cannot read properties of undefined (reading 'find')

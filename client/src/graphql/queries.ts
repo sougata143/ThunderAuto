@@ -132,6 +132,36 @@ export const GET_CAR_DETAILS = gql`
   }
 `
 
+export const GET_COMPARE_CARS = gql`
+  query GetCompareCars($ids: [ID!]!) {
+    compareCars(ids: $ids) {
+      id
+      make
+      model
+      year
+      price
+      engineType
+      transmission
+      fuelType
+      power
+      acceleration
+      topSpeed
+      specs {
+        dimensions {
+          length
+          width
+          height
+          wheelbase
+        }
+        weight
+        fuelCapacity
+        trunkCapacity
+        seatingCapacity
+      }
+    }
+  }
+`
+
 export const SEARCH_CARS = gql`
   query SearchCars($query: String!) {
     searchCars(query: $query) {
