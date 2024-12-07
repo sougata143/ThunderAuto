@@ -1,0 +1,182 @@
+type Car {
+  id: ID!
+  make: String!
+  carModel: String!
+  year: Int!
+  price: Float!
+  images: [CarImage!]!
+  rating: Float!
+  engineType: String!
+  transmission: String!
+  power: Float!
+  acceleration: Float!
+  status: CarStatus!
+  createdBy: User!
+  lastUpdatedBy: User!
+  specs: CarSpecs!
+  reviews: [Review!]!
+  fullName: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type CarSpecs {
+  engine: Engine!
+  performance: Performance!
+  chassis: Chassis!
+  dimensions: Dimensions!
+  transmission: TransmissionSpecs!
+  fuel: Fuel!
+  interior: Interior!
+  safety: Safety!
+  technology: Technology!
+  warranty: Warranty!
+}
+
+type Engine {
+  displacement: Float!
+  cylinders: Int!
+  configuration: String!
+  fuelInjection: String!
+  turbocharger: Boolean!
+  supercharger: Boolean!
+  compression: String!
+  valvesPerCylinder: Int!
+}
+
+type Performance {
+  powerToWeight: Float!
+  topSpeed: Float!
+  acceleration060: Float!
+  acceleration0100: Float!
+  quarterMile: Float!
+  brakingDistance60_0: Float!
+}
+
+type Chassis {
+  bodyType: String!
+  platform: String!
+  frontSuspension: String!
+  rearSuspension: String!
+  frontBrakes: String!
+  rearBrakes: String!
+  wheelSize: String!
+  tireSize: String!
+}
+
+type Dimensions {
+  length: Float!
+  width: Float!
+  height: Float!
+  wheelbase: Float!
+  groundClearance: Float!
+  dragCoefficient: Float!
+  weight: Float!
+  distribution: String!
+}
+
+type TransmissionSpecs {
+  type: String!
+  gears: Int!
+  clutchType: String!
+  driveType: String!
+  differential: String!
+}
+
+type Fuel {
+  fuelType: String!
+  fuelSystem: String!
+  tankCapacity: Float!
+  cityMPG: Float!
+  highwayMPG: Float!
+  combinedMPG: Float!
+  emissionClass: String!
+}
+
+type Interior {
+  seatingCapacity: Int!
+  doors: Int!
+  trunkCapacity: Float!
+  infotainmentScreen: String!
+  soundSystem: String!
+  climateZones: Int!
+  upholsteryMaterial: String!
+}
+
+type Safety {
+  airbags: String!
+  abs: Boolean!
+  stabilityControl: Boolean!
+  tractionControl: Boolean!
+  parkingSensors: Boolean!
+  camera: String!
+  blindSpotMonitoring: Boolean!
+  laneDepartureWarning: Boolean!
+  collisionWarning: Boolean!
+  nightVision: Boolean!
+}
+
+type Technology {
+  connectivity: [String!]!
+  smartphone: [String!]!
+  navigation: String!
+  headlightType: String!
+  adaptiveCruiseControl: Boolean!
+  keylessEntry: Boolean!
+  startSystem: String!
+  driverAssistance: [String!]!
+}
+
+type Warranty {
+  basic: String!
+  powertrain: String!
+  corrosion: String!
+  roadside: String!
+  maintenance: String!
+}
+
+type Review {
+  id: ID!
+  user: ReviewUser!
+  rating: Float!
+  comment: String
+  createdAt: DateTime!
+}
+
+type ReviewUser {
+  id: ID!
+  name: String!
+}
+
+input CarFilter {
+  make: String
+  model: String
+  year: Int
+  engineType: String
+  transmission: String
+  fuelType: String
+  minPrice: Float
+  maxPrice: Float
+}
+
+input ReviewInput {
+  carId: ID!
+  rating: Float!
+  comment: String!
+}
+
+extend type Query {
+  cars(filter: CarFilter, limit: Int = 20, offset: Int = 0): [Car!]!
+  car(id: ID!): Car
+  carsByMake(make: String!): [Car!]!
+  carsByYear(year: Int!): [Car!]!
+  searchCars(query: String!): [Car!]!
+  compareCars(ids: [ID!]!): [Car!]!
+  reviews(carId: ID!): [Review!]!
+}
+
+extend type Mutation {
+  createReview(input: ReviewInput!): Review!
+  updateReview(id: ID!, rating: Float!, comment: String!): Review!
+  deleteReview(id: ID!): Boolean!
+}

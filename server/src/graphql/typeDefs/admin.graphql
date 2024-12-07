@@ -1,0 +1,167 @@
+type CarImage {
+  url: String!
+  isFeatured: Boolean!
+  caption: String
+  uploadedBy: User!
+  uploadedAt: DateTime!
+}
+
+input CarInput {
+  make: String!
+  model: String!
+  year: Int!
+  price: Float!
+  engineType: String!
+  transmission: String!
+  power: Float!
+  acceleration: Float!
+  specs: CarSpecsInput!
+}
+
+input CarSpecsInput {
+  engine: EngineInput!
+  performance: PerformanceInput!
+  chassis: ChassisInput!
+  dimensions: DimensionsInput!
+  transmission: TransmissionInput!
+  fuel: FuelInput!
+  interior: InteriorInput!
+  safety: SafetyInput!
+  technology: TechnologyInput!
+  warranty: WarrantyInput!
+  features: FeaturesInput!
+}
+
+input EngineInput {
+  displacement: Float!
+  cylinders: Int!
+  configuration: String!
+  fuelInjection: String!
+  turbocharger: Boolean
+  supercharger: Boolean
+  compression: String!
+  valvesPerCylinder: Int!
+}
+
+input PerformanceInput {
+  powerToWeight: Float!
+  topSpeed: Float!
+  acceleration060: Float!
+  acceleration0100: Float!
+  quarterMile: Float!
+  brakingDistance60_0: Float!
+}
+
+input ChassisInput {
+  bodyType: String!
+  platform: String!
+  frontSuspension: String!
+  rearSuspension: String!
+  frontBrakes: String!
+  rearBrakes: String!
+  wheelSize: String!
+  tireSize: String!
+}
+
+input DimensionsInput {
+  length: Float!
+  width: Float!
+  height: Float!
+  wheelbase: Float!
+  groundClearance: Float!
+  dragCoefficient: Float!
+  weight: Float!
+  distribution: String!
+}
+
+input TransmissionInput {
+  type: String!
+  gears: Int!
+  clutchType: String!
+  driveType: String!
+  differential: String!
+}
+
+input FuelInput {
+  fuelType: String!
+  fuelSystem: String!
+  tankCapacity: Float!
+  cityMPG: Float!
+  highwayMPG: Float!
+  combinedMPG: Float!
+  emissionClass: String!
+}
+
+input InteriorInput {
+  seatingCapacity: Int!
+  doors: Int!
+  trunkCapacity: Float!
+  infotainmentScreen: String!
+  soundSystem: String!
+  climateZones: Int!
+  upholsteryMaterial: String!
+}
+
+input SafetyInput {
+  airbags: String!
+  abs: Boolean
+  stabilityControl: Boolean
+  tractionControl: Boolean
+  parkingSensors: Boolean
+  camera: String!
+  blindSpotMonitoring: Boolean
+  laneDepartureWarning: Boolean
+  collisionWarning: Boolean
+  nightVision: Boolean
+}
+
+input TechnologyInput {
+  connectivity: [String!]!
+  smartphone: [String!]!
+  navigation: String!
+  headlightType: String!
+  adaptiveCruiseControl: Boolean
+  keylessEntry: Boolean
+  startSystem: String!
+  driverAssistance: [String!]!
+}
+
+input WarrantyInput {
+  basic: String!
+  powertrain: String!
+  corrosion: String!
+  roadside: String!
+  maintenance: String!
+}
+
+input FeaturesInput {
+  safety: [String!]!
+  comfort: [String!]!
+  technology: [String!]!
+  exterior: [String!]!
+  interior: [String!]!
+}
+
+type AdminMutation {
+  createCar(input: CarInput!): Car!
+  updateCar(id: ID!, input: CarInput!): Car!
+  uploadCarImage(carId: ID!, image: Upload!, caption: String, isFeatured: Boolean!): Car!
+  deleteCarImage(carId: ID!, imageUrl: String!): Car!
+  updateCarStatus(carId: ID!, status: CarStatus!): Car!
+  deleteCar(id: ID!): DeleteCarResponse!
+}
+
+enum CarStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+type DeleteCarResponse {
+  success: Boolean!
+  message: String!
+}
+
+extend type Mutation {
+  admin: AdminMutation!
+}

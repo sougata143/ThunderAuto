@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react'
 import { useApolloClient, useMutation, useQuery } from '@apollo/client'
-import { GET_ME, LOGIN, REGISTER, CREATE_GUEST_USER } from '../graphql/queries'
+import { GET_ME } from '../graphql/queries'
+import { LOGIN_USER, REGISTER_USER, CREATE_GUEST_USER, UPGRADE_GUEST_USER } from '../graphql/mutations'
 
 interface User {
   id: string
@@ -50,8 +51,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     },
   })
 
-  const [loginMutation] = useMutation(LOGIN)
-  const [registerMutation] = useMutation(REGISTER)
+  const [loginMutation] = useMutation(LOGIN_USER)
+  const [registerMutation] = useMutation(REGISTER_USER)
   const [createGuestUserMutation] = useMutation(CREATE_GUEST_USER)
 
   useEffect(() => {
@@ -63,7 +64,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const { data } = await loginMutation({
         variables: { input: { email, password } },
       })
-      const { token: newToken, user: newUser } = data.login
+      const { token: newToken, user: newUser } = data.loginUser
       localStorage.setItem('token', newToken)
       setToken(newToken)
       setUser(newUser)
@@ -79,7 +80,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const { data } = await registerMutation({
         variables: { input: { name, email, password } },
       })
-      const { token: newToken, user: newUser } = data.register
+      const { token: newToken, user: newUser } = data.registerUser
       localStorage.setItem('token', newToken)
       setToken(newToken)
       setUser(newUser)

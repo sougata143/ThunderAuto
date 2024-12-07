@@ -1,33 +1,104 @@
 import { gql } from '@apollo/client'
 
 export const REGISTER_USER = gql`
-  mutation RegisterUser($input: RegisterInput!) {
-    register(input: $input) {
+  mutation RegisterUser($input: RegisterUserInput!) {
+    registerUser(input: $input) {
       token
       user {
         id
         name
         email
+        role
+        isGuest
+        preferences {
+          theme
+          notifications
+          language
+        }
       }
     }
   }
 `
 
 export const LOGIN_USER = gql`
-  mutation LoginUser($input: LoginInput!) {
-    login(input: $input) {
+  mutation LoginUser($input: LoginUserInput!) {
+    loginUser(input: $input) {
       token
       user {
         id
         name
         email
+        role
+        isGuest
+        preferences {
+          theme
+          notifications
+          language
+        }
+      }
+    }
+  }
+`
+
+export const CREATE_GUEST_USER = gql`
+  mutation CreateGuestUser {
+    createGuestUser {
+      token
+      user {
+        id
+        name
+        email
+        role
+        isGuest
+        preferences {
+          theme
+          notifications
+          language
+        }
+      }
+    }
+  }
+`
+
+export const UPGRADE_GUEST_USER = gql`
+  mutation UpgradeGuestUser($input: RegisterUserInput!) {
+    upgradeGuestUser(input: $input) {
+      token
+      user {
+        id
+        name
+        email
+        role
+        isGuest
+        preferences {
+          theme
+          notifications
+          language
+        }
+      }
+    }
+  }
+`
+
+export const UPDATE_USER = gql`
+  mutation UpdateUser($input: UpdateUserInput!) {
+    updateUser(input: $input) {
+      id
+      name
+      email
+      role
+      isGuest
+      preferences {
+        theme
+        notifications
+        language
       }
     }
   }
 `
 
 export const CREATE_REVIEW = gql`
-  mutation CreateReview($input: CreateReviewInput!) {
+  mutation CreateReview($input: ReviewInput!) {
     createReview(input: $input) {
       id
       rating
@@ -42,7 +113,7 @@ export const CREATE_REVIEW = gql`
 `
 
 export const UPDATE_REVIEW = gql`
-  mutation UpdateReview($id: ID!, $rating: Int, $comment: String) {
+  mutation UpdateReview($id: ID!, $rating: Float!, $comment: String!) {
     updateReview(id: $id, rating: $rating, comment: $comment) {
       id
       rating
