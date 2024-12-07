@@ -48,7 +48,7 @@ export const requireNonGuest = (req: AuthRequest, res: Response, next: NextFunct
 }
 
 export const requireAdmin = (req: AuthRequest, res: Response, next: NextFunction) => {
-  if (!req.user || req.user.role !== 'admin') {
+  if (!req.user || req.user.role !== 'ADMIN') {
     return res.status(403).json({ error: 'Admin access required' })
   }
   next()

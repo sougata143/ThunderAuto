@@ -6,10 +6,10 @@ export const REGISTER_USER = gql`
       token
       user {
         id
-        name
+        firstName
+        lastName
         email
         role
-        isGuest
         preferences {
           theme
           notifications
@@ -26,10 +26,10 @@ export const LOGIN_USER = gql`
       token
       user {
         id
-        name
+        firstName
+        lastName
         email
         role
-        isGuest
         preferences {
           theme
           notifications
@@ -46,10 +46,10 @@ export const CREATE_GUEST_USER = gql`
       token
       user {
         id
-        name
+        firstName
+        lastName
         email
         role
-        isGuest
         preferences {
           theme
           notifications
@@ -66,10 +66,10 @@ export const UPGRADE_GUEST_USER = gql`
       token
       user {
         id
-        name
+        firstName
+        lastName
         email
         role
-        isGuest
         preferences {
           theme
           notifications
@@ -84,10 +84,10 @@ export const UPDATE_USER = gql`
   mutation UpdateUser($input: UpdateUserInput!) {
     updateUser(input: $input) {
       id
-      name
+      firstName
+      lastName
       email
       role
-      isGuest
       preferences {
         theme
         notifications
@@ -106,7 +106,8 @@ export const CREATE_REVIEW = gql`
       createdAt
       user {
         id
-        name
+        firstName
+        lastName
       }
     }
   }
@@ -121,7 +122,8 @@ export const UPDATE_REVIEW = gql`
       createdAt
       user {
         id
-        name
+        firstName
+        lastName
       }
     }
   }
@@ -154,8 +156,318 @@ export const UPDATE_PROFILE = gql`
   mutation UpdateProfile($input: UpdateProfileInput!) {
     updateProfile(input: $input) {
       id
-      name
+      firstName
+      lastName
       email
+    }
+  }
+`
+
+export const CREATE_CAR = gql`
+  mutation CreateCar($input: CarInput!) {
+    admin {
+      createCar(input: $input) {
+        id
+        make
+        carModel
+        year
+        price
+        engineType
+        transmission
+        power
+        acceleration
+        status
+        images {
+          url
+          isFeatured
+          caption
+          uploadedBy {
+            id
+            firstName
+            lastName
+          }
+          uploadedAt
+        }
+        specs {
+          engine {
+            displacement
+            cylinders
+            configuration
+            fuelInjection
+            turbocharger
+            supercharger
+            compression
+            valvesPerCylinder
+          }
+          performance {
+            powerToWeight
+            topSpeed
+            acceleration060
+            acceleration0100
+            quarterMile
+            brakingDistance60_0
+          }
+          chassis {
+            bodyType
+            platform
+            frontSuspension
+            rearSuspension
+            frontBrakes
+            rearBrakes
+            wheelSize
+            tireSize
+          }
+          dimensions {
+            length
+            width
+            height
+            wheelbase
+            groundClearance
+            dragCoefficient
+            weight
+            distribution
+          }
+        }
+        createdBy {
+          id
+          firstName
+          lastName
+        }
+        lastUpdatedBy {
+          id
+          firstName
+          lastName
+        }
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`
+
+export const UPDATE_CAR = gql`
+  mutation UpdateCar($id: ID!, $input: CarUpdateInput!) {
+    updateCar(id: $id, input: $input) {
+      id
+      make
+      carModel
+      year
+      price
+      engineType
+      transmission
+      power
+      acceleration
+      status
+      fullName
+      specs {
+        engine {
+          displacement
+          cylinders
+          configuration
+          fuelInjection
+          turbocharger
+          supercharger
+          compression
+          valvesPerCylinder
+        }
+        performance {
+          powerToWeight
+          topSpeed
+          acceleration060
+          acceleration0100
+          quarterMile
+          brakingDistance60_0
+        }
+        chassis {
+          bodyType
+          platform
+          frontSuspension
+          rearSuspension
+          frontBrakes
+          rearBrakes
+          wheelSize
+          tireSize
+        }
+        dimensions {
+          length
+          width
+          height
+          wheelbase
+          groundClearance
+          dragCoefficient
+          weight
+          distribution
+        }
+        transmission {
+          type
+          gears
+          clutchType
+          driveType
+          differential
+        }
+        fuel {
+          fuelType
+          fuelSystem
+          tankCapacity
+          cityMPG
+          highwayMPG
+          combinedMPG
+          emissionClass
+        }
+        interior {
+          seatingCapacity
+          doors
+          trunkCapacity
+          infotainmentScreen
+          soundSystem
+          climateZones
+          upholsteryMaterial
+        }
+        safety {
+          airbags
+          abs
+          stabilityControl
+          tractionControl
+          parkingSensors
+          camera
+          blindSpotMonitoring
+          laneDepartureWarning
+          collisionWarning
+          nightVision
+        }
+        technology {
+          connectivity
+          smartphone
+          navigation
+          headlightType
+          adaptiveCruiseControl
+          keylessEntry
+          startSystem
+          driverAssistance
+        }
+        warranty {
+          basic
+          powertrain
+          corrosion
+          roadside
+          maintenance
+        }
+        features {
+          safety
+          comfort
+          technology
+          exterior
+          interior
+        }
+      }
+      lastUpdatedBy {
+        id
+        firstName
+        lastName
+        email
+      }
+      updatedAt
+    }
+  }
+`
+
+export const UPDATE_CAR_STATUS = gql`
+  mutation UpdateCarStatus($carId: ID!, $status: CarStatus!) {
+    admin {
+      updateCarStatus(carId: $carId, status: $status) {
+        id
+        status
+        lastUpdatedBy {
+          id
+          firstName
+          lastName
+        }
+        updatedAt
+      }
+    }
+  }
+`
+
+export const DELETE_CAR = gql`
+  mutation DeleteCar($id: ID!) {
+    admin {
+      deleteCar(id: $id) {
+        success
+        message
+      }
+    }
+  }
+`
+
+export const UPLOAD_CAR_IMAGE = gql`
+  mutation UploadCarImage($carId: ID!, $image: Upload!, $caption: String, $isFeatured: Boolean!) {
+    admin {
+      uploadCarImage(carId: $carId, image: $image, caption: $caption, isFeatured: $isFeatured) {
+        id
+        images {
+          url
+          isFeatured
+          caption
+          uploadedBy {
+            id
+            firstName
+            lastName
+          }
+          uploadedAt
+        }
+      }
+    }
+  }
+`
+
+export const DELETE_CAR_IMAGE = gql`
+  mutation DeleteCarImage($carId: ID!, $imageUrl: String!) {
+    admin {
+      deleteCarImage(carId: $carId, imageUrl: $imageUrl) {
+        id
+        images {
+          url
+          isFeatured
+          caption
+        }
+      }
+    }
+  }
+`
+
+export const CREATE_ADMIN = gql`
+  mutation CreateAdmin($input: RegisterUserInput!) {
+    registerUser(input: $input) {
+      token
+      user {
+        id
+        firstName
+        lastName
+        email
+        role
+        preferences {
+          theme
+          notifications
+          language
+        }
+      }
+    }
+  }
+`
+
+export const UPDATE_USER_ROLE = gql`
+  mutation UpdateUserRole($userId: ID!, $role: UserRole!) {
+    updateUserRole(userId: $userId, role: $role) {
+      id
+      firstName
+      lastName
+      email
+      role
+      preferences {
+        theme
+        notifications
+        language
+      }
     }
   }
 `

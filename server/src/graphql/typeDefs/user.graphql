@@ -1,10 +1,9 @@
 type User {
   id: ID!
-  name: String!
   email: String!
+  firstName: String!
+  lastName: String!
   role: UserRole!
-  isGuest: Boolean!
-  lastLogin: DateTime
   preferences: UserPreferences!
   createdAt: DateTime!
   updatedAt: DateTime!
@@ -17,9 +16,9 @@ type UserPreferences {
 }
 
 enum UserRole {
-  guest
-  user
-  admin
+  GUEST
+  USER
+  ADMIN
 }
 
 enum Theme {
@@ -36,17 +35,18 @@ extend type Query {
 extend type Mutation {
   updateUserPreferences(theme: Theme, notifications: Boolean, language: String): User!
   updateUserRole(userId: ID!, role: UserRole!): User!
-  registerUser(input: RegisterUserInput!): User!
+  registerUser(input: RegisterUserInput!): AuthPayload!
   loginUser(input: LoginUserInput!): AuthPayload!
-  createGuestUser: User!
-  upgradeGuestUser(input: RegisterUserInput!): User!
+  createGuestUser: AuthPayload!
+  upgradeGuestUser(input: RegisterUserInput!): AuthPayload!
   updateUser(input: UpdateUserInput!): User!
 }
 
 input RegisterUserInput {
   email: String!
   password: String!
-  name: String!
+  firstName: String!
+  lastName: String!
 }
 
 input LoginUserInput {
@@ -55,8 +55,10 @@ input LoginUserInput {
 }
 
 input UpdateUserInput {
-  name: String
+  firstName: String
+  lastName: String
   email: String
+  password: String
   preferences: UserPreferencesInput
 }
 

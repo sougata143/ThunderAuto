@@ -1,4 +1,5 @@
 import mongoose, { Document, Model } from 'mongoose'
+import { IUser } from './User'
 
 export interface ICar extends mongoose.Document {
   make: string
@@ -9,7 +10,7 @@ export interface ICar extends mongoose.Document {
     url: string
     isFeatured: boolean
     caption?: string
-    uploadedBy: mongoose.Types.ObjectId
+    uploadedBy: mongoose.Types.ObjectId | IUser
     uploadedAt: Date
   }[]
   rating: number
@@ -17,9 +18,9 @@ export interface ICar extends mongoose.Document {
   transmission: string
   power: number
   acceleration: number
-  status: 'draft' | 'published' | 'archived'
-  createdBy: mongoose.Types.ObjectId
-  lastUpdatedBy: mongoose.Types.ObjectId
+  status: 'DRAFT' | 'PUBLISHED' | 'ARCHIVED'
+  createdBy: mongoose.Types.ObjectId | IUser
+  lastUpdatedBy: mongoose.Types.ObjectId | IUser
   specs: {
     engine: {
       displacement: number
@@ -113,11 +114,19 @@ export interface ICar extends mongoose.Document {
       roadside: string
       maintenance: string
     }
+    features: {
+      safety: string[]
+      comfort: string[]
+      technology: string[]
+      exterior: string[]
+      interior: string[]
+    }
   }
   reviews: Array<{
     user: {
       id: string
-      name: string
+      firstName: string
+      lastName: string
     }
     rating: number
     comment: string
@@ -144,8 +153,8 @@ const carSchema = new mongoose.Schema({
   acceleration: { type: Number, required: true },
   status: {
     type: String,
-    enum: ['draft', 'published', 'archived'],
-    default: 'draft'
+    enum: ['DRAFT', 'PUBLISHED', 'ARCHIVED'],
+    default: 'DRAFT'
   },
   createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   lastUpdatedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
@@ -241,12 +250,20 @@ const carSchema = new mongoose.Schema({
       corrosion: { type: String, required: true },
       roadside: { type: String, required: true },
       maintenance: { type: String, required: true }
+    },
+    features: {
+      safety: [{ type: String }],
+      comfort: [{ type: String }],
+      technology: [{ type: String }],
+      exterior: [{ type: String }],
+      interior: [{ type: String }]
     }
   },
   reviews: [{
     user: {
       id: { type: String, required: true },
-      name: { type: String, required: true }
+      firstName: { type: String, required: true },
+      lastName: { type: String, required: true }
     },
     rating: { type: Number, required: true },
     comment: { type: String, required: true },

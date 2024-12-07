@@ -1,5 +1,4 @@
 import jwt from 'jsonwebtoken'
-import { nanoid } from 'nanoid'
 import { User, IUser } from '../models/User'
 import { logger } from '../utils/logger'
 
@@ -11,8 +10,7 @@ export class AuthService {
     return jwt.sign(
       { 
         userId: user._id,
-        role: user.role,
-        isGuest: user.isGuest 
+        role: user.role
       },
       JWT_SECRET,
       { expiresIn: JWT_EXPIRES_IN }
@@ -27,7 +25,12 @@ export class AuthService {
     }
   }
 
-  static async registerUser(name: string, email: string, password: string): Promise<{ user: IUser; token: string }> {
+  static async registerUser(
+    firstName: string,
+    lastName: string,
+    email: string,
+    password: string
+  ): Promise<{ user: IUser; token: string }> {
     try {
       const existingUser = await User.findOne({ email })
       if (existingUser) {
@@ -35,11 +38,11 @@ export class AuthService {
       }
 
       const user = await User.create({
-        name,
+        firstName,
+        lastName,
         email,
         password,
-        role: 'user',
-        isGuest: false,
+        role: 'USER'
       })
 
       const token = this.generateToken(user)
@@ -54,82 +57,18 @@ export class AuthService {
     try {
       const user = await User.findOne({ email })
       if (!user) {
-        throw new Error('User not found')
+        throw new Error('Invalid email or password')
       }
 
-      if (user.isGuest) {
-        throw new Error('Guest accounts cannot login with password')
+      const isValid = await user.comparePassword(password)
+      if (!isValid) {
+        throw new Error('Invalid email or password')
       }
-
-      const isValidPassword = await user.comparePassword(password)
-      if (!isValidPassword) {
-        throw new Error('Invalid password')
-      }
-
-      user.lastLogin = new Date()
-      await user.save()
 
       const token = this.generateToken(user)
       return { user, token }
     } catch (error) {
       logger.error('Error logging in user:', error)
-      throw error
-    }
-  }
-
-  static async createGuestUser(): Promise<{ user: IUser; token: string }> {
-    try {
-      const guestEmail = `guest_${nanoid(10)}@thunderauto.com`
-      const guestName = `Guest_${nanoid(6)}`
-
-      const user = await User.create({
-        name: guestName,
-        email: guestEmail,
-        role: 'guest',
-        isGuest: true,
-      })
-
-      const token = this.generateToken(user)
-      return { user, token }
-    } catch (error) {
-      logger.error('Error creating guest user:', error)
-      throw error
-    }
-  }
-
-  static async upgradeGuestUser(
-    userId: string,
-    name: string,
-    email: string,
-    password: string
-  ): Promise<{ user: IUser; token: string }> {
-    try {
-      const user = await User.findById(userId)
-      if (!user) {
-        throw new Error('User not found')
-      }
-
-      if (!user.isGuest) {
-        throw new Error('Only guest accounts can be upgraded')
-      }
-
-      const existingUser = await User.findOne({ email })
-      if (existingUser) {
-        throw new Error('Email already registered')
-      }
-
-      user.name = name
-      user.email = email
-      user.password = password
-      user.role = 'user'
-      user.isGuest = false
-
-      await user.save()
-
-      const token = this.generateToken(user)
-      return { user, token }
-    } catch (error) {
-      logger.error('Error upgrading guest user:', error)
       throw error
     }
   }

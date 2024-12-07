@@ -5,7 +5,7 @@ export const userResolvers = {
   Query: {
     users: async (_: unknown, __: unknown, { user }: IContext) => {
       // Check if user is admin
-      if (!user || user.role !== 'admin') {
+      if (!user || user.role !== 'ADMIN') {
         throw new Error('Not authorized')
       }
 
@@ -20,7 +20,7 @@ export const userResolvers = {
 
     user: async (_: unknown, { id }: { id: string }, { user }: IContext) => {
       // Check if user is admin or requesting their own data
-      if (!user || (user.role !== 'admin' && user.id !== id)) {
+      if (!user || (user.role !== 'ADMIN' && user.id !== id)) {
         throw new Error('Not authorized')
       }
 
@@ -84,7 +84,7 @@ export const userResolvers = {
       { user }: IContext
     ) => {
       // Only admin can update roles
-      if (!user || user.role !== 'admin') {
+      if (!user || user.role !== 'ADMIN') {
         throw new Error('Not authorized')
       }
 

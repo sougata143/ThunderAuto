@@ -5,10 +5,10 @@ import { LOGIN_USER, REGISTER_USER, CREATE_GUEST_USER, UPGRADE_GUEST_USER } from
 
 interface User {
   id: string
-  name: string
+  firstName: string
+  lastName: string
   email: string
   role: string
-  isGuest: boolean
   preferences: {
     theme: string
     notifications: boolean
@@ -23,7 +23,7 @@ interface AuthContextType {
   token: string | null
   isAuthenticated: boolean
   login: (email: string, password: string) => Promise<void>
-  register: (name: string, email: string, password: string) => Promise<void>
+  register: (firstName: string, lastName: string, email: string, password: string) => Promise<void>
   loginAsGuest: () => Promise<void>
   logout: () => void
 }
@@ -42,12 +42,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     onCompleted: (data) => {
       if (data?.me) {
         setUser(data.me)
+      } else {
+        // If no user data, clear the token
+        localStorage.removeItem('token')
+        setToken(null)
+        setUser(null)
       }
     },
-    onError: () => {
+    onError: (error) => {
+      console.error('Auth error:', error)
+      // Clear token on auth errors
       localStorage.removeItem('token')
       setToken(null)
       setUser(null)
+      client.clearStore() // Clear Apollo cache
     },
   })
 
@@ -75,10 +83,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }
 
-  const register = async (name: string, email: string, password: string) => {
+  const register = async (firstName: string, lastName: string, email: string, password: string) => {
     try {
       const { data } = await registerMutation({
-        variables: { input: { name, email, password } },
+        variables: { input: { firstName, lastName, email, password } },
       })
       const { token: newToken, user: newUser } = data.registerUser
       localStorage.setItem('token', newToken)
@@ -109,7 +117,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     localStorage.removeItem('token')
     setToken(null)
     setUser(null)
-    client.resetStore()
+    client.clearStore() // Clear Apollo cache on logout
+    setError(null)
   }
 
   return (

@@ -1,130 +1,18 @@
-export const typeDefs = `#graphql
-  type Car {
-    id: ID!
-    make: String!
-    model: String!
-    year: Int!
-    price: Float
-    engineType: String
-    transmission: String
-    fuelType: String
-    mileage: Float
-    power: Int
-    acceleration: Float
-    topSpeed: Int
-    images: [String]
-    specs: CarSpecs
-    reviews: [Review]
-    rating: Float
-  }
+import { readFileSync } from 'fs';
+import { join } from 'path';
 
-  type CarSpecs {
-    dimensions: Dimensions
-    weight: Int
-    fuelCapacity: Float
-    trunkCapacity: Int
-    seatingCapacity: Int
-    groundClearance: Float
-  }
+// Load GraphQL type definitions from .graphql files
+const loadGraphQLFile = (filename: string) => {
+  return readFileSync(join(__dirname, 'typeDefs', filename), 'utf8');
+};
 
-  type Dimensions {
-    length: Float
-    width: Float
-    height: Float
-    wheelbase: Float
-  }
+// Load all type definitions
+const types = {
+  base: loadGraphQLFile('base.graphql'),
+  user: loadGraphQLFile('user.graphql'),
+  car: loadGraphQLFile('car.graphql'),
+  admin: loadGraphQLFile('admin.graphql')
+};
 
-  type Review {
-    id: ID!
-    user: User!
-    rating: Int!
-    comment: String
-    createdAt: String!
-    updatedAt: String
-  }
-
-  type User {
-    id: ID!
-    name: String!
-    email: String!
-    role: String!
-    isGuest: Boolean!
-    lastLogin: String
-    preferences: UserPreferences!
-    createdAt: String!
-    updatedAt: String!
-    reviews: [Review]
-  }
-
-  type UserPreferences {
-    theme: String!
-    notifications: Boolean!
-    language: String!
-  }
-
-  type AuthResponse {
-    user: User!
-    token: String!
-  }
-
-  input CarFilter {
-    make: String
-    model: String
-    year: Int
-    minPrice: Float
-    maxPrice: Float
-    engineType: String
-    transmission: String
-    fuelType: String
-  }
-
-  input RegisterInput {
-    name: String!
-    email: String!
-    password: String!
-  }
-
-  input LoginInput {
-    email: String!
-    password: String!
-  }
-
-  input UpdateUserInput {
-    name: String
-    email: String
-    password: String
-    preferences: UserPreferencesInput
-  }
-
-  input UserPreferencesInput {
-    theme: String
-    notifications: Boolean
-    language: String
-  }
-
-  input CreateReviewInput {
-    carId: ID!
-    rating: Int!
-    comment: String
-  }
-
-  type Query {
-    me: User
-    cars(filter: CarFilter, limit: Int, offset: Int): [Car]!
-    car(id: ID!): Car
-    compareCars(ids: [ID!]!): [Car]!
-    searchCars(query: String!): [Car]!
-    reviews(carId: ID!): [Review]!
-  }
-
-  type Mutation {
-    register(input: RegisterInput!): AuthResponse!
-    login(input: LoginInput!): AuthResponse!
-    createGuestUser: AuthResponse!
-    upgradeGuestUser(input: RegisterInput!): AuthResponse!
-    updateUser(input: UpdateUserInput!): User!
-    createReview(input: CreateReviewInput!): Review!
-    updateReview(id: ID!, rating: Int, comment: String): Review!
-    deleteReview(id: ID!): Boolean!
-  }
-`
+// Export combined type definitions
+export const typeDefs = Object.values(types).join('\n');

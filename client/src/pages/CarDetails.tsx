@@ -1,182 +1,267 @@
-import { useState } from 'react'
-import { useParams } from 'react-router-dom'
-import { useQuery } from '@apollo/client'
-import { StarIcon } from '@heroicons/react/20/solid'
-import { GET_CAR_DETAILS } from '../graphql/queries'
-import { SpecificationGrid } from '../components/SpecificationCard'
-import { getCarSpecifications } from '../utils/carSpecifications'
-import ReviewForm from '../components/ReviewForm'
-import FavoriteButton from '../components/FavoriteButton'
+import React, { useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { useQuery, useMutation } from '@apollo/client';
+import { GET_CAR_BY_ID } from '../graphql/queries';
+import { UPDATE_CAR } from '../graphql/mutations';
+import { useAuth } from '../contexts/AuthContext';
+import Loading from '../components/Loading';
+import ErrorMessage from '../components/ErrorMessage';
 
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(' ')
-}
+const CarDetails: React.FC = () => {
+  const { id } = useParams<{ id: string }>();
+  const { user } = useAuth();
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedCar, setEditedCar] = useState<any>(null);
 
-export default function CarDetails() {
-  const { id } = useParams<{ id: string }>()
-  const [selectedImage, setSelectedImage] = useState(0)
-  const { loading, error, data, refetch } = useQuery(GET_CAR_DETAILS, {
+  const { loading, error, data } = useQuery(GET_CAR_BY_ID, {
     variables: { id },
-  })
+    onCompleted: (data) => {
+      setEditedCar(data.car);
+    },
+  });
 
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center min-h-screen">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
-      </div>
-    )
-  }
+  const [updateCar, { loading: updating }] = useMutation(UPDATE_CAR, {
+    onCompleted: () => {
+      setIsEditing(false);
+    },
+    onError: (error) => {
+      console.error('Error updating car:', error);
+    },
+  });
 
-  if (error || !data?.car) {
-    return (
-      <div className="text-center py-12">
-        <p className="text-red-500">Error loading car details. Please try again later.</p>
-      </div>
-    )
-  }
+  if (loading) return <Loading />;
+  if (error) return <ErrorMessage message={error.message} />;
+  if (!data?.car) return <ErrorMessage message="Car not found" />;
 
-  const { car } = data
-  const specifications = getCarSpecifications(car)
+  const { car } = data;
+
+  const handleEdit = () => {
+    setIsEditing(true);
+  };
+
+  const handleCancel = () => {
+    setIsEditing(false);
+    setEditedCar(car);
+  };
+
+  const handleSave = async () => {
+    try {
+      await updateCar({
+        variables: {
+          id: car.id,
+          input: {
+            make: editedCar.make,
+            carModel: editedCar.carModel,
+            year: editedCar.year,
+            price: editedCar.price,
+            engineType: editedCar.engineType,
+            transmission: editedCar.transmission,
+            power: editedCar.power,
+            acceleration: editedCar.acceleration,
+            status: editedCar.status,
+            specs: editedCar.specs,
+          },
+        },
+      });
+    } catch (error) {
+      console.error('Error saving car:', error);
+    }
+  };
+
+  const handleInputChange = (field: string, value: any) => {
+    setEditedCar((prev: any) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
+
+  const handleSpecsChange = (category: string, field: string, value: any) => {
+    setEditedCar((prev: any) => ({
+      ...prev,
+      specs: {
+        ...prev.specs,
+        [category]: {
+          ...prev.specs[category],
+          [field]: value,
+        },
+      },
+    }));
+  };
 
   return (
-    <div className="bg-white">
-      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-        {/* Car Header */}
-        <div className="lg:grid lg:grid-cols-2 lg:items-start lg:gap-x-8">
-          {/* Image Gallery */}
-          <div className="flex flex-col">
-            <div className="aspect-h-3 aspect-w-4 overflow-hidden rounded-lg">
-              <img
-                src={car.images[selectedImage] || '/placeholder-car.jpg'}
-                alt={`${car.make} ${car.model}`}
-                className="h-full w-full object-cover object-center"
-              />
-            </div>
-            <div className="mt-4 grid grid-cols-4 gap-4">
-              {car.images.map((image: string, idx: number) => (
+    <div className="container mx-auto px-4 py-8">
+      <div className="bg-white rounded-lg shadow-lg p-6">
+        {/* Header with Edit Button for Admin */}
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-3xl font-bold text-gray-900">{car.fullName}</h1>
+          {user?.role === 'ADMIN' && (
+            <div>
+              {isEditing ? (
+                <div className="space-x-2">
+                  <button
+                    onClick={handleSave}
+                    disabled={updating}
+                    className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded"
+                  >
+                    {updating ? 'Saving...' : 'Save'}
+                  </button>
+                  <button
+                    onClick={handleCancel}
+                    disabled={updating}
+                    className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              ) : (
                 <button
-                  key={idx}
-                  onClick={() => setSelectedImage(idx)}
-                  className={classNames(
-                    'relative aspect-h-3 aspect-w-4 overflow-hidden rounded-lg',
-                    selectedImage === idx ? 'ring-2 ring-blue-500' : 'ring-1 ring-gray-200'
-                  )}
+                  onClick={handleEdit}
+                  className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
                 >
-                  <img
-                    src={image}
-                    alt={`${car.make} ${car.model}`}
-                    className="h-full w-full object-cover object-center"
-                  />
+                  Edit Car
                 </button>
-              ))}
+              )}
             </div>
-          </div>
-
-          {/* Car Info */}
-          <div className="mt-10 lg:mt-0">
-            <h1 className="text-3xl font-bold tracking-tight text-gray-900">
-              {car.year} {car.make} {car.model}
-            </h1>
-
-            <div className="mt-4 flex items-center justify-between">
-              <p className="text-3xl tracking-tight text-gray-900">
-                ${car.price?.toLocaleString()}
-              </p>
-              <FavoriteButton carId={car.id} isFavorited={false} />
-            </div>
-
-            {/* Rating */}
-            <div className="mt-4">
-              <div className="flex items-center">
-                <div className="flex items-center">
-                  {[0, 1, 2, 3, 4].map((rating) => (
-                    <StarIcon
-                      key={rating}
-                      className={classNames(
-                        car.rating > rating ? 'text-yellow-400' : 'text-gray-300',
-                        'h-5 w-5 flex-shrink-0'
-                      )}
-                      aria-hidden="true"
-                    />
-                  ))}
-                </div>
-                <p className="ml-3 text-sm text-gray-700">
-                  {car.rating.toFixed(1)} out of 5 stars
-                </p>
-              </div>
-            </div>
-
-            {/* Quick Specs */}
-            <div className="mt-8 border-t border-gray-200 pt-8">
-              <h2 className="text-lg font-medium text-gray-900">Quick Specifications</h2>
-              <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
-                <div className="flex justify-between border-b border-gray-200 py-2">
-                  <span className="text-sm text-gray-500">Engine</span>
-                  <span className="text-sm font-medium text-gray-900">{car.engineType}</span>
-                </div>
-                <div className="flex justify-between border-b border-gray-200 py-2">
-                  <span className="text-sm text-gray-500">Power</span>
-                  <span className="text-sm font-medium text-gray-900">{car.power} hp</span>
-                </div>
-                <div className="flex justify-between border-b border-gray-200 py-2">
-                  <span className="text-sm text-gray-500">Transmission</span>
-                  <span className="text-sm font-medium text-gray-900">{car.transmission}</span>
-                </div>
-                <div className="flex justify-between border-b border-gray-200 py-2">
-                  <span className="text-sm text-gray-500">0-60 mph</span>
-                  <span className="text-sm font-medium text-gray-900">{car.acceleration}s</span>
-                </div>
-              </div>
-            </div>
-          </div>
+          )}
         </div>
 
-        {/* Detailed Specifications */}
-        <div className="mt-16">
-          <h2 className="text-2xl font-bold tracking-tight text-gray-900 mb-8">
-            Detailed Specifications
-          </h2>
-          <SpecificationGrid specifications={specifications} />
-        </div>
-
-        {/* Reviews Section */}
-        <div className="mt-16">
-          <h2 className="text-2xl font-bold tracking-tight text-gray-900 mb-8">
-            Reviews
-          </h2>
-          <div className="space-y-8">
-            <ReviewForm carId={car.id} onSuccess={() => refetch()} />
-            {car.reviews.map((review: any) => (
-              <div key={review.id} className="bg-white shadow sm:rounded-lg p-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h4 className="text-lg font-medium text-gray-900">{review.user.name}</h4>
-                    <div className="mt-1 flex items-center">
-                      {[0, 1, 2, 3, 4].map((rating) => (
-                        <StarIcon
-                          key={rating}
-                          className={classNames(
-                            review.rating > rating ? 'text-yellow-400' : 'text-gray-300',
-                            'h-5 w-5 flex-shrink-0'
-                          )}
-                          aria-hidden="true"
-                        />
-                      ))}
-                    </div>
+        {/* Car Images */}
+        <div className="mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {car.images.map((image: any, index: number) => (
+              <div key={index} className="relative">
+                <img
+                  src={image.url}
+                  alt={image.caption || `${car.fullName} - Image ${index + 1}`}
+                  className="w-full h-64 object-cover rounded-lg shadow-md"
+                />
+                {image.caption && (
+                  <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-2 rounded-b-lg">
+                    <p className="text-sm">{image.caption}</p>
                   </div>
-                  <span className="text-sm text-gray-500">
-                    {new Date(review.createdAt).toLocaleDateString()}
-                  </span>
-                </div>
-                <p className="mt-4 text-gray-600">{review.comment}</p>
+                )}
+                {image.isFeatured && (
+                  <div className="absolute top-2 right-2 bg-yellow-500 text-white px-2 py-1 rounded text-sm">
+                    Featured
+                  </div>
+                )}
               </div>
             ))}
-            {car.reviews.length === 0 && (
-              <p className="text-center text-gray-500">No reviews yet. Be the first to review!</p>
-            )}
           </div>
+        </div>
+
+        {/* Basic Information */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          {isEditing ? (
+            <>
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Make</label>
+                <input
+                  type="text"
+                  value={editedCar.make}
+                  onChange={(e) => handleInputChange('make', e.target.value)}
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Model</label>
+                <input
+                  type="text"
+                  value={editedCar.carModel}
+                  onChange={(e) => handleInputChange('carModel', e.target.value)}
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Year</label>
+                <input
+                  type="number"
+                  value={editedCar.year}
+                  onChange={(e) => handleInputChange('year', parseInt(e.target.value))}
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Price</label>
+                <input
+                  type="number"
+                  value={editedCar.price}
+                  onChange={(e) => handleInputChange('price', parseFloat(e.target.value))}
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                />
+              </div>
+            </>
+          ) : (
+            <>
+              <div>
+                <h2 className="text-xl font-semibold mb-2">Basic Information</h2>
+                <p>
+                  <span className="font-medium">Make:</span> {car.make}
+                </p>
+                <p>
+                  <span className="font-medium">Model:</span> {car.carModel}
+                </p>
+                <p>
+                  <span className="font-medium">Year:</span> {car.year}
+                </p>
+                <p>
+                  <span className="font-medium">Price:</span> ${car.price.toLocaleString()}
+                </p>
+              </div>
+            </>
+          )}
+        </div>
+
+        {/* Car Specifications */}
+        <div className="mt-8">
+          <h2 className="text-2xl font-semibold mb-4">Specifications</h2>
+          {Object.entries(car.specs).map(([category, specs]: [string, any]) => (
+            <div key={category} className="mb-6">
+              <h3 className="text-xl font-medium mb-3 capitalize">{category}</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {Object.entries(specs).map(([field, value]: [string, any]) => (
+                  <div key={field}>
+                    {isEditing ? (
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 capitalize">
+                          {field.replace(/([A-Z])/g, ' $1').trim()}
+                        </label>
+                        <input
+                          type={typeof value === 'number' ? 'number' : 'text'}
+                          value={editedCar.specs[category][field]}
+                          onChange={(e) =>
+                            handleSpecsChange(
+                              category,
+                              field,
+                              typeof value === 'number' ? parseFloat(e.target.value) : e.target.value
+                            )
+                          }
+                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                        />
+                      </div>
+                    ) : (
+                      <p>
+                        <span className="font-medium capitalize">
+                          {field.replace(/([A-Z])/g, ' $1').trim()}:
+                        </span>{' '}
+                        {Array.isArray(value) ? value.join(', ') : value.toString()}
+                      </p>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Last Updated Info */}
+        <div className="mt-8 text-sm text-gray-500">
+          <p>Last updated by: {car.lastUpdatedBy.firstName} {car.lastUpdatedBy.lastName}</p>
+          <p>Last updated: {new Date(car.updatedAt).toLocaleString()}</p>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
+
+export default CarDetails;

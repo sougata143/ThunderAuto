@@ -2,18 +2,18 @@ import { AdminService } from '../../services/admin.service'
 import { IContext } from '../../types/context'
 import { FileUpload } from '../../types/file'
 import { ICar } from '../../models/Car'
-import Car from '../../models/Car'
+import { Car } from '../../models/Car'
+import { IUser } from '../../models/User'
 
 interface AdminCarInput {
   make: string
-  model: string
+  carModel: string
   year: number
   price: number
   engineType: string
   transmission: string
   power: number
   acceleration: number
-  status: 'draft' | 'published' | 'archived'
   specs: {
     engine: {
       displacement: number
@@ -107,45 +107,79 @@ interface AdminCarInput {
       roadside: string
       maintenance: string
     }
+    features: {
+      safety: string[]
+      comfort: string[]
+      technology: string[]
+      exterior: string[]
+      interior: string[]
+    }
   }
 }
 
 export const adminResolvers = {
   Query: {
-    adminCars: async (_: unknown, __: unknown, { user }: IContext) => {
-      // Add admin authorization check here
-      if (!user) {
-        throw new Error('Not authenticated')
-      }
+    admin: () => ({})
+  },
 
-      try {
-        const cars = await Car.find({})
-          .populate('createdBy', 'name email')
-          .populate('lastUpdatedBy', 'name email')
-          .sort({ createdAt: -1 })
-        return cars
-      } catch (error) {
-        console.error('Error fetching cars:', error)
-        throw error
+  AdminQuery: {
+    adminCars: async (_parent: unknown, _args: unknown, context: IContext): Promise<ICar[]> => {
+      if (!context.user || context.user.role !== 'ADMIN') {
+        throw new Error('Unauthorized: Admin access required')
       }
+      return Car.find()
     }
   },
 
   Mutation: {
-    createCar: async (_: unknown, { input }: { input: AdminCarInput }, { user }: IContext) => {
-      // Add admin authorization check here
-      if (!user) {
-        throw new Error('Not authenticated')
-      }
+    admin: () => ({})
+  },
 
+  AdminMutation: {
+    createCar: async (_parent: unknown, { input }: { input: AdminCarInput }, context: IContext): Promise<ICar> => {
       try {
-        const car = new Car({
-          ...input,
-          createdBy: user._id,
-          lastUpdatedBy: user._id
-        })
+        if (!context.user || context.user.role !== 'ADMIN') {
+          throw new Error('Unauthorized: Admin access required')
+        }
 
-        await car.save()
+        console.log('Creating car with input:', JSON.stringify(input, null, 2))
+
+        const carData = {
+          make: input.make,
+          carModel: input.carModel,
+          year: input.year,
+          price: input.price,
+          engineType: input.engineType,
+          transmission: input.transmission,
+          power: input.power,
+          acceleration: input.acceleration,
+          specs: {
+            ...input.specs,
+            features: {
+              safety: input.specs.features.safety,
+              comfort: input.specs.features.comfort,
+              technology: input.specs.features.technology,
+              exterior: input.specs.features.exterior,
+              interior: input.specs.features.interior
+            }
+          },
+          status: 'draft',
+          createdBy: context.user._id,
+          lastUpdatedBy: context.user._id,
+          rating: 0,
+          images: []
+        }
+
+        console.log('Creating car with data:', JSON.stringify(carData, null, 2))
+
+        const car = await Car.create(carData)
+
+        console.log('Created car:', JSON.stringify(car, null, 2))
+
+        if (!car) {
+          throw new Error('Failed to create car')
+        }
+
         return car
       } catch (error) {
         console.error('Error creating car:', error)
@@ -153,118 +187,100 @@ export const adminResolvers = {
       }
     },
 
-    updateCar: async (_: unknown, { id, input }: { id: string, input: Partial<AdminCarInput> }, { user }: IContext) => {
-      // Add admin authorization check here
-      if (!user) {
-        throw new Error('Not authenticated')
+    updateCar: async (_parent: unknown, { id, input }: { id: string, input: Partial<AdminCarInput> }, context: IContext): Promise<ICar> => {
+      if (!context.user || context.user.role !== 'ADMIN') {
+        throw new Error('Unauthorized: Admin access required')
       }
-
-      try {
-        const car = await Car.findByIdAndUpdate(
-          id,
-          {
-            ...input,
-            lastUpdatedBy: user._id
-          },
-          { new: true }
-        )
-          .populate('createdBy', 'name email')
-          .populate('lastUpdatedBy', 'name email')
-
-        if (!car) {
-          throw new Error('Car not found')
-        }
-
-        return car
-      } catch (error) {
-        console.error('Error updating car:', error)
-        throw error
+      const car = await Car.findByIdAndUpdate(
+        id,
+        {
+          ...input,
+          lastUpdatedBy: context.user._id
+        },
+        { new: true }
+      )
+      if (!car) {
+        throw new Error('Car not found')
       }
-    },
-
-    deleteCar: async (_: unknown, { id }: { id: string }, { user }: IContext) => {
-      // Add admin authorization check here
-      if (!user) {
-        throw new Error('Not authenticated')
-      }
-
-      try {
-        const car = await Car.findByIdAndDelete(id)
-
-        if (!car) {
-          throw new Error('Car not found')
-        }
-
-        return car
-      } catch (error) {
-        console.error('Error deleting car:', error)
-        throw error
-      }
-    },
-
-    updateCarStatus: async (_: unknown, { id, status }: { id: string, status: 'draft' | 'published' | 'archived' }, { user }: IContext) => {
-      // Add admin authorization check here
-      if (!user) {
-        throw new Error('Not authenticated')
-      }
-
-      try {
-        const car = await Car.findByIdAndUpdate(
-          id,
-          {
-            status,
-            lastUpdatedBy: user._id
-          },
-          { new: true }
-        )
-          .populate('createdBy', 'name email')
-          .populate('lastUpdatedBy', 'name email')
-
-        if (!car) {
-          throw new Error('Car not found')
-        }
-
-        return car
-      } catch (error) {
-        console.error('Error updating car status:', error)
-        throw error
-      }
-    }
-  },
-
-  AdminMutation: {
-    createCar: async (_, { input }, { user }: IContext) => {
-      return AdminService.createCar(input, user)
-    },
-
-    updateCar: async (_, { id, input }, { user }: IContext) => {
-      return AdminService.updateCar(id, input, user)
+      return car
     },
 
     uploadCarImage: async (
-      _,
-      { carId, image, caption, isFeatured },
-      { user }: IContext
-    ) => {
-      return AdminService.uploadCarImage(
+      _parent: unknown,
+      { carId, image, caption, isFeatured }: { carId: string, image: FileUpload, caption?: string, isFeatured: boolean },
+      context: IContext
+    ): Promise<ICar> => {
+      if (!context.user || context.user.role !== 'ADMIN') {
+        throw new Error('Unauthorized: Admin access required')
+      }
+      // TODO: Implement image upload logic
+      const car = await Car.findByIdAndUpdate(
         carId,
-        image as FileUpload,
-        caption,
-        isFeatured,
-        user
+        {
+          $push: {
+            images: {
+              url: 'placeholder-url',
+              isFeatured,
+              caption,
+              uploadedBy: context.user._id,
+              uploadedAt: new Date()
+            }
+          },
+          lastUpdatedBy: context.user._id
+        },
+        { new: true }
       )
+      if (!car) {
+        throw new Error('Car not found')
+      }
+      return car
     },
 
-    deleteCarImage: async (_, { carId, imageUrl }, { user }: IContext) => {
-      return AdminService.deleteCarImage(carId, imageUrl, user)
+    deleteCarImage: async (_parent: unknown, { carId, imageUrl }: { carId: string, imageUrl: string }, context: IContext): Promise<ICar> => {
+      if (!context.user || context.user.role !== 'ADMIN') {
+        throw new Error('Unauthorized: Admin access required')
+      }
+      const car = await Car.findByIdAndUpdate(
+        carId,
+        {
+          $pull: { images: { url: imageUrl } },
+          lastUpdatedBy: context.user._id
+        },
+        { new: true }
+      )
+      if (!car) {
+        throw new Error('Car not found')
+      }
+      return car
     },
 
-    updateCarStatus: async (_, { carId, status }, { user }: IContext) => {
-      return AdminService.updateCarStatus(carId, status.toLowerCase(), user)
+    updateCarStatus: async (_parent: unknown, { carId, status }: { carId: string, status: 'draft' | 'published' | 'archived' }, context: IContext): Promise<ICar> => {
+      if (!context.user || context.user.role !== 'ADMIN') {
+        throw new Error('Unauthorized: Admin access required')
+      }
+      const car = await Car.findByIdAndUpdate(
+        carId,
+        {
+          status,
+          lastUpdatedBy: context.user._id
+        },
+        { new: true }
+      )
+      if (!car) {
+        throw new Error('Car not found')
+      }
+      return car
     },
 
-    deleteCar: async (_, { id }, { user }: IContext) => {
-      return AdminService.deleteCar(id, user)
+    deleteCar: async (_parent: unknown, { id }: { id: string }, context: IContext): Promise<{ success: boolean, message: string }> => {
+      if (!context.user || context.user.role !== 'ADMIN') {
+        throw new Error('Unauthorized: Admin access required')
+      }
+      const car = await Car.findByIdAndDelete(id)
+      if (!car) {
+        throw new Error('Car not found')
+      }
+      return { success: true, message: 'Car deleted successfully' }
     }
   }
 }
