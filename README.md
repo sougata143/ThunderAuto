@@ -98,7 +98,17 @@ A modern, responsive website offering comprehensive specifications for various c
    brew services start rabbitmq
    ```
 
-5. Start development servers:
+5. Create admin user:
+   ```bash
+   # In server directory
+   cd server
+   ts-node scripts/reset-admin.ts
+   ```
+   This will create an admin user with the following credentials:
+   - Email: admin@thunderauto.com
+   - Password: Admin@123
+
+6. Start development servers:
    ```bash
    # Start backend server
    cd server
@@ -109,7 +119,7 @@ A modern, responsive website offering comprehensive specifications for various c
    npm run dev
    ```
 
-6. Access the application:
+7. Access the application:
    - Frontend: http://localhost:3000
    - Backend API: http://localhost:4000
    - GraphQL Playground: http://localhost:4000/graphql
