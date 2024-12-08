@@ -58,13 +58,23 @@ export default function CarList() {
           setMobileFiltersOpen={setMobileFiltersOpen}
           selectedFilters={selectedFilters}
           onFilterChange={handleFilterChange}
+          isMobile={true}
         />
 
         <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex items-baseline justify-between border-b border-gray-200 pb-6 pt-24">
             <h1 className="text-4xl font-bold tracking-tight text-gray-900">Cars</h1>
 
-            <div className="flex items-center">
+            <div className="flex items-center gap-4">
+              {Object.keys(selectedFilters).length > 0 && (
+                <button
+                  type="button"
+                  onClick={() => setSelectedFilters({})}
+                  className="text-sm font-medium text-indigo-600 hover:text-indigo-500"
+                >
+                  Clear filters
+                </button>
+              )}
               <button
                 type="button"
                 className="lg:hidden p-2 text-gray-400 hover:text-gray-500"
@@ -93,6 +103,7 @@ export default function CarList() {
                   setMobileFiltersOpen={setMobileFiltersOpen}
                   selectedFilters={selectedFilters}
                   onFilterChange={handleFilterChange}
+                  isMobile={false}
                 />
               </div>
 
