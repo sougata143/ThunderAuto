@@ -1,27 +1,50 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { useAuth } from '../context/AuthContext'
+import { useAuth } from '../contexts/AuthContext'
 
 export default function Register() {
   const navigate = useNavigate()
   const { register } = useAuth()
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState('')
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    password: '',
+    confirmPassword: ''
+  })
   const [error, setError] = useState('')
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }))
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError('')
+
+    const { firstName, lastName, email, password, confirmPassword } = formData
+
+    if (!firstName.trim()) {
+      setError('First name is required')
+      return
+    }
 
     if (password !== confirmPassword) {
       setError('Passwords do not match')
       return
     }
 
+    if (password.length < 6) {
+      setError('Password must be at least 6 characters long')
+      return
+    }
+
     try {
-      await register(name, email, password)
+      await register(firstName.trim(), lastName.trim(), email.trim(), password)
       navigate('/')
     } catch (err: any) {
       setError(err.message || 'Registration failed')
@@ -44,26 +67,46 @@ export default function Register() {
             </div>
           )}
 
-          <div>
-            <label htmlFor="name" className="block text-sm font-medium leading-6 text-gray-900">
-              Full name
-            </label>
-            <div className="mt-2">
-              <input
-                id="name"
-                name="name"
-                type="text"
-                required
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
-              />
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div>
+              <label htmlFor="firstName" className="block text-sm font-medium leading-6 text-gray-900">
+                First name *
+              </label>
+              <div className="mt-2">
+                <input
+                  id="firstName"
+                  name="firstName"
+                  type="text"
+                  required
+                  value={formData.firstName}
+                  onChange={handleChange}
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
+                  placeholder="First name"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label htmlFor="lastName" className="block text-sm font-medium leading-6 text-gray-900">
+                Last name
+              </label>
+              <div className="mt-2">
+                <input
+                  id="lastName"
+                  name="lastName"
+                  type="text"
+                  value={formData.lastName}
+                  onChange={handleChange}
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
+                  placeholder="Last name"
+                />
+              </div>
             </div>
           </div>
 
           <div>
             <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
-              Email address
+              Email address *
             </label>
             <div className="mt-2">
               <input
@@ -72,16 +115,17 @@ export default function Register() {
                 type="email"
                 autoComplete="email"
                 required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={formData.email}
+                onChange={handleChange}
                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
+                placeholder="you@example.com"
               />
             </div>
           </div>
 
           <div>
             <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
-              Password
+              Password *
             </label>
             <div className="mt-2">
               <input
@@ -90,16 +134,17 @@ export default function Register() {
                 type="password"
                 autoComplete="new-password"
                 required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                value={formData.password}
+                onChange={handleChange}
                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
+                placeholder="••••••••"
               />
             </div>
           </div>
 
           <div>
             <label htmlFor="confirmPassword" className="block text-sm font-medium leading-6 text-gray-900">
-              Confirm password
+              Confirm password *
             </label>
             <div className="mt-2">
               <input
@@ -108,9 +153,10 @@ export default function Register() {
                 type="password"
                 autoComplete="new-password"
                 required
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
+                value={formData.confirmPassword}
+                onChange={handleChange}
                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
+                placeholder="••••••••"
               />
             </div>
           </div>

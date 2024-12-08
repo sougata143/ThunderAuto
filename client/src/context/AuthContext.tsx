@@ -4,7 +4,8 @@ import { LOGIN_USER, REGISTER_USER } from '../graphql/mutations'
 
 interface User {
   id: string
-  name: string
+  firstName: string
+  lastName: string
   email: string
 }
 
@@ -12,7 +13,7 @@ interface AuthContextType {
   user: User | null
   token: string | null
   login: (email: string, password: string) => Promise<void>
-  register: (name: string, email: string, password: string) => Promise<void>
+  register: (firstName: string, lastName: string, email: string, password: string) => Promise<void>
   logout: () => void
   isAuthenticated: boolean
 }
@@ -58,15 +59,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }
 
-  const register = async (name: string, email: string, password: string) => {
+  const register = async (firstName: string, lastName: string, email: string, password: string) => {
     try {
       const { data } = await registerMutation({
         variables: {
-          input: { name, email, password }
+          input: { 
+            firstName,
+            lastName,
+            email,
+            password
+          }
         }
       })
 
-      const { token: newToken, user: newUser } = data.register
+      const { token: newToken, user: newUser } = data.registerUser
       
       setToken(newToken)
       setUser(newUser)
