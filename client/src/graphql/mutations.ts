@@ -399,22 +399,39 @@ export const DELETE_CAR = gql`
   }
 `
 
-export const UPLOAD_CAR_IMAGE = gql`
-  mutation UploadCarImage($carId: ID!, $image: Upload!, $caption: String, $isFeatured: Boolean!) {
-    admin {
-      uploadCarImage(carId: $carId, image: $image, caption: $caption, isFeatured: $isFeatured) {
-        id
-        images {
-          url
-          isFeatured
-          caption
-          uploadedBy {
-            id
-            firstName
-            lastName
-          }
-          uploadedAt
+export const ADD_CAR_IMAGE = gql`
+  mutation AddCarImage($carId: ID!, $input: CarImageInput!) {
+    addCarImage(carId: $carId, input: $input) {
+      id
+      images {
+        url
+        isFeatured
+        caption
+        uploadedBy {
+          id
+          firstName
+          lastName
         }
+        uploadedAt
+      }
+    }
+  }
+`
+
+export const UPLOAD_CAR_IMAGE = gql`
+  mutation UploadCarImage($carId: ID!, $file: Upload!, $caption: String, $isFeatured: Boolean) {
+    uploadCarImage(carId: $carId, file: $file, caption: $caption, isFeatured: $isFeatured) {
+      id
+      images {
+        url
+        isFeatured
+        caption
+        uploadedBy {
+          id
+          firstName
+          lastName
+        }
+        uploadedAt
       }
     }
   }
