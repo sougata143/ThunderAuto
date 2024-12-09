@@ -23,6 +23,7 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
+    "@types/streamifier": "^0.1.2",
     "concurrently": "^8.2.0",
     "husky": "^8.0.3",
     "lint-staged": "^13.2.3",

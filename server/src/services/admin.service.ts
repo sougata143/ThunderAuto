@@ -84,6 +84,9 @@ export class AdminService {
     })
 
     // Add image to car
+    if (!car.images) {
+      car.images = []
+    }
     car.images.push({
       url: result.secure_url,
       caption,
@@ -119,7 +122,7 @@ export class AdminService {
     }
 
     // Find image in car
-    const imageIndex = car.images.findIndex(img => img.url === imageUrl)
+    const imageIndex = car.images?.findIndex(img => img.url === imageUrl) ?? -1
     if (imageIndex === -1) {
       throw new GraphQLError('Image not found', {
         extensions: { code: 'NOT_FOUND' }
@@ -131,12 +134,12 @@ export class AdminService {
     await deleteFromCloudinary(publicId)
 
     // Remove from car
-    car.images.splice(imageIndex, 1)
+    car.images?.splice(imageIndex, 1)
     await car.save()
     return car
   }
 
-  static async updateCarStatus(carId: string, status: 'draft' | 'published' | 'archived', adminUser: IUser) {
+  static async updateCarStatus(carId: string, status: 'DRAFT' | 'PUBLISHED' | 'ARCHIVED', adminUser: IUser) {
     if (!adminUser || adminUser.role !== 'ADMIN') {
       throw new GraphQLError('Only admin users can update car status', {
         extensions: { code: 'FORBIDDEN' }
@@ -172,10 +175,10 @@ export class AdminService {
 
     // Delete all images from Cloudinary
     await Promise.all(
-      car.images.map(async (image) => {
+      car.images?.map(async (image) => {
         const publicId = image.url.split('/').slice(-1)[0].split('.')[0]
         await deleteFromCloudinary(publicId)
-      })
+      }) ?? []
     )
 
     await car.deleteOne()

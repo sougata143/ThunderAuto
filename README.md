@@ -24,6 +24,16 @@ A modern, responsive website offering comprehensive specifications for various c
 - 🌐 Multilingual support (i18next)
 - 📱 Social media integration
 - 📊 Admin dashboard
+- 🚀 Comprehensive car specifications with detailed technical specs
+  - Engine details
+  - Performance metrics
+  - Chassis specifications
+  - Dimensions
+  - Transmission details
+  - Fuel efficiency
+  - Interior features
+  - Safety technologies
+  - Warranty information
 
 ## Tech Stack
 
