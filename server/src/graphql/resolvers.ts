@@ -132,7 +132,7 @@ export const resolvers = {
         if (!car) {
           throw new Error('Car not found')
         }
-        return car.reviews || []
+        return car.reviews ?? []
       } catch (error) {
         logger.error('Error fetching reviews:', error)
         throw error
@@ -309,7 +309,7 @@ export const resolvers = {
 
         const userId = (user as IUser & { _id: mongoose.Types.ObjectId })._id
 
-        const review = car.reviews.find(r => r.user.id === userId.toString())
+        const review = car.reviews?.find(r => r.user.id === userId.toString())
         if (!review || review.user.id !== userId.toString()) {
           throw new Error('Not authorized to update this review')
         }
@@ -338,13 +338,13 @@ export const resolvers = {
 
         const userId = (user as IUser & { _id: mongoose.Types.ObjectId })._id
 
-        const reviewIndex = car.reviews.findIndex(r => r.user.id === userId.toString())
-        if (reviewIndex === -1 || car.reviews[reviewIndex].user.id !== userId.toString()) {
+        const reviewIndex = car.reviews?.findIndex(r => r.user.id === userId.toString()) ?? -1
+        if (reviewIndex === -1 || car.reviews?.[reviewIndex]?.user.id !== userId.toString()) {
           throw new Error('Not authorized to delete this review')
         }
 
-        const review = car.reviews[reviewIndex]
-        car.reviews.splice(reviewIndex, 1)
+        const review = car.reviews?.[reviewIndex]
+        car.reviews?.splice(reviewIndex, 1)
         await car.save()
 
         return review
@@ -358,7 +358,7 @@ export const resolvers = {
   Car: {
     ...carResolvers.Car,
     reviews: async (parent: ICar) => {
-      return parent.reviews || []
+      return parent.reviews ?? []
     }
   },
 

@@ -250,6 +250,26 @@ export const carResolvers = {
   },
 
   Mutation: {
+    createCar: async (_: unknown, { input }: { input: CarInput }, { user }: IContext) => {
+      if (!user || user.role !== 'ADMIN') {
+        throw new Error('Unauthorized. Only admins can create cars.')
+      }
+
+      try {
+        const newCar = new Car({
+          ...input,
+          createdBy: user._id,
+          lastUpdatedBy: user._id,
+          status: 'DRAFT'
+        })
+        await newCar.save()
+        return newCar
+      } catch (error) {
+        console.error('Error creating car:', error)
+        throw new Error('Failed to create car')
+      }
+    },
+
     updateCar: async (_: unknown, { id, input }: { id: string; input: any }, context: IContext) => {
       try {
         // Validate ID format
@@ -286,6 +306,23 @@ export const carResolvers = {
         throw error;
       }
     },
+
+    deleteCar: async (_: unknown, { id }: { id: string }, { user }: IContext) => {
+      if (!user || user.role !== 'ADMIN') {
+        throw new Error('Unauthorized. Only admins can delete cars.')
+      }
+
+      try {
+        const car = await Car.findByIdAndDelete(id)
+        if (!car) {
+          throw new Error('Car not found')
+        }
+        return car
+      } catch (error) {
+        console.error('Error deleting car:', error)
+        throw new Error('Failed to delete car')
+      }
+    }
   },
 
   Car: {
@@ -299,6 +336,10 @@ export const carResolvers = {
     
     // Resolver for handling the images array
     images: (parent: ICar) => {
+      // Check if images exist before mapping
+      if (!parent.images || parent.images.length === 0) {
+        return [];
+      }
       return parent.images.map(image => ({
         ...image,
         uploadedBy: parent.populated('images.uploadedBy') 

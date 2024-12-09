@@ -103,57 +103,46 @@ export default function Navbar() {
                               <Link
                                 to="/auth"
                                 className={classNames(
-                                  active ? 'bg-gray-100 dark:bg-gray-600' : '',
-                                  'block px-4 py-2 text-sm text-gray-700 dark:text-gray-200'
+                                  active ? 'bg-gray-100' : '',
+                                  'block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 dark:hover:bg-gray-600'
                                 )}
                               >
-                                Create Account
+                                Sign in
                               </Link>
                             )}
                           </Menu.Item>
                         ) : (
                           <>
+                            {user.role === 'ADMIN' && (
+                              <Menu.Item>
+                                {({ active }) => (
+                                  <Link
+                                    to="/admin/cars"
+                                    className={classNames(
+                                      active ? 'bg-gray-100' : '',
+                                      'block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 dark:hover:bg-gray-600'
+                                    )}
+                                  >
+                                    Manage Cars
+                                  </Link>
+                                )}
+                              </Menu.Item>
+                            )}
                             <Menu.Item>
                               {({ active }) => (
-                                <Link
-                                  to="/profile"
+                                <button
+                                  onClick={logout}
                                   className={classNames(
-                                    active ? 'bg-gray-100 dark:bg-gray-600' : '',
-                                    'block px-4 py-2 text-sm text-gray-700 dark:text-gray-200'
+                                    active ? 'bg-gray-100' : '',
+                                    'block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 dark:hover:bg-gray-600'
                                   )}
                                 >
-                                  Your Profile
-                                </Link>
-                              )}
-                            </Menu.Item>
-                            <Menu.Item>
-                              {({ active }) => (
-                                <Link
-                                  to="/settings"
-                                  className={classNames(
-                                    active ? 'bg-gray-100 dark:bg-gray-600' : '',
-                                    'block px-4 py-2 text-sm text-gray-700 dark:text-gray-200'
-                                  )}
-                                >
-                                  Settings
-                                </Link>
+                                  Sign out
+                                </button>
                               )}
                             </Menu.Item>
                           </>
                         )}
-                        <Menu.Item>
-                          {({ active }) => (
-                            <button
-                              onClick={logout}
-                              className={classNames(
-                                active ? 'bg-gray-100 dark:bg-gray-600' : '',
-                                'block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200'
-                              )}
-                            >
-                              Sign out
-                            </button>
-                          )}
-                        </Menu.Item>
                       </Menu.Items>
                     </Transition>
                   </Menu>

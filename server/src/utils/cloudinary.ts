@@ -1,6 +1,26 @@
 import { v2 as cloudinary } from 'cloudinary'
 import { Stream } from 'stream'
-import streamifier from 'streamifier'
+import * as streamifier from 'streamifier'
+
+// Explicit type definitions for Cloudinary
+interface CloudinaryUploadOptions {
+  folder: string
+  public_id: string
+  allowed_formats: string[]
+  transformation: Array<{
+    width?: number
+    height?: number
+    crop?: string
+    quality?: string
+  }>
+}
+
+// Use Cloudinary's native types
+import { 
+  UploadApiResponse, 
+  UploadApiErrorResponse, 
+  UploadResponseCallback 
+} from 'cloudinary'
 
 // Configure Cloudinary
 cloudinary.config({
@@ -11,55 +31,47 @@ cloudinary.config({
 
 export const uploadToCloudinary = (
   stream: Stream,
-  options: {
-    folder: string
-    public_id: string
-    allowed_formats: string[]
-    transformation: Array<{
-      width?: number
-      height?: number
-      crop?: string
-      quality?: string
-    }>
-  }
-): Promise<{ secure_url: string }> => {
+  options: CloudinaryUploadOptions
+): Promise<UploadApiResponse> => {
   return new Promise((resolve, reject) => {
-    const uploadStream = cloudinary.uploader.upload_stream(
+    const uploadStream: UploadResponseCallback = (
+      err: UploadApiErrorResponse | null | undefined, 
+      result?: UploadApiResponse
+    ) => {
+      if (err) return reject(err)
+      if (!result) return reject(new Error('No upload result'))
+      resolve(result)
+    }
+
+    const uploadStreamInstance = cloudinary.uploader.upload_stream(
       options,
-      (error, result) => {
-        if (error) return reject(error)
-        resolve(result!)
-      }
+      uploadStream
     )
 
-    stream.pipe(uploadStream)
+    stream.pipe(uploadStreamInstance)
   })
 }
 
 export const uploadBufferToCloudinary = (
   buffer: Buffer,
-  options: {
-    folder: string
-    public_id: string
-    allowed_formats: string[]
-    transformation: Array<{
-      width?: number
-      height?: number
-      crop?: string
-      quality?: string
-    }>
-  }
-): Promise<{ secure_url: string }> => {
+  options: CloudinaryUploadOptions
+): Promise<UploadApiResponse> => {
   return new Promise((resolve, reject) => {
-    const uploadStream = cloudinary.uploader.upload_stream(
+    const uploadStream: UploadResponseCallback = (
+      err: UploadApiErrorResponse | null | undefined, 
+      result?: UploadApiResponse
+    ) => {
+      if (err) return reject(err)
+      if (!result) return reject(new Error('No upload result'))
+      resolve(result)
+    }
+
+    const uploadStreamInstance = cloudinary.uploader.upload_stream(
       options,
-      (error, result) => {
-        if (error) return reject(error)
-        resolve(result!)
-      }
+      uploadStream
     )
 
-    streamifier.createReadStream(buffer).pipe(uploadStream)
+    streamifier.createReadStream(buffer).pipe(uploadStreamInstance)
   })
 }
 

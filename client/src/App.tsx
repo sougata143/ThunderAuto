@@ -8,6 +8,9 @@ import CarDetails from './pages/CarDetails'
 import Compare from './pages/Compare'
 import NotFound from './pages/NotFound'
 import { Auth } from './pages/Auth'
+import AdminCarManagement from './pages/AdminCarManagement'
+import AdminCarForm from './pages/AdminCarForm'
+import './styles/automotive.css'
 
 function App() {
   return (
@@ -36,6 +39,14 @@ function App() {
           <Route path="cars" element={<CarList />} />
           <Route path="cars/:id" element={<CarDetails />} />
           <Route path="compare" element={<Compare />} />
+          
+          {/* Admin Routes */}
+          <Route path="admin">
+            <Route path="cars" element={<AdminCarManagement />} />
+            <Route path="cars/new" element={<AdminCarForm />} />
+            <Route path="cars/:id/edit" element={<AdminCarForm />} />
+          </Route>
+          
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>

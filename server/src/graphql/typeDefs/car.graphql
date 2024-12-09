@@ -6,14 +6,14 @@ type Car {
   price: Float!
   images: [CarImage!]!
   rating: Float!
-  engineType: String!
-  transmission: String!
+  engineType: EngineType!
+  transmission: TransmissionType!
   power: Float!
   acceleration: Float!
   status: CarStatus!
   createdBy: User!
   lastUpdatedBy: User!
-  specs: CarSpecs!
+  specs: CarSpecs
   reviews: [Review!]!
   fullName: String!
   createdAt: DateTime!
@@ -21,127 +21,157 @@ type Car {
 }
 
 type CarSpecs {
-  engine: Engine!
-  performance: Performance!
-  chassis: Chassis!
-  dimensions: Dimensions!
-  transmission: TransmissionSpecs!
-  fuel: Fuel!
-  interior: Interior!
-  safety: Safety!
-  technology: Technology!
-  warranty: Warranty!
-  features: Features!
+  engine: Engine
+  performance: Performance
+  chassis: Chassis
+  dimensions: Dimensions
+  transmission: TransmissionSpecs
+  fuel: Fuel
+  interior: Interior
+  safety: Safety
+  technology: Technology
+  warranty: Warranty
+  features: Features
 }
 
 type Engine {
-  displacement: Float!
-  cylinders: Int!
-  configuration: String!
-  fuelInjection: String!
-  turbocharger: Boolean!
-  supercharger: Boolean!
-  compression: String!
-  valvesPerCylinder: Int!
+  displacement: Float
+  cylinders: Int
+  configuration: String
+  fuelInjection: String
+  turbocharger: Boolean
+  supercharger: Boolean
+  compression: String
+  valvesPerCylinder: Int
 }
 
 type Performance {
-  powerToWeight: Float!
-  topSpeed: Float!
-  acceleration060: Float!
-  acceleration0100: Float!
-  quarterMile: Float!
-  brakingDistance60_0: Float!
+  powerToWeight: Float
+  topSpeed: Float
+  acceleration060: Float
+  acceleration0100: Float
+  quarterMile: Float
+  brakingDistance60_0: Float
+  lateralG: Float
+  nurburgringTime: String
+  passingAcceleration: Float
+  elasticity: Float
+  launchControl: Boolean
+  performanceMode: [String!]
 }
 
 type Chassis {
-  bodyType: String!
-  platform: String!
-  frontSuspension: String!
-  rearSuspension: String!
-  frontBrakes: String!
-  rearBrakes: String!
-  wheelSize: String!
-  tireSize: String!
+  bodyType: String
+  platform: String
+  frontSuspension: String
+  rearSuspension: String
+  frontBrakes: String
+  rearBrakes: String
+  wheelSize: String
+  tireSize: String
 }
 
 type Dimensions {
-  length: Float!
-  width: Float!
-  height: Float!
-  wheelbase: Float!
-  groundClearance: Float!
-  dragCoefficient: Float!
-  weight: Float!
-  distribution: String!
+  length: Float
+  width: Float
+  height: Float
+  wheelbase: Float
+  groundClearance: Float
+  dragCoefficient: Float
+  weight: Float
+  distribution: String
 }
 
 type TransmissionSpecs {
-  type: String!
-  gears: Int!
-  clutchType: String!
-  driveType: String!
-  differential: String!
+  type: String
+  gears: Int
+  clutchType: String
+  driveType: String
+  differential: String
 }
 
 type Fuel {
-  fuelType: String!
-  fuelSystem: String!
-  tankCapacity: Float!
-  cityMPG: Float!
-  highwayMPG: Float!
-  combinedMPG: Float!
-  emissionClass: String!
+  fuelType: String
+  fuelSystem: String
+  tankCapacity: Float
+  cityMPG: Float
+  highwayMPG: Float
+  combinedMPG: Float
+  emissionClass: String
 }
 
 type Interior {
-  seatingCapacity: Int!
-  doors: Int!
-  trunkCapacity: Float!
-  infotainmentScreen: String!
-  soundSystem: String!
-  climateZones: Int!
-  upholsteryMaterial: String!
+  seatingCapacity: Int
+  doors: Int
+  trunkCapacity: Float
+  infotainmentScreen: String
+  soundSystem: String
+  climateZones: Int
+  upholsteryMaterial: String
 }
 
 type Safety {
-  airbags: String!
-  abs: Boolean!
-  stabilityControl: Boolean!
-  tractionControl: Boolean!
-  parkingSensors: Boolean!
-  camera: String!
-  blindSpotMonitoring: Boolean!
-  laneDepartureWarning: Boolean!
-  collisionWarning: Boolean!
-  nightVision: Boolean!
+  airbags: String
+  abs: Boolean
+  stabilityControl: Boolean
+  tractionControl: Boolean
+  parkingSensors: Boolean
+  camera: String
+  blindSpotMonitoring: Boolean
+  laneDepartureWarning: Boolean
+  collisionWarning: Boolean
+  nightVision: Boolean
 }
 
 type Technology {
-  connectivity: [String!]!
-  smartphone: [String!]!
-  navigation: String!
-  headlightType: String!
-  adaptiveCruiseControl: Boolean!
-  keylessEntry: Boolean!
-  startSystem: String!
-  driverAssistance: [String!]!
+  infotainmentSystem: String
+  screenSize: Float
+  appleCarPlay: Boolean
+  androidAuto: Boolean
+  adaptiveCruiseControl: Boolean
+  laneKeepAssist: Boolean
+  blindSpotMonitoring: Boolean
+  parkingAssist: Boolean
+  nightVision: Boolean
+  headUpDisplay: Boolean
+  surroundViewCamera: Boolean
+  digitalKey: Boolean
+  mobileApp: Boolean
+  overTheAirUpdates: Boolean
+  voiceControl: Boolean
+  voiceAssistantName: String
+  connectivity: ConnectivityFeatures
+  smartphone: [String!]
+  navigation: String
+  headlightType: String
+  keylessEntry: Boolean
+  startSystem: String
+  driverAssistance: [String!]
+}
+
+type ConnectivityFeatures {
+  bluetooth: Boolean
+  wirelessCharging: Boolean
+  wifi: Boolean
+  soundSystem: String
+  speakers: Int
 }
 
 type Warranty {
-  basic: String!
-  powertrain: String!
-  corrosion: String!
-  roadside: String!
-  maintenance: String!
+  basic: String
+  powertrain: String
+  corrosion: String
+  roadside: String
+  maintenance: String
 }
 
 type Features {
-  safety: [String!]!
-  comfort: [String!]!
-  technology: [String!]!
-  exterior: [String!]!
-  interior: [String!]!
+  comfort: [String!]
+  safety: [String!]
+  performance: [String!]
+  technology: [String!]
+  exterior: [String!]
+  interior: [String!]
 }
 
 type Review {
@@ -170,9 +200,9 @@ input CarFilter {
 }
 
 input ReviewInput {
-  carId: ID!
-  rating: Float!
-  comment: String!
+  carId: ID
+  rating: Float
+  comment: String
 }
 
 input CarUpdateInput {
@@ -180,8 +210,8 @@ input CarUpdateInput {
   carModel: String
   year: Int
   price: Float
-  engineType: String
-  transmission: String
+  engineType: EngineType
+  transmission: TransmissionType
   power: Float
   acceleration: Float
   status: CarStatus
@@ -189,17 +219,17 @@ input CarUpdateInput {
 }
 
 input CarSpecsInput {
-  engine: EngineInput
-  performance: PerformanceInput
-  chassis: ChassisInput
-  dimensions: DimensionsInput
-  transmission: TransmissionSpecsInput
-  fuel: FuelInput
-  interior: InteriorInput
-  safety: SafetyInput
-  technology: TechnologyInput
-  warranty: WarrantyInput
-  features: FeaturesInput
+  engine: EngineInput!
+  performance: PerformanceInput!
+  chassis: ChassisInput!
+  dimensions: DimensionsInput!
+  transmission: TransmissionDetailsInput!
+  fuel: FuelInput!
+  interior: InteriorInput!
+  safety: SafetyInput!
+  technology: TechnologyInput!
+  warranty: WarrantyInput!
+  features: FeaturesInput!
 }
 
 input EngineInput {
@@ -211,15 +241,31 @@ input EngineInput {
   supercharger: Boolean
   compression: String
   valvesPerCylinder: Int
+  valveSystem: String
+  aspiration: String
+  boostPressure: Float
+  redlineRpm: Int
+  idleRpm: Int
+  position: String
+  orientation: String
 }
 
 input PerformanceInput {
   powerToWeight: Float
+  powerToWeightRatio: Float
   topSpeed: Float
   acceleration060: Float
   acceleration0100: Float
   quarterMile: Float
+  quarterMileSpeed: Float
   brakingDistance60_0: Float
+  brakingDistance: Float
+  lateralG: Float
+  nurburgringTime: String
+  passingAcceleration: Float
+  elasticity: Float
+  launchControl: Boolean
+  performanceMode: [String!]
 }
 
 input ChassisInput {
@@ -244,11 +290,11 @@ input DimensionsInput {
   distribution: String
 }
 
-input TransmissionSpecsInput {
-  type: String
+input TransmissionDetailsInput {
+  type: TransmissionType!
   gears: Int
-  clutchType: String
-  driveType: String
+  clutchType: ClutchType
+  driveType: DriveType!
   differential: String
 }
 
@@ -286,14 +332,37 @@ input SafetyInput {
 }
 
 input TechnologyInput {
-  connectivity: [String!]
+  infotainmentSystem: String
+  screenSize: Float
+  appleCarPlay: Boolean
+  androidAuto: Boolean
+  adaptiveCruiseControl: Boolean
+  laneKeepAssist: Boolean
+  blindSpotMonitoring: Boolean
+  parkingAssist: Boolean
+  nightVision: Boolean
+  headUpDisplay: Boolean
+  surroundViewCamera: Boolean
+  digitalKey: Boolean
+  mobileApp: Boolean
+  overTheAirUpdates: Boolean
+  voiceControl: Boolean
+  voiceAssistantName: String
+  connectivity: ConnectivityFeaturesInput
   smartphone: [String!]
   navigation: String
   headlightType: String
-  adaptiveCruiseControl: Boolean
   keylessEntry: Boolean
   startSystem: String
   driverAssistance: [String!]
+}
+
+input ConnectivityFeaturesInput {
+  bluetooth: Boolean
+  wirelessCharging: Boolean
+  wifi: Boolean
+  soundSystem: String
+  speakers: Int
 }
 
 input WarrantyInput {
@@ -305,11 +374,69 @@ input WarrantyInput {
 }
 
 input FeaturesInput {
-  safety: [String!]
   comfort: [String!]
+  safety: [String!]
+  performance: [String!]
   technology: [String!]
   exterior: [String!]
   interior: [String!]
+}
+
+input CarInput {
+  make: String!
+  carModel: String!
+  year: Int!
+  price: Float!
+  engineType: EngineType!
+  transmission: TransmissionType!
+  power: Float!
+  acceleration: Float!
+  status: CarStatus!
+  specs: CarSpecsInput!
+  images: [String!]
+  rating: Float
+}
+
+enum EngineType {
+  GASOLINE
+  DIESEL
+  ELECTRIC
+  HYBRID
+  HYDROGEN
+  PLUG_IN_HYBRID
+}
+
+enum CarStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+enum TransmissionType {
+  MANUAL
+  AUTOMATIC
+  SEMI_AUTOMATIC
+  CVT
+}
+
+enum ClutchType {
+  MANUAL
+  AUTOMATIC
+  DUAL_CLUTCH
+  TORQUE_CONVERTER
+}
+
+enum DriveType {
+  FRONT_WHEEL_DRIVE
+  REAR_WHEEL_DRIVE
+  ALL_WHEEL_DRIVE
+  FOUR_WHEEL_DRIVE
+  REAR_ENGINE_REAR_WHEEL_DRIVE
+  MID_ENGINE_REAR_WHEEL_DRIVE
+  FRONT_ENGINE_FRONT_WHEEL_DRIVE
+  FRONT_ENGINE_REAR_WHEEL_DRIVE
+  MID_ENGINE_ALL_WHEEL_DRIVE
+  FRONT_ENGINE_ALL_WHEEL_DRIVE
 }
 
 extend type Query {
@@ -326,5 +453,7 @@ extend type Mutation {
   createReview(input: ReviewInput!): Review!
   updateReview(id: ID!, rating: Float!, comment: String!): Review!
   deleteReview(id: ID!): Boolean!
-  updateCar(id: ID!, input: CarUpdateInput!): Car! @auth(requires: ADMIN)
+  createCar(input: CarInput!): Car! @auth(requires: ADMIN)
+  updateCar(id: ID!, input: CarInput!): Car! @auth(requires: ADMIN)
+  deleteCar(id: ID!): Car! @auth(requires: ADMIN)
 }

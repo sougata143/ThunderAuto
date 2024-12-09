@@ -8,22 +8,21 @@ export const GET_CARS = gql`
       carModel
       year
       price
-      images {
-        url
-        isFeatured
-        caption
-        uploadedBy {
-          id
-          firstName
-          lastName
-        }
-        uploadedAt
-      }
-      rating
       engineType
       transmission
       power
       acceleration
+      status
+      createdAt
+      updatedAt
+      createdBy {
+        firstName
+        lastName
+      }
+      lastUpdatedBy {
+        firstName
+        lastName
+      }
     }
   }
 `
@@ -122,14 +121,28 @@ export const GET_CAR_DETAILS = gql`
           nightVision
         }
         technology {
-          connectivity
-          smartphone
-          navigation
-          headlightType
+          infotainmentSystem
+          screenSize
+          appleCarPlay
+          androidAuto
           adaptiveCruiseControl
-          keylessEntry
-          startSystem
-          driverAssistance
+          laneKeepAssist
+          blindSpotMonitoring
+          parkingAssist
+          nightVision
+          headUpDisplay
+          surroundViewCamera
+          digitalKey
+          mobileApp
+          overTheAirUpdates
+          voiceControl
+          voiceAssistantName
+          connectivity {
+            bluetooth
+            wifi
+            soundSystem
+            speakers
+          }
         }
         warranty {
           basic
@@ -381,14 +394,29 @@ export const GET_CAR_BY_ID = gql`
           nightVision
         }
         technology {
-          connectivity
-          smartphone
-          navigation
-          headlightType
+          infotainmentSystem
+          screenSize
+          appleCarPlay
+          androidAuto
           adaptiveCruiseControl
-          keylessEntry
-          startSystem
-          driverAssistance
+          laneKeepAssist
+          blindSpotMonitoring
+          parkingAssist
+          nightVision
+          headUpDisplay
+          surroundViewCamera
+          digitalKey
+          mobileApp
+          overTheAirUpdates
+          voiceControl
+          voiceAssistantName
+          connectivity {
+            bluetooth
+            wirelessCharging
+            wifi
+            soundSystem
+            speakers
+          }
         }
         warranty {
           basic
@@ -411,4 +439,48 @@ export const GET_CAR_BY_ID = gql`
       }
     }
   }
-`;
+`
+
+export const DELETE_CAR = gql`
+  mutation DeleteCar($id: ID!) {
+    deleteCar(id: $id) {
+      id
+      make
+      carModel
+    }
+  }
+`
+
+export const CREATE_CAR = gql`
+  mutation CreateCar($input: CarInput!) {
+    createCar(input: $input) {
+      id
+      make
+      carModel
+      year
+      price
+      engineType
+      transmission
+      power
+      acceleration
+      status
+    }
+  }
+`
+
+export const UPDATE_CAR = gql`
+  mutation UpdateCar($id: ID!, $input: CarInput!) {
+    updateCar(id: $id, input: $input) {
+      id
+      make
+      carModel
+      year
+      price
+      engineType
+      transmission
+      power
+      acceleration
+      status
+    }
+  }
+`
