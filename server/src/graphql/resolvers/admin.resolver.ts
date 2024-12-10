@@ -6,6 +6,11 @@ import mongoose from 'mongoose'
 import { ICar } from '../../models/Car'
 import { Car } from '../../models/Car'
 import { IUser } from '../../models/User'
+import { 
+  uploadImageToS3, 
+  deleteImageFromS3, 
+  getImageCompressionOptions 
+} from '../../config/cloudStorage';
 
 interface AdminCarInput {
   make: string
@@ -18,12 +23,11 @@ interface AdminCarInput {
     uploadedBy: mongoose.Types.ObjectId;
     uploadedAt: Date;
   }[]
-  engineType?: 'GASOLINE' | 'DIESEL' | 'ELECTRIC' | 'HYBRID' | 'HYDROGEN' | 'PLUG_IN_HYBRID'
-  transmission?: string
-  power?: number
-  acceleration?: number
-  rating?: number
-  status?: 'DRAFT' | 'PUBLISHED' | 'ARCHIVED'
+  engineType: 'GASOLINE' | 'DIESEL' | 'ELECTRIC' | 'HYBRID' | 'HYDROGEN' | 'PLUG_IN_HYBRID'
+  transmission: string
+  power: number
+  acceleration: number
+  status: 'DRAFT' | 'PUBLISHED' | 'ARCHIVED'
   createdBy?: mongoose.Types.ObjectId | IUser
   lastUpdatedBy?: mongoose.Types.ObjectId | IUser
   specs: {
@@ -88,8 +92,8 @@ interface AdminCarInput {
     transmission?: {
       type?: string
       gears?: number
-      clutchType?: 'MANUAL' | 'AUTOMATIC' | 'SINGLE_CLUTCH'
-      driveType?: 'FRONT_WHEEL_DRIVE' | 'REAR_WHEEL_DRIVE' | 'ALL_WHEEL_DRIVE'
+      clutchType?: 'MANUAL' | 'AUTOMATIC' | 'SINGLE_CLUTCH' | ''
+      driveType?: 'FRONT_WHEEL_DRIVE' | 'REAR_WHEEL_DRIVE' | 'ALL_WHEEL_DRIVE' | ''
       differential?: string
     }
     fuel?: {
@@ -165,28 +169,118 @@ interface AdminCarInput {
   }
 }
 
+type ClutchType = 'MANUAL' | 'AUTOMATIC' | 'SINGLE_CLUTCH' | undefined;
+type DriveType = 'FRONT_WHEEL_DRIVE' | 'REAR_WHEEL_DRIVE' | 'ALL_WHEEL_DRIVE' | undefined;
+
 const convertToEngineType = (engineType?: string): 'GASOLINE' | 'DIESEL' | 'ELECTRIC' | 'HYBRID' | 'HYDROGEN' | 'PLUG_IN_HYBRID' | undefined => {
   if (!engineType) return undefined;
   
+  const validEngineTypes = [
+    'GASOLINE', 
+    'DIESEL', 
+    'ELECTRIC', 
+    'HYBRID', 
+    'HYDROGEN', 
+    'PLUG_IN_HYBRID'
+  ] as const;
+
   const upperCaseEngineType = engineType.toUpperCase();
   
-  switch (upperCaseEngineType) {
-    case 'GASOLINE':
-      return 'GASOLINE';
-    case 'DIESEL':
-      return 'DIESEL';
-    case 'ELECTRIC':
-      return 'ELECTRIC';
-    case 'HYBRID':
-      return 'HYBRID';
-    case 'HYDROGEN':
-      return 'HYDROGEN';
-    case 'PLUG_IN_HYBRID':
-      return 'PLUG_IN_HYBRID';
-    default:
-      throw new Error(`Invalid engine type: ${engineType}`);
+  const matchedType = validEngineTypes.find(type => type === upperCaseEngineType);
+  
+  return matchedType ?? undefined;
+};
+
+const convertToClutchType = (clutchType?: string): ClutchType => {
+  if (!clutchType) return undefined;
+  
+  const validClutchTypes = [
+    'MANUAL', 
+    'AUTOMATIC', 
+    'SINGLE_CLUTCH'
+  ] as const;
+
+  const upperCaseClutchType = clutchType.toUpperCase();
+  
+  const matchedType = validClutchTypes.find(type => type === upperCaseClutchType);
+  
+  return matchedType ?? undefined;
+};
+
+const convertToDriveType = (driveType?: string): 'FRONT_WHEEL_DRIVE' | 'REAR_WHEEL_DRIVE' | 'ALL_WHEEL_DRIVE' | undefined => {
+  if (!driveType) return undefined;
+  
+  const validDriveTypes = [
+    'FRONT_WHEEL_DRIVE', 
+    'REAR_WHEEL_DRIVE', 
+    'ALL_WHEEL_DRIVE'
+  ] as const;
+
+  const upperCaseDriveType = driveType.toUpperCase();
+  
+  return validDriveTypes.find(type => type === upperCaseDriveType);
+};
+
+// Add utility functions for image validation and processing
+const isValidBase64Image = (base64String: string): boolean => {
+  const base64ImageRegex = /^data:image\/(png|jpeg|jpg|gif|webp);base64,/;
+  return base64ImageRegex.test(base64String);
+}
+
+const processBase64Image = async (
+  base64String: string, 
+  carId: string, 
+  userId: mongoose.Types.ObjectId
+): Promise<string> => {
+  if (!isValidBase64Image(base64String)) {
+    throw new GraphQLError('Invalid base64 image format', {
+      extensions: { code: 'BAD_USER_INPUT' }
+    });
+  }
+
+  try {
+    const base64Data = base64String.replace(/^data:image\/\w+;base64,/, '');
+    const buffer = Buffer.from(base64Data, 'base64');
+    
+    const compressionOptions = getImageCompressionOptions(buffer.byteLength);
+
+    const imageUrl = await uploadImageToS3(
+      base64String, 
+      `cars/${carId}`, 
+      compressionOptions
+    );
+
+    return imageUrl;
+  } catch (error) {
+    console.error('Image upload error:', error);
+    throw new GraphQLError(
+      error instanceof Error ? error.message : 'Failed to process image', 
+      {
+        extensions: { 
+          code: 'INTERNAL_SERVER_ERROR',
+          originalError: error instanceof Error ? error.message : 'Unknown error'
+        }
+      }
+    );
   }
 };
+
+const cleanupOldImages = async (car: ICar, newImages: { url: string, isFeatured: boolean }[]) => {
+  if (car.images && car.images.length > 0) {
+    const oldImageUrls = car.images.map(img => img.url);
+    const newImageUrls = newImages.map(img => img.url);
+    
+    // Find images to delete (those in old list but not in new list)
+    const imagesToDelete = oldImageUrls.filter(
+      oldUrl => !newImageUrls.includes(oldUrl)
+    );
+
+    // Delete images from S3
+    await Promise.all(
+      imagesToDelete.map(imageUrl => deleteImageFromS3(imageUrl))
+    );
+  }
+}
 
 export const adminResolvers = {
   Query: {
@@ -196,7 +290,9 @@ export const adminResolvers = {
   AdminQuery: {
     adminCars: async (_parent: unknown, _args: unknown, context: IContext): Promise<ICar[]> => {
       if (!context.user || context.user.role !== 'ADMIN') {
-        throw new Error('Unauthorized: Admin access required')
+        throw new GraphQLError('Unauthorized: Admin access required', {
+          extensions: { code: 'UNAUTHORIZED' }
+        });
       }
       return Car.find()
     }
@@ -208,899 +304,265 @@ export const adminResolvers = {
 
   AdminMutation: {
     createCar: async (_parent: unknown, { input }: { input: AdminCarInput }, context: IContext): Promise<ICar> => {
-      // Check if user is authenticated and is an admin
-      if (!context.user) {
-        throw new GraphQLError('Authentication required', {
-          extensions: { code: 'UNAUTHENTICATED' }
-        });
-      }
-
-      if (context.user.role !== 'ADMIN') {
-        throw new GraphQLError('Only admin users can create cars', {
-          extensions: { code: 'FORBIDDEN' }
+      // Validate admin access
+      if (!context.user || context.user.role !== 'ADMIN') {
+        throw new GraphQLError('Unauthorized: Admin access required', {
+          extensions: { code: 'UNAUTHORIZED' }
         });
       }
 
       // Sanitize and validate input
       const sanitizedInput: AdminCarInput = {
-        make: input.make,
-        carModel: input.carModel,
-        year: input.year,
-        price: input.price,
-        engineType: convertToEngineType(input.engineType),
-        transmission: input.transmission,
-        power: input.power,
-        acceleration: input.acceleration,
-        rating: input.rating,
-        status: input.status ?? 'DRAFT',
+        make: input.make || '',
+        carModel: input.carModel || '',
+        year: input.year || new Date().getFullYear(),
+        price: input.price || 0,
+        engineType: convertToEngineType(input.engineType) ?? 'GASOLINE',
+        transmission: input.transmission || '',
+        power: input.power ?? 0,
+        acceleration: input.acceleration ?? 0,
+        status: input.status || 'DRAFT',
         createdBy: context.user?._id instanceof mongoose.Types.ObjectId ? context.user._id : undefined,
         lastUpdatedBy: context.user?._id instanceof mongoose.Types.ObjectId ? context.user._id : undefined,
-        specs: input.specs ? {
-          engine: input.specs.engine ? {
-            displacement: input.specs.engine?.displacement ?? 0,
-            cylinders: input.specs.engine?.cylinders ?? 0,
-            configuration: input.specs.engine?.configuration ?? '',
-            fuelInjection: input.specs.engine?.fuelInjection ?? '',
-            turbocharger: input.specs.engine?.turbocharger ?? false,
-            supercharger: input.specs.engine?.supercharger ?? false,
-            compression: input.specs.engine?.compression ?? '',
-            valvesPerCylinder: input.specs.engine?.valvesPerCylinder ?? 0,
-            type: input.specs.engine?.type,
-            engineType: convertToEngineType(input.specs.engine?.engineType),
-            powerOutput: input.specs.engine?.powerOutput,
-            horsepower: input.specs.engine?.horsepower,
-            torque: input.specs.engine?.torque,
-            compressionRatio: input.specs.engine?.compressionRatio,
-            bore: input.specs.engine?.bore,
-            stroke: input.specs.engine?.stroke,
-            weight: input.specs.engine?.weight,
-            oilCapacity: input.specs.engine?.oilCapacity,
-            coolingSystem: input.specs.engine?.coolingSystem
-          } : {
-            displacement: 0,
-            cylinders: 0,
-            configuration: '',
-            fuelInjection: '',
-            turbocharger: false,
-            supercharger: false,
-            compression: '',
-            valvesPerCylinder: 0,
-            type: undefined,
-            engineType: undefined,
-            powerOutput: undefined,
-            horsepower: undefined,
-            torque: undefined,
-            compressionRatio: undefined,
-            bore: undefined,
-            stroke: undefined,
-            weight: undefined,
-            oilCapacity: undefined,
-            coolingSystem: undefined
-          },
-          performance: input.specs.performance ? {
-            powerToWeight: input.specs.performance?.powerToWeight,
-            powerToWeightRatio: input.specs.performance?.powerToWeightRatio,
-            topSpeed: input.specs.performance?.topSpeed,
-            acceleration060: input.specs.performance?.acceleration060,
-            acceleration0100: input.specs.performance?.acceleration0100,
-            quarterMile: input.specs.performance?.quarterMile,
-            quarterMileSpeed: input.specs.performance?.quarterMileSpeed,
-            brakingDistance60_0: input.specs.performance?.brakingDistance60_0,
-            brakingDistance: input.specs.performance?.brakingDistance,
-            lateralG: input.specs.performance?.lateralG,
-            nurburgringTime: input.specs.performance?.nurburgringTime,
-            passingAcceleration: input.specs.performance?.passingAcceleration,
-            elasticity: input.specs.performance?.elasticity,
-            launchControl: input.specs.performance?.launchControl,
-            performanceMode: input.specs.performance?.performanceMode
-          } : {
-            powerToWeight: undefined,
-            powerToWeightRatio: undefined,
-            topSpeed: undefined,
-            acceleration060: undefined,
-            acceleration0100: undefined,
-            quarterMile: undefined,
-            quarterMileSpeed: undefined,
-            brakingDistance60_0: undefined,
-            brakingDistance: undefined,
-            lateralG: undefined,
-            nurburgringTime: undefined,
-            passingAcceleration: undefined,
-            elasticity: undefined,
-            launchControl: undefined,
-            performanceMode: undefined
-          },
-          chassis: input.specs.chassis ? {
-            bodyType: input.specs.chassis?.bodyType,
-            platform: input.specs.chassis?.platform,
-            frontSuspension: input.specs.chassis?.frontSuspension,
-            rearSuspension: input.specs.chassis?.rearSuspension,
-            frontBrakes: input.specs.chassis?.frontBrakes,
-            rearBrakes: input.specs.chassis?.rearBrakes,
-            wheelSize: input.specs.chassis?.wheelSize,
-            tireSize: input.specs.chassis?.tireSize
-          } : {
-            bodyType: undefined,
-            platform: undefined,
-            frontSuspension: undefined,
-            rearSuspension: undefined,
-            frontBrakes: undefined,
-            rearBrakes: undefined,
-            wheelSize: undefined,
-            tireSize: undefined
-          },
-          dimensions: input.specs.dimensions ? {
-            length: input.specs.dimensions?.length,
-            width: input.specs.dimensions?.width,
-            height: input.specs.dimensions?.height,
-            wheelbase: input.specs.dimensions?.wheelbase,
-            groundClearance: input.specs.dimensions?.groundClearance,
-            dragCoefficient: input.specs.dimensions?.dragCoefficient,
-            weight: input.specs.dimensions?.weight,
-            distribution: input.specs.dimensions?.distribution
-          } : {
-            length: undefined,
-            width: undefined,
-            height: undefined,
-            wheelbase: undefined,
-            groundClearance: undefined,
-            dragCoefficient: undefined,
-            weight: undefined,
-            distribution: undefined
-          },
-          transmission: input.specs.transmission ? {
-            type: input.specs.transmission?.type,
-            gears: input.specs.transmission?.gears,
-            clutchType: input.specs.transmission?.clutchType,
-            driveType: input.specs.transmission?.driveType,
-            differential: input.specs.transmission?.differential
-          } : {
-            type: undefined,
-            gears: undefined,
-            clutchType: undefined,
-            driveType: undefined,
-            differential: undefined
-          },
-          fuel: input.specs.fuel ? {
-            fuelType: input.specs.fuel?.fuelType,
-            fuelSystem: input.specs.fuel?.fuelSystem,
-            tankCapacity: input.specs.fuel?.tankCapacity,
-            cityMPG: input.specs.fuel?.cityMPG,
-            highwayMPG: input.specs.fuel?.highwayMPG,
-            combinedMPG: input.specs.fuel?.combinedMPG,
-            emissionClass: input.specs.fuel?.emissionClass
-          } : {
-            fuelType: undefined,
-            fuelSystem: undefined,
-            tankCapacity: undefined,
-            cityMPG: undefined,
-            highwayMPG: undefined,
-            combinedMPG: undefined,
-            emissionClass: undefined
-          },
-          interior: input.specs.interior ? {
-            seatingCapacity: input.specs.interior?.seatingCapacity,
-            doors: input.specs.interior?.doors,
-            trunkCapacity: input.specs.interior?.trunkCapacity,
-            infotainmentScreen: input.specs.interior?.infotainmentScreen,
-            soundSystem: input.specs.interior?.soundSystem,
-            climateZones: input.specs.interior?.climateZones,
-            upholsteryMaterial: input.specs.interior?.upholsteryMaterial
-          } : {
-            seatingCapacity: undefined,
-            doors: undefined,
-            trunkCapacity: undefined,
-            infotainmentScreen: undefined,
-            soundSystem: undefined,
-            climateZones: undefined,
-            upholsteryMaterial: undefined
-          },
-          safety: input.specs.safety ? {
-            airbags: input.specs.safety?.airbags,
-            abs: input.specs.safety?.abs,
-            stabilityControl: input.specs.safety?.stabilityControl,
-            tractionControl: input.specs.safety?.tractionControl,
-            parkingSensors: input.specs.safety?.parkingSensors,
-            camera: input.specs.safety?.camera,
-            blindSpotMonitoring: input.specs.safety?.blindSpotMonitoring,
-            laneDepartureWarning: input.specs.safety?.laneDepartureWarning,
-            collisionWarning: input.specs.safety?.collisionWarning,
-            nightVision: input.specs.safety?.nightVision
-          } : {
-            airbags: undefined,
-            abs: undefined,
-            stabilityControl: undefined,
-            tractionControl: undefined,
-            parkingSensors: undefined,
-            camera: undefined,
-            blindSpotMonitoring: undefined,
-            laneDepartureWarning: undefined,
-            collisionWarning: undefined,
-            nightVision: undefined
-          },
-          technology: input.specs.technology ? {
-            infotainmentSystem: input.specs.technology?.infotainmentSystem,
-            screenSize: input.specs.technology?.screenSize,
-            appleCarPlay: input.specs.technology?.appleCarPlay,
-            androidAuto: input.specs.technology?.androidAuto,
-            adaptiveCruiseControl: input.specs.technology?.adaptiveCruiseControl,
-            laneKeepAssist: input.specs.technology?.laneKeepAssist,
-            blindSpotMonitoring: input.specs.technology?.blindSpotMonitoring,
-            parkingAssist: input.specs.technology?.parkingAssist,
-            nightVision: input.specs.technology?.nightVision,
-            headUpDisplay: input.specs.technology?.headUpDisplay,
-            surroundViewCamera: input.specs.technology?.surroundViewCamera,
-            bluetooth: input.specs.technology?.bluetooth,
-            wirelessCharging: input.specs.technology?.wirelessCharging,
-            wifi: input.specs.technology?.wifi,
-            soundSystem: input.specs.technology?.soundSystem,
-            speakers: input.specs.technology?.speakers,
-            digitalKey: input.specs.technology?.digitalKey,
-            mobileApp: input.specs.technology?.mobileApp,
-            overTheAirUpdates: input.specs.technology?.overTheAirUpdates,
-            voiceControl: input.specs.technology?.voiceControl,
-            voiceAssistantName: input.specs.technology?.voiceAssistantName,
-            navigation: input.specs.technology?.navigation,
-            headlightType: input.specs.technology?.headlightType,
-            driverAssistance: input.specs.technology?.driverAssistance
-          } : {
-            infotainmentSystem: undefined,
-            screenSize: undefined,
-            appleCarPlay: undefined,
-            androidAuto: undefined,
-            adaptiveCruiseControl: undefined,
-            laneKeepAssist: undefined,
-            blindSpotMonitoring: undefined,
-            parkingAssist: undefined,
-            nightVision: undefined,
-            headUpDisplay: undefined,
-            surroundViewCamera: undefined,
-            bluetooth: undefined,
-            wirelessCharging: undefined,
-            wifi: undefined,
-            soundSystem: undefined,
-            speakers: undefined,
-            digitalKey: undefined,
-            mobileApp: undefined,
-            overTheAirUpdates: undefined,
-            voiceControl: undefined,
-            voiceAssistantName: undefined,
-            navigation: undefined,
-            headlightType: undefined,
-            driverAssistance: undefined
-          },
-          warranty: input.specs.warranty ? {
-            basic: input.specs.warranty?.basic,
-            powertrain: input.specs.warranty?.powertrain,
-            corrosion: input.specs.warranty?.corrosion,
-            roadside: input.specs.warranty?.roadside,
-            maintenance: input.specs.warranty?.maintenance
-          } : {
-            basic: undefined,
-            powertrain: undefined,
-            corrosion: undefined,
-            roadside: undefined,
-            maintenance: undefined
-          },
-          features: input.specs.features ? {
-            safety: input.specs.features?.safety,
-            comfort: input.specs.features?.comfort,
-            technology: input.specs.features?.technology,
-            exterior: input.specs.features?.exterior,
-            interior: input.specs.features?.interior
-          } : {
-            safety: undefined,
-            comfort: undefined,
-            technology: undefined,
-            exterior: undefined,
-            interior: undefined
-          }
-        } : {
+        specs: {
           engine: {
-            displacement: 0,
-            cylinders: 0,
-            configuration: '',
-            fuelInjection: '',
-            turbocharger: false,
-            supercharger: false,
-            compression: '',
-            valvesPerCylinder: 0,
-            type: undefined,
-            engineType: undefined,
-            powerOutput: undefined,
-            horsepower: undefined,
-            torque: undefined,
-            compressionRatio: undefined,
-            bore: undefined,
-            stroke: undefined,
-            weight: undefined,
-            oilCapacity: undefined,
-            coolingSystem: undefined
-          },
-          performance: {
-            powerToWeight: undefined,
-            powerToWeightRatio: undefined,
-            topSpeed: undefined,
-            acceleration060: undefined,
-            acceleration0100: undefined,
-            quarterMile: undefined,
-            quarterMileSpeed: undefined,
-            brakingDistance60_0: undefined,
-            brakingDistance: undefined,
-            lateralG: undefined,
-            nurburgringTime: undefined,
-            passingAcceleration: undefined,
-            elasticity: undefined,
-            launchControl: undefined,
-            performanceMode: undefined
-          },
-          chassis: {
-            bodyType: undefined,
-            platform: undefined,
-            frontSuspension: undefined,
-            rearSuspension: undefined,
-            frontBrakes: undefined,
-            rearBrakes: undefined,
-            wheelSize: undefined,
-            tireSize: undefined
-          },
-          dimensions: {
-            length: undefined,
-            width: undefined,
-            height: undefined,
-            wheelbase: undefined,
-            groundClearance: undefined,
-            dragCoefficient: undefined,
-            weight: undefined,
-            distribution: undefined
+            displacement: input.specs?.engine?.displacement ?? 0,
+            cylinders: input.specs?.engine?.cylinders ?? 0,
+            configuration: input.specs?.engine?.configuration || '',
+            fuelInjection: input.specs?.engine?.fuelInjection || '',
+            turbocharger: input.specs?.engine?.turbocharger ?? false,
+            supercharger: input.specs?.engine?.supercharger ?? false,
+            compression: input.specs?.engine?.compression || '',
+            valvesPerCylinder: input.specs?.engine?.valvesPerCylinder ?? 0,
+            type: input.specs?.engine?.type || '',
+            engineType: convertToEngineType(input.specs?.engine?.engineType) ?? 'GASOLINE',
+            powerOutput: input.specs?.engine?.powerOutput ?? 0,
+            horsepower: input.specs?.engine?.horsepower ?? 0,
+            torque: input.specs?.engine?.torque ?? 0,
+            compressionRatio: input.specs?.engine?.compressionRatio ?? 0,
+            bore: input.specs?.engine?.bore ?? 0,
+            stroke: input.specs?.engine?.stroke ?? 0,
+            weight: input.specs?.engine?.weight ?? 0,
+            oilCapacity: input.specs?.engine?.oilCapacity ?? 0,
+            coolingSystem: input.specs?.engine?.coolingSystem || ''
           },
           transmission: {
-            type: undefined,
-            gears: undefined,
-            clutchType: undefined,
-            driveType: undefined,
-            differential: undefined
-          },
-          fuel: {
-            fuelType: undefined,
-            fuelSystem: undefined,
-            tankCapacity: undefined,
-            cityMPG: undefined,
-            highwayMPG: undefined,
-            combinedMPG: undefined,
-            emissionClass: undefined
+            type: input.specs?.transmission?.type || '',
+            gears: input.specs?.transmission?.gears ?? 0,
+            clutchType: convertToClutchType(input.specs?.transmission?.clutchType),
+            driveType: convertToDriveType(input.specs?.transmission?.driveType),
+            differential: input.specs?.transmission?.differential || ''
           },
           interior: {
-            seatingCapacity: undefined,
-            doors: undefined,
-            trunkCapacity: undefined,
-            infotainmentScreen: undefined,
-            soundSystem: undefined,
-            climateZones: undefined,
-            upholsteryMaterial: undefined
-          },
-          safety: {
-            airbags: undefined,
-            abs: undefined,
-            stabilityControl: undefined,
-            tractionControl: undefined,
-            parkingSensors: undefined,
-            camera: undefined,
-            blindSpotMonitoring: undefined,
-            laneDepartureWarning: undefined,
-            collisionWarning: undefined,
-            nightVision: undefined
-          },
-          technology: {
-            infotainmentSystem: undefined,
-            screenSize: undefined,
-            appleCarPlay: undefined,
-            androidAuto: undefined,
-            adaptiveCruiseControl: undefined,
-            laneKeepAssist: undefined,
-            blindSpotMonitoring: undefined,
-            parkingAssist: undefined,
-            nightVision: undefined,
-            headUpDisplay: undefined,
-            surroundViewCamera: undefined,
-            bluetooth: undefined,
-            wirelessCharging: undefined,
-            wifi: undefined,
-            soundSystem: undefined,
-            speakers: undefined,
-            digitalKey: undefined,
-            mobileApp: undefined,
-            overTheAirUpdates: undefined,
-            voiceControl: undefined,
-            voiceAssistantName: undefined,
-            navigation: undefined,
-            headlightType: undefined,
-            driverAssistance: undefined
-          },
-          warranty: {
-            basic: undefined,
-            powertrain: undefined,
-            corrosion: undefined,
-            roadside: undefined,
-            maintenance: undefined
-          },
-          features: {
-            safety: undefined,
-            comfort: undefined,
-            technology: undefined,
-            exterior: undefined,
-            interior: undefined
+            seatingCapacity: input.specs?.interior?.seatingCapacity ?? 0,
+            doors: input.specs?.interior?.doors ?? 0,
+            climateZones: input.specs?.interior?.climateZones ?? 0
           }
-        },
-        images: input.images?.map(img => ({
-          url: img.url || '',  
-          isFeatured: img.isFeatured,
-          uploadedBy: img.uploadedBy,
-          uploadedAt: img.uploadedAt
-        })) || [],
+        }
       };
 
-      console.log('Prepared Car Data:', JSON.stringify(sanitizedInput, null, 2));
-
-      // Create the car in the database
-      return AdminService.createCar(sanitizedInput, context.user as IUser);
+      try {
+        const newCar = new Car(sanitizedInput);
+        await newCar.save();
+        return newCar;
+      } catch (error) {
+        console.error('Error creating car:', error);
+        throw new GraphQLError('Failed to create car', {
+          extensions: { 
+            code: 'INTERNAL_SERVER_ERROR',
+            originalError: error instanceof Error ? error.message : 'Unknown error'
+          }
+        });
+      }
     },
 
-    updateCar: async (_parent: unknown, { id, input }: { id: string, input: Partial<AdminCarInput> }, context: IContext): Promise<ICar> => {
-      // Check if user is authenticated and is an admin
-      if (!context.user) {
-        throw new GraphQLError('Authentication required', {
-          extensions: { code: 'UNAUTHENTICATED' }
+    updateCar: async (
+      _parent: unknown, 
+      { id, input }: { id: string, input: Partial<AdminCarInput> }, 
+      context: IContext
+    ): Promise<ICar> => {
+      // Validate admin access
+      if (!context.user || context.user.role !== 'ADMIN') {
+        throw new GraphQLError('Unauthorized: Admin access required', {
+          extensions: { code: 'UNAUTHORIZED' }
         });
       }
 
-      if (context.user.role !== 'ADMIN') {
-        throw new GraphQLError('Only admin users can update cars', {
-          extensions: { code: 'FORBIDDEN' }
+      // Find the existing car
+      const existingCar = await Car.findById(id);
+      if (!existingCar) {
+        throw new GraphQLError('Car not found', {
+          extensions: { code: 'NOT_FOUND' }
         });
       }
 
-      // Convert AdminCarInput to Partial<ICar>
-      const sanitizedInput: Partial<ICar> = {
-        ...input,
-        engineType: input.engineType ? convertToEngineType(input.engineType) : undefined,
-        specs: input.specs ? {
-          engine: input.specs.engine ? {
-            displacement: input.specs.engine?.displacement ?? 0,
-            cylinders: input.specs.engine?.cylinders ?? 0,
-            configuration: input.specs.engine?.configuration ?? '',
-            fuelInjection: input.specs.engine?.fuelInjection ?? '',
-            turbocharger: input.specs.engine?.turbocharger ?? false,
-            supercharger: input.specs.engine?.supercharger ?? false,
-            compression: input.specs.engine?.compression ?? '',
-            valvesPerCylinder: input.specs.engine?.valvesPerCylinder ?? 0,
-            type: input.specs.engine?.type,
-            engineType: input.specs.engine?.engineType ? convertToEngineType(input.specs.engine?.engineType) : undefined,
-            powerOutput: input.specs.engine?.powerOutput,
-            horsepower: input.specs.engine?.horsepower,
-            torque: input.specs.engine?.torque,
-            compressionRatio: input.specs.engine?.compressionRatio,
-            bore: input.specs.engine?.bore,
-            stroke: input.specs.engine?.stroke,
-            weight: input.specs.engine?.weight,
-            oilCapacity: input.specs.engine?.oilCapacity,
-            coolingSystem: input.specs.engine?.coolingSystem
-          } : {
-            displacement: 0,
-            cylinders: 0,
-            configuration: '',
-            fuelInjection: '',
-            turbocharger: false,
-            supercharger: false,
-            compression: '',
-            valvesPerCylinder: 0,
-            type: undefined,
-            engineType: undefined,
-            powerOutput: undefined,
-            horsepower: undefined,
-            torque: undefined,
-            compressionRatio: undefined,
-            bore: undefined,
-            stroke: undefined,
-            weight: undefined,
-            oilCapacity: undefined,
-            coolingSystem: undefined
-          },
-          performance: input.specs.performance ? {
-            powerToWeight: input.specs.performance?.powerToWeight,
-            powerToWeightRatio: input.specs.performance?.powerToWeightRatio,
-            topSpeed: input.specs.performance?.topSpeed,
-            acceleration060: input.specs.performance?.acceleration060,
-            acceleration0100: input.specs.performance?.acceleration0100,
-            quarterMile: input.specs.performance?.quarterMile,
-            quarterMileSpeed: input.specs.performance?.quarterMileSpeed,
-            brakingDistance60_0: input.specs.performance?.brakingDistance60_0,
-            brakingDistance: input.specs.performance?.brakingDistance,
-            lateralG: input.specs.performance?.lateralG,
-            nurburgringTime: input.specs.performance?.nurburgringTime,
-            passingAcceleration: input.specs.performance?.passingAcceleration,
-            elasticity: input.specs.performance?.elasticity,
-            launchControl: input.specs.performance?.launchControl,
-            performanceMode: input.specs.performance?.performanceMode
-          } : {
-            powerToWeight: undefined,
-            powerToWeightRatio: undefined,
-            topSpeed: undefined,
-            acceleration060: undefined,
-            acceleration0100: undefined,
-            quarterMile: undefined,
-            quarterMileSpeed: undefined,
-            brakingDistance60_0: undefined,
-            brakingDistance: undefined,
-            lateralG: undefined,
-            nurburgringTime: undefined,
-            passingAcceleration: undefined,
-            elasticity: undefined,
-            launchControl: undefined,
-            performanceMode: undefined
-          },
-          chassis: input.specs.chassis ? {
-            bodyType: input.specs.chassis?.bodyType,
-            platform: input.specs.chassis?.platform,
-            frontSuspension: input.specs.chassis?.frontSuspension,
-            rearSuspension: input.specs.chassis?.rearSuspension,
-            frontBrakes: input.specs.chassis?.frontBrakes,
-            rearBrakes: input.specs.chassis?.rearBrakes,
-            wheelSize: input.specs.chassis?.wheelSize,
-            tireSize: input.specs.chassis?.tireSize
-          } : {
-            bodyType: undefined,
-            platform: undefined,
-            frontSuspension: undefined,
-            rearSuspension: undefined,
-            frontBrakes: undefined,
-            rearBrakes: undefined,
-            wheelSize: undefined,
-            tireSize: undefined
-          },
-          dimensions: input.specs.dimensions ? {
-            length: input.specs.dimensions?.length,
-            width: input.specs.dimensions?.width,
-            height: input.specs.dimensions?.height,
-            wheelbase: input.specs.dimensions?.wheelbase,
-            groundClearance: input.specs.dimensions?.groundClearance,
-            dragCoefficient: input.specs.dimensions?.dragCoefficient,
-            weight: input.specs.dimensions?.weight,
-            distribution: input.specs.dimensions?.distribution
-          } : {
-            length: undefined,
-            width: undefined,
-            height: undefined,
-            wheelbase: undefined,
-            groundClearance: undefined,
-            dragCoefficient: undefined,
-            weight: undefined,
-            distribution: undefined
-          },
-          transmission: input.specs.transmission ? {
-            type: input.specs.transmission?.type,
-            gears: input.specs.transmission?.gears,
-            clutchType: input.specs.transmission?.clutchType,
-            driveType: input.specs.transmission?.driveType,
-            differential: input.specs.transmission?.differential
-          } : {
-            type: undefined,
-            gears: undefined,
-            clutchType: undefined,
-            driveType: undefined,
-            differential: undefined
-          },
-          fuel: input.specs.fuel ? {
-            fuelType: input.specs.fuel?.fuelType,
-            fuelSystem: input.specs.fuel?.fuelSystem,
-            tankCapacity: input.specs.fuel?.tankCapacity,
-            cityMPG: input.specs.fuel?.cityMPG,
-            highwayMPG: input.specs.fuel?.highwayMPG,
-            combinedMPG: input.specs.fuel?.combinedMPG,
-            emissionClass: input.specs.fuel?.emissionClass
-          } : {
-            fuelType: undefined,
-            fuelSystem: undefined,
-            tankCapacity: undefined,
-            cityMPG: undefined,
-            highwayMPG: undefined,
-            combinedMPG: undefined,
-            emissionClass: undefined
-          },
-          interior: input.specs.interior ? {
-            seatingCapacity: input.specs.interior?.seatingCapacity,
-            doors: input.specs.interior?.doors,
-            trunkCapacity: input.specs.interior?.trunkCapacity,
-            infotainmentScreen: input.specs.interior?.infotainmentScreen,
-            soundSystem: input.specs.interior?.soundSystem,
-            climateZones: input.specs.interior?.climateZones,
-            upholsteryMaterial: input.specs.interior?.upholsteryMaterial
-          } : {
-            seatingCapacity: undefined,
-            doors: undefined,
-            trunkCapacity: undefined,
-            infotainmentScreen: undefined,
-            soundSystem: undefined,
-            climateZones: undefined,
-            upholsteryMaterial: undefined
-          },
-          safety: input.specs.safety ? {
-            airbags: input.specs.safety?.airbags,
-            abs: input.specs.safety?.abs,
-            stabilityControl: input.specs.safety?.stabilityControl,
-            tractionControl: input.specs.safety?.tractionControl,
-            parkingSensors: input.specs.safety?.parkingSensors,
-            camera: input.specs.safety?.camera,
-            blindSpotMonitoring: input.specs.safety?.blindSpotMonitoring,
-            laneDepartureWarning: input.specs.safety?.laneDepartureWarning,
-            collisionWarning: input.specs.safety?.collisionWarning,
-            nightVision: input.specs.safety?.nightVision
-          } : {
-            airbags: undefined,
-            abs: undefined,
-            stabilityControl: undefined,
-            tractionControl: undefined,
-            parkingSensors: undefined,
-            camera: undefined,
-            blindSpotMonitoring: undefined,
-            laneDepartureWarning: undefined,
-            collisionWarning: undefined,
-            nightVision: undefined
-          },
-          technology: input.specs.technology ? {
-            infotainmentSystem: input.specs.technology?.infotainmentSystem,
-            screenSize: input.specs.technology?.screenSize,
-            appleCarPlay: input.specs.technology?.appleCarPlay,
-            androidAuto: input.specs.technology?.androidAuto,
-            adaptiveCruiseControl: input.specs.technology?.adaptiveCruiseControl,
-            laneKeepAssist: input.specs.technology?.laneKeepAssist,
-            blindSpotMonitoring: input.specs.technology?.blindSpotMonitoring,
-            parkingAssist: input.specs.technology?.parkingAssist,
-            nightVision: input.specs.technology?.nightVision,
-            headUpDisplay: input.specs.technology?.headUpDisplay,
-            surroundViewCamera: input.specs.technology?.surroundViewCamera,
-            bluetooth: input.specs.technology?.bluetooth,
-            wirelessCharging: input.specs.technology?.wirelessCharging,
-            wifi: input.specs.technology?.wifi,
-            soundSystem: input.specs.technology?.soundSystem,
-            speakers: input.specs.technology?.speakers,
-            digitalKey: input.specs.technology?.digitalKey,
-            mobileApp: input.specs.technology?.mobileApp,
-            overTheAirUpdates: input.specs.technology?.overTheAirUpdates,
-            voiceControl: input.specs.technology?.voiceControl,
-            voiceAssistantName: input.specs.technology?.voiceAssistantName,
-            navigation: input.specs.technology?.navigation,
-            headlightType: input.specs.technology?.headlightType,
-            driverAssistance: input.specs.technology?.driverAssistance
-          } : {
-            infotainmentSystem: undefined,
-            screenSize: undefined,
-            appleCarPlay: undefined,
-            androidAuto: undefined,
-            adaptiveCruiseControl: undefined,
-            laneKeepAssist: undefined,
-            blindSpotMonitoring: undefined,
-            parkingAssist: undefined,
-            nightVision: undefined,
-            headUpDisplay: undefined,
-            surroundViewCamera: undefined,
-            bluetooth: undefined,
-            wirelessCharging: undefined,
-            wifi: undefined,
-            soundSystem: undefined,
-            speakers: undefined,
-            digitalKey: undefined,
-            mobileApp: undefined,
-            overTheAirUpdates: undefined,
-            voiceControl: undefined,
-            voiceAssistantName: undefined,
-            navigation: undefined,
-            headlightType: undefined,
-            driverAssistance: undefined
-          },
-          warranty: input.specs.warranty ? {
-            basic: input.specs.warranty?.basic,
-            powertrain: input.specs.warranty?.powertrain,
-            corrosion: input.specs.warranty?.corrosion,
-            roadside: input.specs.warranty?.roadside,
-            maintenance: input.specs.warranty?.maintenance
-          } : {
-            basic: undefined,
-            powertrain: undefined,
-            corrosion: undefined,
-            roadside: undefined,
-            maintenance: undefined
-          },
-          features: input.specs.features ? {
-            safety: input.specs.features?.safety,
-            comfort: input.specs.features?.comfort,
-            technology: input.specs.features?.technology,
-            exterior: input.specs.features?.exterior,
-            interior: input.specs.features?.interior
-          } : {
-            safety: undefined,
-            comfort: undefined,
-            technology: undefined,
-            exterior: undefined,
-            interior: undefined
-          }
-        } : {
+      // Process images if provided
+      let processedImages: {
+        url: string;
+        isFeatured: boolean;
+        uploadedBy: mongoose.Types.ObjectId;
+        uploadedAt: Date;
+      }[] = [];
+      
+      if (input.images && input.images.length > 0) {
+        processedImages = await Promise.all(
+          input.images.map(async (imageData, index) => {
+            const imageUrl = await processBase64Image(
+              imageData.url, // Pass the correct base64 string
+              id, 
+              context.user?._id as mongoose.Types.ObjectId
+            );
+            
+            return {
+              url: imageUrl,
+              isFeatured: index === 0,
+              uploadedBy: context.user?._id as mongoose.Types.ObjectId,
+              uploadedAt: new Date()
+            };
+          })
+        );
+      }
+      
+      const sanitizedInput: Partial<AdminCarInput> = {
+        make: input.make || existingCar.make || '',
+        carModel: input.carModel || existingCar.carModel || '',
+        year: input.year || existingCar.year || new Date().getFullYear(),
+        price: input.price ?? existingCar.price ?? 0,
+        engineType: convertToEngineType(input.engineType) ?? existingCar.engineType ?? 'GASOLINE',
+        transmission: input.transmission || existingCar.transmission || '',
+        power: input.power ?? existingCar.power ?? 0,
+        acceleration: input.acceleration ?? existingCar.acceleration ?? 0,
+        status: input.status || existingCar.status || 'DRAFT',
+        lastUpdatedBy: context.user?._id instanceof mongoose.Types.ObjectId ? context.user._id : undefined,
+        specs: {
           engine: {
-            displacement: 0,
-            cylinders: 0,
-            configuration: '',
-            fuelInjection: '',
-            turbocharger: false,
-            supercharger: false,
-            compression: '',
-            valvesPerCylinder: 0,
-            type: undefined,
-            engineType: undefined,
-            powerOutput: undefined,
-            horsepower: undefined,
-            torque: undefined,
-            compressionRatio: undefined,
-            bore: undefined,
-            stroke: undefined,
-            weight: undefined,
-            oilCapacity: undefined,
-            coolingSystem: undefined
-          },
-          performance: {
-            powerToWeight: undefined,
-            powerToWeightRatio: undefined,
-            topSpeed: undefined,
-            acceleration060: undefined,
-            acceleration0100: undefined,
-            quarterMile: undefined,
-            quarterMileSpeed: undefined,
-            brakingDistance60_0: undefined,
-            brakingDistance: undefined,
-            lateralG: undefined,
-            nurburgringTime: undefined,
-            passingAcceleration: undefined,
-            elasticity: undefined,
-            launchControl: undefined,
-            performanceMode: undefined
-          },
-          chassis: {
-            bodyType: undefined,
-            platform: undefined,
-            frontSuspension: undefined,
-            rearSuspension: undefined,
-            frontBrakes: undefined,
-            rearBrakes: undefined,
-            wheelSize: undefined,
-            tireSize: undefined
-          },
-          dimensions: {
-            length: undefined,
-            width: undefined,
-            height: undefined,
-            wheelbase: undefined,
-            groundClearance: undefined,
-            dragCoefficient: undefined,
-            weight: undefined,
-            distribution: undefined
+            displacement: input.specs?.engine?.displacement ?? existingCar.specs?.engine?.displacement ?? 0,
+            cylinders: input.specs?.engine?.cylinders ?? existingCar.specs?.engine?.cylinders ?? 0,
+            configuration: input.specs?.engine?.configuration || existingCar.specs?.engine?.configuration || '',
+            fuelInjection: input.specs?.engine?.fuelInjection || existingCar.specs?.engine?.fuelInjection || '',
+            turbocharger: input.specs?.engine?.turbocharger ?? existingCar.specs?.engine?.turbocharger ?? false,
+            supercharger: input.specs?.engine?.supercharger ?? existingCar.specs?.engine?.supercharger ?? false,
+            compression: input.specs?.engine?.compression || existingCar.specs?.engine?.compression || '',
+            valvesPerCylinder: input.specs?.engine?.valvesPerCylinder ?? existingCar.specs?.engine?.valvesPerCylinder ?? 0,
+            type: input.specs?.engine?.type || existingCar.specs?.engine?.type || '',
+            engineType: convertToEngineType(input.specs?.engine?.engineType) ?? 
+              convertToEngineType(existingCar.specs?.engine?.engineType) ?? 'GASOLINE',
+            powerOutput: input.specs?.engine?.powerOutput ?? existingCar.specs?.engine?.powerOutput ?? 0,
+            horsepower: input.specs?.engine?.horsepower ?? existingCar.specs?.engine?.horsepower ?? 0,
+            torque: input.specs?.engine?.torque ?? existingCar.specs?.engine?.torque ?? 0,
+            compressionRatio: input.specs?.engine?.compressionRatio ?? existingCar.specs?.engine?.compressionRatio ?? 0,
+            bore: input.specs?.engine?.bore ?? existingCar.specs?.engine?.bore ?? 0,
+            stroke: input.specs?.engine?.stroke ?? existingCar.specs?.engine?.stroke ?? 0,
+            weight: input.specs?.engine?.weight ?? existingCar.specs?.engine?.weight ?? 0,
+            oilCapacity: input.specs?.engine?.oilCapacity ?? existingCar.specs?.engine?.oilCapacity ?? 0,
+            coolingSystem: input.specs?.engine?.coolingSystem || existingCar.specs?.engine?.coolingSystem || ''
           },
           transmission: {
-            type: undefined,
-            gears: undefined,
-            clutchType: undefined,
-            driveType: undefined,
-            differential: undefined
-          },
-          fuel: {
-            fuelType: undefined,
-            fuelSystem: undefined,
-            tankCapacity: undefined,
-            cityMPG: undefined,
-            highwayMPG: undefined,
-            combinedMPG: undefined,
-            emissionClass: undefined
+            type: input.specs?.transmission?.type || existingCar.specs?.transmission?.type || '',
+            gears: input.specs?.transmission?.gears ?? existingCar.specs?.transmission?.gears ?? 0,
+            clutchType: convertToClutchType(input.specs?.transmission?.clutchType) ?? 
+              convertToClutchType(existingCar.specs?.transmission?.clutchType),
+            driveType: convertToDriveType(input.specs?.transmission?.driveType) ?? 
+              (existingCar.specs?.transmission?.driveType === 'FRONT_WHEEL_DRIVE' || 
+               existingCar.specs?.transmission?.driveType === 'REAR_WHEEL_DRIVE' || 
+               existingCar.specs?.transmission?.driveType === 'ALL_WHEEL_DRIVE' 
+                ? existingCar.specs?.transmission?.driveType 
+                : undefined),
+            differential: input.specs?.transmission?.differential || existingCar.specs?.transmission?.differential || ''
           },
           interior: {
-            seatingCapacity: undefined,
-            doors: undefined,
-            trunkCapacity: undefined,
-            infotainmentScreen: undefined,
-            soundSystem: undefined,
-            climateZones: undefined,
-            upholsteryMaterial: undefined
-          },
-          safety: {
-            airbags: undefined,
-            abs: undefined,
-            stabilityControl: undefined,
-            tractionControl: undefined,
-            parkingSensors: undefined,
-            camera: undefined,
-            blindSpotMonitoring: undefined,
-            laneDepartureWarning: undefined,
-            collisionWarning: undefined,
-            nightVision: undefined
-          },
-          technology: {
-            infotainmentSystem: undefined,
-            screenSize: undefined,
-            appleCarPlay: undefined,
-            androidAuto: undefined,
-            adaptiveCruiseControl: undefined,
-            laneKeepAssist: undefined,
-            blindSpotMonitoring: undefined,
-            parkingAssist: undefined,
-            nightVision: undefined,
-            headUpDisplay: undefined,
-            surroundViewCamera: undefined,
-            bluetooth: undefined,
-            wirelessCharging: undefined,
-            wifi: undefined,
-            soundSystem: undefined,
-            speakers: undefined,
-            digitalKey: undefined,
-            mobileApp: undefined,
-            overTheAirUpdates: undefined,
-            voiceControl: undefined,
-            voiceAssistantName: undefined,
-            navigation: undefined,
-            headlightType: undefined,
-            driverAssistance: undefined
-          },
-          warranty: {
-            basic: undefined,
-            powertrain: undefined,
-            corrosion: undefined,
-            roadside: undefined,
-            maintenance: undefined
-          },
-          features: {
-            safety: undefined,
-            comfort: undefined,
-            technology: undefined,
-            exterior: undefined,
-            interior: undefined
+            seatingCapacity: input.specs?.interior?.seatingCapacity ?? existingCar.specs?.interior?.seatingCapacity ?? 0,
+            doors: input.specs?.interior?.doors ?? existingCar.specs?.interior?.doors ?? 0,
+            climateZones: input.specs?.interior?.climateZones ?? existingCar.specs?.interior?.climateZones ?? 0
           }
         },
+        ...(processedImages.length > 0 && { images: processedImages })
       };
 
-      return AdminService.updateCar(id, sanitizedInput, context.user as IUser);
+      try {
+        // Update the car
+        const updatedCar = await Car.findByIdAndUpdate(
+          id, 
+          sanitizedInput, 
+          { new: true, runValidators: true }
+        );
+
+        if (!updatedCar) {
+          throw new GraphQLError('Failed to update car', {
+            extensions: { code: 'INTERNAL_SERVER_ERROR' }
+          });
+        }
+
+        return updatedCar;
+      } catch (error) {
+        console.error('Error updating car:', error);
+        throw new GraphQLError('Failed to update car', {
+          extensions: { 
+            code: 'INTERNAL_SERVER_ERROR',
+            originalError: error instanceof Error ? error.message : 'Unknown error'
+          }
+        });
+      }
     },
 
     uploadCarImage: async (
       _parent: unknown,
-      { carId, image, caption, isFeatured }: { carId: string, image: FileUpload, caption?: string, isFeatured: boolean },
+      { carId, image, caption, isFeatured }: { 
+        carId: string, 
+        image: string,  
+        caption?: string, 
+        isFeatured: boolean 
+      },
       context: IContext
     ): Promise<ICar> => {
       if (!context.user || context.user.role !== 'ADMIN') {
-        throw new Error('Unauthorized: Admin access required')
+        throw new GraphQLError('Unauthorized: Admin access required', {
+          extensions: { code: 'UNAUTHORIZED' }
+        });
       }
-      // TODO: Implement image upload logic
+    
+      // Process and upload image
+      const imageUrl = await processBase64Image(
+        image, 
+        carId, 
+        context.user?._id as mongoose.Types.ObjectId
+      );
+    
       const car = await Car.findByIdAndUpdate(
         carId,
         {
           $push: {
             images: {
-              url: 'placeholder-url',
+              url: imageUrl,
               isFeatured,
               caption,
-              uploadedBy: context.user,
+              uploadedBy: context.user?._id,
               uploadedAt: new Date()
             }
-          },
-          lastUpdatedBy: context.user
+          }
         },
         { new: true }
-      )
+      );
+    
       if (!car) {
-        throw new Error('Car not found')
+        // If image was uploaded, but car not found, delete the image
+        await deleteImageFromS3(imageUrl);
+        throw new GraphQLError('Car not found', {
+          extensions: { code: 'NOT_FOUND' }
+        });
       }
-      return car
+    
+      return car;
     },
 
     deleteCarImage: async (_parent: unknown, { carId, imageUrl }: { carId: string, imageUrl: string }, context: IContext): Promise<ICar> => {
       if (!context.user || context.user.role !== 'ADMIN') {
         throw new Error('Unauthorized: Admin access required')
       }
+
+      // First, delete image from S3
+      await deleteImageFromS3(imageUrl);
+
       const car = await Car.findByIdAndUpdate(
         carId,
         {
@@ -1109,9 +571,11 @@ export const adminResolvers = {
         },
         { new: true }
       )
+
       if (!car) {
         throw new Error('Car not found')
       }
+
       return car
     },
 

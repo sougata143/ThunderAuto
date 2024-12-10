@@ -35,6 +35,25 @@ A modern, responsive website offering comprehensive specifications for various c
   - Safety technologies
   - Warranty information
 
+## New Features and Enhancements
+
+### Cloud Storage and Image Management
+- 🖼️ Advanced Image Upload System
+  - AWS S3 integration for scalable image storage
+  - CloudFront distribution for fast image delivery
+  - Intelligent image compression and validation
+  - Automatic orphaned image cleanup
+- 🔒 Enhanced Image Security
+  - Configurable image upload size limits
+  - Supported image type restrictions
+  - Base64 image validation
+  - Automatic image resizing and optimization
+
+### Background Jobs
+- 🤖 Scheduled Image Maintenance
+  - Daily cleanup of orphaned car images
+  - Automated image management using node-cron
+
 ## Tech Stack
 
 ### Frontend
@@ -159,6 +178,52 @@ thunderauto/
 ├── docker/               # Docker configuration files
 └── docs/                 # Documentation
 
+## Configuration
+
+### Environment Variables
+Add the following to your `.env` file:
+
+```bash
+# AWS S3 Configuration
+AWS_ACCESS_KEY_ID=your_aws_access_key
+AWS_SECRET_ACCESS_KEY=your_aws_secret_key
+AWS_REGION=us-east-1
+AWS_S3_BUCKET_NAME=thunderauto-images
+AWS_CLOUDFRONT_DOMAIN=your_cloudfront_domain
+
+# Image Upload Configuration
+MAX_IMAGE_UPLOAD_SIZE=10485760  # 10MB default
+ALLOWED_IMAGE_TYPES=image/jpeg,image/png,image/webp,image/gif
+```
+
+### Image Upload Limits and Restrictions
+- Maximum upload size: 10MB (configurable)
+- Supported image types: 
+  - JPEG
+  - PNG
+  - WebP
+  - GIF
+
+## New Dependencies
+- `node-cron`: Background job scheduling
+- `aws-sdk`: AWS S3 integration
+- `sharp`: Image processing and optimization
+
+## Image Upload Workflow
+1. Base64 image validation
+2. MIME type checking
+3. File size verification
+4. Intelligent image compression
+5. Upload to AWS S3
+6. CloudFront distribution
+7. Automatic orphaned image cleanup
+
+## Troubleshooting
+- Ensure AWS credentials are correctly configured
+- Check network connectivity to AWS services
+- Verify environment variable settings
+- Monitor server logs for image upload issues
+
 ## Key Features Implementation
 
 ### Car Comparison System
@@ -178,6 +243,21 @@ thunderauto/
 - Multiple sorting strategies
 - Responsive design
 - Real-time updates
+
+### Image Management Features
+- 🖼️ Advanced Image Upload and Processing
+  - Dynamic image compression
+  - Configurable upload size and type restrictions
+  - WebP conversion for optimal performance
+  - Automatic orphaned image cleanup
+- 🌐 Cloud Storage Integration
+  - AWS S3 image storage
+  - Optional CloudFront CDN support
+  - Secure and scalable image hosting
+- 🔒 Image Upload Validation
+  - Strict file type checking
+  - Maximum file size enforcement
+  - Intelligent image resizing
 
 ## Contributing
 
