@@ -14,7 +14,7 @@ export interface ICar extends mongoose.Document {
     uploadedAt: Date
   }[]
   rating?: number
-  engineType?: string
+  engineType?: 'GASOLINE' | 'DIESEL' | 'ELECTRIC' | 'HYBRID' | 'HYDROGEN' | 'PLUG_IN_HYBRID'
   transmission?: string
   power?: number
   acceleration?: number
@@ -31,9 +31,24 @@ export interface ICar extends mongoose.Document {
       supercharger?: boolean
       compression?: string
       valvesPerCylinder?: number
-      type?: string
+      valveSystem?: string
+      aspiration?: string
+      boostPressure?: number
+      redlineRpm?: number
+      idleRpm?: number
+      position?: string
+      orientation?: string
+      horsepower?: number
+      torque?: number
+      compressionRatio?: number
+      bore?: number
+      stroke?: number
       engineType?: string
       powerOutput?: number
+      weight?: number
+      oilCapacity?: number
+      coolingSystem?: string
+      type?: string
     }
     performance?: {
       powerToWeight?: number
@@ -175,7 +190,10 @@ const carSchema = new mongoose.Schema({
     uploadedAt: { type: Date, default: Date.now }
   }],
   rating: { type: Number, default: 0 },
-  engineType: { type: String },
+  engineType: {
+    type: String,
+    enum: ['GASOLINE', 'DIESEL', 'ELECTRIC', 'HYBRID', 'HYDROGEN', 'PLUG_IN_HYBRID']
+  },
   transmission: { type: String },
   power: { type: Number },
   acceleration: { type: Number },
@@ -196,9 +214,24 @@ const carSchema = new mongoose.Schema({
       supercharger: { type: Boolean },
       compression: { type: String },
       valvesPerCylinder: { type: Number },
-      type: { type: String },
+      valveSystem: { type: String },
+      aspiration: { type: String },
+      boostPressure: { type: Number },
+      redlineRpm: { type: Number },
+      idleRpm: { type: Number },
+      position: { type: String },
+      orientation: { type: String },
+      horsepower: { type: Number },
+      torque: { type: Number },
+      compressionRatio: { type: Number },
+      bore: { type: Number },
+      stroke: { type: Number },
       engineType: { type: String },
-      powerOutput: { type: Number }
+      powerOutput: { type: Number },
+      weight: { type: Number },
+      oilCapacity: { type: Number },
+      coolingSystem: { type: String },
+      type: { type: String }
     },
     performance: {
       powerToWeight: { type: Number },
