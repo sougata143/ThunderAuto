@@ -129,6 +129,9 @@ const CarDetails: React.FC = () => {
       return;
     }
 
+    // Convert engineType to uppercase if it exists
+    const engineType = editedCar?.engineType ? editedCar.engineType.toUpperCase() : undefined;
+
     try {
       await updateCar({
         variables: {
@@ -139,9 +142,10 @@ const CarDetails: React.FC = () => {
             year: editedCar.year,
             price: editedCar.price,
             status: editedCar.status,
+            engineType: engineType, // Use the uppercase engineType
             specs: {
               engine: {
-                type: editedCar.specs?.engine?.type,
+                type: editedCar.specs?.engine?.type ? editedCar.specs.engine.type.toUpperCase() : undefined,
                 code: editedCar.specs?.engine?.code,
                 displacement: editedCar.specs?.engine?.displacement,
                 cylinders: editedCar.specs?.engine?.cylinders,
@@ -608,11 +612,11 @@ const CarDetails: React.FC = () => {
           <div className="space-y-4">
             {renderEditableField('Fuel Type', editedCar.specs?.fuel?.type,
               (value) => handleSpecChange('fuel', 'type', value), 'select', [
-                { value: 'gasoline', label: 'Gasoline' },
-                { value: 'diesel', label: 'Diesel' },
-                { value: 'electric', label: 'Electric' },
-                { value: 'hybrid', label: 'Hybrid' },
-                { value: 'plugin_hybrid', label: 'Plug-in Hybrid' }
+                { value: 'GASOLINE', label: 'Gasoline' },
+                { value: 'DIESEL', label: 'Diesel' },
+                { value: 'ELECTRIC', label: 'Electric' },
+                { value: 'HYBRID', label: 'Hybrid' },
+                { value: 'PLUG_IN_HYBRID', label: 'Plug-in Hybrid' }
               ])}
             {renderEditableField('Fuel System', editedCar.specs?.fuel?.system,
               (value) => handleSpecChange('fuel', 'system', value))}
@@ -883,12 +887,13 @@ const CarDetails: React.FC = () => {
       case 'engine':
         return (
           <div className="space-y-4">
-            {renderSpecRow('Engine Type', specs.engine?.type)}
-            {renderSpecRow('Engine Code', specs.engine?.code)}
+            {renderSpecRow('Engine Type', specs.engine?.engineType)}
+            {renderSpecRow('Engine Configuration', specs.engine?.configuration)}
             {renderSpecRow('Displacement (cc)', specs.engine?.displacement)}
             {renderSpecRow('Cylinders', specs.engine?.cylinders)}
-            {renderSpecRow('Power Output (HP)', specs.engine?.powerOutput)}
+            {renderSpecRow('Horsepower (HP)', specs.engine?.horsepower)}
             {renderSpecRow('Torque (Nm)', specs.engine?.torque)}
+            {renderSpecRow('Power Output (HP)', specs.engine?.powerOutput)}
             {renderSpecRow('Compression Ratio', specs.engine?.compressionRatio)}
             {renderSpecRow('Bore (mm)', specs.engine?.bore)}
             {renderSpecRow('Stroke (mm)', specs.engine?.stroke)}

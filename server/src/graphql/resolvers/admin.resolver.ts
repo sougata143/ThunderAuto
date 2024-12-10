@@ -18,7 +18,7 @@ interface AdminCarInput {
     uploadedBy: mongoose.Types.ObjectId;
     uploadedAt: Date;
   }[]
-  engineType?: string
+  engineType?: 'GASOLINE' | 'DIESEL' | 'ELECTRIC' | 'HYBRID' | 'HYDROGEN' | 'PLUG_IN_HYBRID'
   transmission?: string
   power?: number
   acceleration?: number
@@ -37,8 +37,16 @@ interface AdminCarInput {
       compression: string
       valvesPerCylinder: number
       type?: string
-      engineType?: string
+      engineType?: 'GASOLINE' | 'DIESEL' | 'ELECTRIC' | 'HYBRID' | 'HYDROGEN' | 'PLUG_IN_HYBRID'
       powerOutput?: number
+      horsepower?: number
+      torque?: number
+      compressionRatio?: number
+      bore?: number
+      stroke?: number
+      weight?: number
+      oilCapacity?: number
+      coolingSystem?: string
     }
     performance?: {
       powerToWeight?: number
@@ -157,6 +165,29 @@ interface AdminCarInput {
   }
 }
 
+const convertToEngineType = (engineType?: string): 'GASOLINE' | 'DIESEL' | 'ELECTRIC' | 'HYBRID' | 'HYDROGEN' | 'PLUG_IN_HYBRID' | undefined => {
+  if (!engineType) return undefined;
+  
+  const upperCaseEngineType = engineType.toUpperCase();
+  
+  switch (upperCaseEngineType) {
+    case 'GASOLINE':
+      return 'GASOLINE';
+    case 'DIESEL':
+      return 'DIESEL';
+    case 'ELECTRIC':
+      return 'ELECTRIC';
+    case 'HYBRID':
+      return 'HYBRID';
+    case 'HYDROGEN':
+      return 'HYDROGEN';
+    case 'PLUG_IN_HYBRID':
+      return 'PLUG_IN_HYBRID';
+    default:
+      throw new Error(`Invalid engine type: ${engineType}`);
+  }
+};
+
 export const adminResolvers = {
   Query: {
     admin: () => ({})
@@ -196,7 +227,7 @@ export const adminResolvers = {
         carModel: input.carModel,
         year: input.year,
         price: input.price,
-        engineType: input.engineType,
+        engineType: convertToEngineType(input.engineType),
         transmission: input.transmission,
         power: input.power,
         acceleration: input.acceleration,
@@ -215,8 +246,16 @@ export const adminResolvers = {
             compression: input.specs.engine?.compression ?? '',
             valvesPerCylinder: input.specs.engine?.valvesPerCylinder ?? 0,
             type: input.specs.engine?.type,
-            engineType: input.specs.engine?.engineType,
-            powerOutput: input.specs.engine?.powerOutput
+            engineType: convertToEngineType(input.specs.engine?.engineType),
+            powerOutput: input.specs.engine?.powerOutput,
+            horsepower: input.specs.engine?.horsepower,
+            torque: input.specs.engine?.torque,
+            compressionRatio: input.specs.engine?.compressionRatio,
+            bore: input.specs.engine?.bore,
+            stroke: input.specs.engine?.stroke,
+            weight: input.specs.engine?.weight,
+            oilCapacity: input.specs.engine?.oilCapacity,
+            coolingSystem: input.specs.engine?.coolingSystem
           } : {
             displacement: 0,
             cylinders: 0,
@@ -228,7 +267,15 @@ export const adminResolvers = {
             valvesPerCylinder: 0,
             type: undefined,
             engineType: undefined,
-            powerOutput: undefined
+            powerOutput: undefined,
+            horsepower: undefined,
+            torque: undefined,
+            compressionRatio: undefined,
+            bore: undefined,
+            stroke: undefined,
+            weight: undefined,
+            oilCapacity: undefined,
+            coolingSystem: undefined
           },
           performance: input.specs.performance ? {
             powerToWeight: input.specs.performance?.powerToWeight,
@@ -460,7 +507,15 @@ export const adminResolvers = {
             valvesPerCylinder: 0,
             type: undefined,
             engineType: undefined,
-            powerOutput: undefined
+            powerOutput: undefined,
+            horsepower: undefined,
+            torque: undefined,
+            compressionRatio: undefined,
+            bore: undefined,
+            stroke: undefined,
+            weight: undefined,
+            oilCapacity: undefined,
+            coolingSystem: undefined
           },
           performance: {
             powerToWeight: undefined,
@@ -608,6 +663,7 @@ export const adminResolvers = {
       // Convert AdminCarInput to Partial<ICar>
       const sanitizedInput: Partial<ICar> = {
         ...input,
+        engineType: input.engineType ? convertToEngineType(input.engineType) : undefined,
         specs: input.specs ? {
           engine: input.specs.engine ? {
             displacement: input.specs.engine?.displacement ?? 0,
@@ -619,8 +675,16 @@ export const adminResolvers = {
             compression: input.specs.engine?.compression ?? '',
             valvesPerCylinder: input.specs.engine?.valvesPerCylinder ?? 0,
             type: input.specs.engine?.type,
-            engineType: input.specs.engine?.engineType,
-            powerOutput: input.specs.engine?.powerOutput
+            engineType: input.specs.engine?.engineType ? convertToEngineType(input.specs.engine?.engineType) : undefined,
+            powerOutput: input.specs.engine?.powerOutput,
+            horsepower: input.specs.engine?.horsepower,
+            torque: input.specs.engine?.torque,
+            compressionRatio: input.specs.engine?.compressionRatio,
+            bore: input.specs.engine?.bore,
+            stroke: input.specs.engine?.stroke,
+            weight: input.specs.engine?.weight,
+            oilCapacity: input.specs.engine?.oilCapacity,
+            coolingSystem: input.specs.engine?.coolingSystem
           } : {
             displacement: 0,
             cylinders: 0,
@@ -632,7 +696,15 @@ export const adminResolvers = {
             valvesPerCylinder: 0,
             type: undefined,
             engineType: undefined,
-            powerOutput: undefined
+            powerOutput: undefined,
+            horsepower: undefined,
+            torque: undefined,
+            compressionRatio: undefined,
+            bore: undefined,
+            stroke: undefined,
+            weight: undefined,
+            oilCapacity: undefined,
+            coolingSystem: undefined
           },
           performance: input.specs.performance ? {
             powerToWeight: input.specs.performance?.powerToWeight,
@@ -864,7 +936,15 @@ export const adminResolvers = {
             valvesPerCylinder: 0,
             type: undefined,
             engineType: undefined,
-            powerOutput: undefined
+            powerOutput: undefined,
+            horsepower: undefined,
+            torque: undefined,
+            compressionRatio: undefined,
+            bore: undefined,
+            stroke: undefined,
+            weight: undefined,
+            oilCapacity: undefined,
+            coolingSystem: undefined
           },
           performance: {
             powerToWeight: undefined,

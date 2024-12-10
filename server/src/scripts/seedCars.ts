@@ -11,12 +11,27 @@ const latestCars = [
     carModel: 'Model S Plaid',
     year: 2024,
     price: 89990,
-    engineType: 'Electric',
-    transmission: 'Single-Speed',
+    engineType: 'ELECTRIC',
+    transmission: 'AUTOMATIC',
     power: 1020,
     acceleration: 2.1,
     status: 'PUBLISHED',
     specs: {
+      transmission: {
+        type: 'AUTOMATIC',
+        gears: 1,
+        driveType: 'ALL_WHEEL_DRIVE',
+        differential: 'Electronic'
+      },
+      interior: {
+        seatingCapacity: 5,
+        doors: 4,
+        trunkCapacity: 28,
+        infotainmentScreen: '17-inch Touchscreen',
+        soundSystem: 'Premium 22-Speaker',
+        climateZones: 3,
+        upholsteryMaterial: 'Premium Leather'
+      },
       engine: {
         displacement: 0,
         cylinders: 0,
@@ -55,13 +70,6 @@ const latestCars = [
         weight: 4766,
         distribution: '48/52'
       },
-      transmission: {
-        type: 'Single-Speed',
-        gears: 1,
-        clutchType: 'N/A',
-        driveType: 'AWD',
-        differential: 'Electronic'
-      },
       fuel: {
         fuelType: 'Electric',
         fuelSystem: 'N/A',
@@ -70,15 +78,6 @@ const latestCars = [
         highwayMPG: 0,
         combinedMPG: 0,
         emissionClass: 'Zero Emission'
-      },
-      interior: {
-        seatingCapacity: 5,
-        doors: 4,
-        trunkCapacity: 28,
-        infotainmentScreen: '17-inch Touchscreen',
-        soundSystem: 'Premium 22-Speaker',
-        climateZones: 3,
-        upholsteryMaterial: 'Premium Leather'
       },
       safety: {
         airbags: '8 Airbags',
@@ -123,12 +122,28 @@ const latestCars = [
     carModel: '911 GT3 RS',
     year: 2024,
     price: 223800,
-    engineType: 'Gasoline',
-    transmission: '7-speed PDK',
+    engineType: 'GASOLINE',
+    transmission: 'SEMI_AUTOMATIC',
     power: 518,
     acceleration: 3.2,
     status: 'PUBLISHED',
     specs: {
+      transmission: {
+        type: 'SEMI_AUTOMATIC',
+        gears: 7,
+        clutchType: 'DUAL_CLUTCH',
+        driveType: 'REAR_WHEEL_DRIVE',
+        differential: 'Electronic LSD'
+      },
+      interior: {
+        seatingCapacity: 2,
+        doors: 2,
+        trunkCapacity: 4.6,
+        infotainmentScreen: '10.9-inch Touchscreen',
+        soundSystem: 'Bose Surround Sound',
+        climateZones: 2,
+        upholsteryMaterial: 'Race-Tex'
+      },
       engine: {
         displacement: 4.0,
         cylinders: 6,
@@ -167,13 +182,6 @@ const latestCars = [
         weight: 3268,
         distribution: '40/60'
       },
-      transmission: {
-        type: 'PDK Dual-Clutch',
-        gears: 7,
-        clutchType: 'Dual-Clutch',
-        driveType: 'RWD',
-        differential: 'Electronic LSD'
-      },
       fuel: {
         fuelType: 'Premium Unleaded',
         fuelSystem: 'Direct Injection',
@@ -182,15 +190,6 @@ const latestCars = [
         highwayMPG: 19,
         combinedMPG: 17,
         emissionClass: 'Euro 6'
-      },
-      interior: {
-        seatingCapacity: 2,
-        doors: 2,
-        trunkCapacity: 4.6,
-        infotainmentScreen: '10.9-inch Touchscreen',
-        soundSystem: 'Bose Surround Sound',
-        climateZones: 2,
-        upholsteryMaterial: 'Race-Tex'
       },
       safety: {
         airbags: '6 Airbags',
@@ -235,12 +234,27 @@ const latestCars = [
     carModel: 'Air Sapphire',
     year: 2024,
     price: 249000,
-    engineType: 'Electric',
-    transmission: 'Single-Speed',
+    engineType: 'ELECTRIC',
+    transmission: 'AUTOMATIC',
     power: 1234,
     acceleration: 1.89,
     status: 'PUBLISHED',
     specs: {
+      transmission: {
+        type: 'AUTOMATIC',
+        gears: 1,
+        driveType: 'ALL_WHEEL_DRIVE',
+        differential: 'Electronic'
+      },
+      interior: {
+        seatingCapacity: 5,
+        doors: 4,
+        trunkCapacity: 32,
+        infotainmentScreen: '21-inch Touchscreen',
+        soundSystem: 'Dolby Atmos Sound System',
+        climateZones: 3,
+        upholsteryMaterial: 'Premium Leather'
+      },
       engine: {
         displacement: 0,
         cylinders: 0,
@@ -279,13 +293,6 @@ const latestCars = [
         weight: 4695,
         distribution: '48/52'
       },
-      transmission: {
-        type: 'Single-Speed',
-        gears: 1,
-        clutchType: 'N/A',
-        driveType: 'AWD',
-        differential: 'Electronic'
-      },
       fuel: {
         fuelType: 'Electric',
         fuelSystem: 'N/A',
@@ -294,15 +301,6 @@ const latestCars = [
         highwayMPG: 0,
         combinedMPG: 0,
         emissionClass: 'Zero Emission'
-      },
-      interior: {
-        seatingCapacity: 5,
-        doors: 4,
-        trunkCapacity: 16,
-        infotainmentScreen: '34-inch Touchscreen',
-        soundSystem: 'Premium 21-Speaker',
-        climateZones: 3,
-        upholsteryMaterial: 'Premium Leather'
       },
       safety: {
         airbags: '8 Airbags',
@@ -347,12 +345,27 @@ const latestCars = [
     carModel: 'M5 CS',
     year: 2024,
     price: 142000,
-    engineType: 'Gasoline',
-    transmission: '8-speed Automatic',
+    engineType: 'GASOLINE',
+    transmission: 'AUTOMATIC',
     power: 627,
     acceleration: 2.9,
     status: 'PUBLISHED',
     specs: {
+      transmission: {
+        type: 'AUTOMATIC',
+        gears: 8,
+        driveType: 'ALL_WHEEL_DRIVE',
+        differential: 'Electronic Active'
+      },
+      interior: {
+        seatingCapacity: 4,
+        doors: 4,
+        trunkCapacity: 14,
+        infotainmentScreen: '12.3-inch Touchscreen',
+        soundSystem: 'Harman Kardon Surround Sound',
+        climateZones: 4,
+        upholsteryMaterial: 'Merino Leather'
+      },
       engine: {
         displacement: 4.4,
         cylinders: 8,
@@ -391,13 +404,6 @@ const latestCars = [
         weight: 4145,
         distribution: '47/53'
       },
-      transmission: {
-        type: '8-speed M Steptronic',
-        gears: 8,
-        clutchType: 'Torque Converter',
-        driveType: 'AWD',
-        differential: 'Electronic M Differential'
-      },
       fuel: {
         fuelType: 'Premium Unleaded',
         fuelSystem: 'Direct Injection',
@@ -406,15 +412,6 @@ const latestCars = [
         highwayMPG: 21,
         combinedMPG: 17,
         emissionClass: 'Euro 6'
-      },
-      interior: {
-        seatingCapacity: 5,
-        doors: 4,
-        trunkCapacity: 16,
-        infotainmentScreen: '12.3-inch Touchscreen',
-        soundSystem: 'Premium 16-Speaker',
-        climateZones: 3,
-        upholsteryMaterial: 'Premium Leather'
       },
       safety: {
         airbags: '8 Airbags',
@@ -459,12 +456,27 @@ const latestCars = [
     carModel: 'GT 63 S E Performance',
     year: 2024,
     price: 188050,
-    engineType: 'Hybrid',
-    transmission: '9-speed MCT',
+    engineType: 'PLUG_IN_HYBRID',
+    transmission: 'AUTOMATIC',
     power: 831,
     acceleration: 2.9,
     status: 'PUBLISHED',
     specs: {
+      transmission: {
+        type: 'AUTOMATIC',
+        gears: 9,
+        driveType: 'ALL_WHEEL_DRIVE',
+        differential: 'Electronic Performance'
+      },
+      interior: {
+        seatingCapacity: 4,
+        doors: 4,
+        trunkCapacity: 12.8,
+        infotainmentScreen: '12.3-inch MBUX Touchscreen',
+        soundSystem: 'Burmester 3D Surround Sound',
+        climateZones: 3,
+        upholsteryMaterial: 'Nappa Leather'
+      },
       engine: {
         displacement: 4.0,
         cylinders: 8,
@@ -503,13 +515,6 @@ const latestCars = [
         weight: 4695,
         distribution: '53/47'
       },
-      transmission: {
-        type: '9-speed AMG SPEEDSHIFT MCT',
-        gears: 9,
-        clutchType: 'Torque Converter',
-        driveType: 'AWD',
-        differential: 'Electronic Limited Slip'
-      },
       fuel: {
         fuelType: 'Premium Unleaded',
         fuelSystem: 'Direct Injection',
@@ -518,15 +523,6 @@ const latestCars = [
         highwayMPG: 22,
         combinedMPG: 18,
         emissionClass: 'Euro 6'
-      },
-      interior: {
-        seatingCapacity: 5,
-        doors: 4,
-        trunkCapacity: 12.7,
-        infotainmentScreen: '12.3-inch Touchscreen',
-        soundSystem: 'Premium 23-Speaker',
-        climateZones: 3,
-        upholsteryMaterial: 'Premium Leather'
       },
       safety: {
         airbags: '8 Airbags',
@@ -568,46 +564,39 @@ const latestCars = [
   }
 ]
 
-async function seedCars() {
+export async function seedCars() {
   try {
-    // Connect to MongoDB
-    const mongoUri = 'mongodb://localhost:27017/thunderauto'
-    console.log('MongoDB URI:', mongoUri)
-    await mongoose.connect(mongoUri)
-    console.log('Connected to MongoDB')
-
-    // Find admin user
-    const adminUser = await User.findOne({ role: 'ADMIN' })
-    if (!adminUser) {
-      throw new Error('Admin user not found')
+    // Connect to MongoDB if not already connected
+    if (mongoose.connection.readyState === 0) {
+      await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/thunderauto')
     }
 
-    // Clear existing cars
-    await Car.deleteMany({})
-    console.log('Cleared existing cars')
+    // Find or create an admin user for seeding
+    let adminUser = await User.findOne({ role: 'ADMIN' })
+    if (!adminUser) {
+      adminUser = new User({
+        firstName: 'Admin',
+        lastName: 'User',
+        email: 'admin@thunderauto.com',
+        role: 'ADMIN',
+        password: 'admin123' // Updated to match the login attempt
+      })
+      await adminUser.save()
+    }
 
-    // Add created/updated by fields to each car
-    const carsWithMetadata = latestCars.map(car => ({
+    // Seed cars with the admin user
+    const carsWithCreator = latestCars.map(car => ({
       ...car,
       createdBy: adminUser._id,
-      lastUpdatedBy: adminUser._id,
-      images: [],
-      rating: 0,
-      reviews: []
+      lastUpdatedBy: adminUser._id
     }))
 
-    // Insert cars
-    await Car.insertMany(carsWithMetadata)
-    console.log('Added latest cars to database')
+    // Insert cars into the database
+    await Car.insertMany(carsWithCreator)
 
-    // Disconnect from MongoDB
-    await mongoose.disconnect()
-    console.log('Disconnected from MongoDB')
+    console.log('Cars seeded successfully!')
   } catch (error) {
     console.error('Error seeding cars:', error)
-    process.exit(1)
+    throw error
   }
 }
-
-// Run the seeding function
-seedCars()

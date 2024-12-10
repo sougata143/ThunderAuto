@@ -20,100 +20,108 @@ const defaultCarInput = {
   status: 'DRAFT',
   specs: {
     engine: {
-      displacement: 1.0,  // Default 1.0L engine
-      cylinders: 4,  // Standard 4-cylinder
-      configuration: 'INLINE',
-      fuelInjection: 'ELECTRONIC',
+      type: '',
+      displacement: '',
+      horsepower: 0,
+      torque: 0,
+      cylinders: 0, 
+      configuration: '',
+      fuelInjection: '',
       turbocharger: false,
       supercharger: false,
-      compression: '10:1',
-      valvesPerCylinder: 4,
-      valveSystem: 'DOHC',
-      aspiration: 'NATURALLY_ASPIRATED',
+      compression: '',
+      valvesPerCylinder: 0,
+      valveSystem: '',
+      aspiration: '',
       boostPressure: 0,
-      redlineRpm: 6500,
-      idleRpm: 750,
-      position: 'FRONT',
-      orientation: 'TRANSVERSE',
-      type: 'INLINE',
-      engineType: 'GASOLINE',
-      powerOutput: 100
-    },
-    performance: {
-      powerToWeightRatio: 0.1,
-      topSpeed: 180,  // km/h
-      acceleration060: 8.5,  // seconds
-      acceleration0100: 10,  // seconds
-      quarterMile: 16,  // seconds
-      quarterMileSpeed: 140,  // km/h
-      lateralG: 0.8,
-      nurburgringTime: 'N/A',
-      passingAcceleration: 5,
-      elasticity: 3,
-      launchControl: false,
-      performanceMode: ['STANDARD'],
-      brakingDistance: 40  // meters
-    },
-    chassis: {
-      bodyType: 'SEDAN',
-      platform: 'UNIBODY',
-      frontSuspension: 'MACPHERSON_STRUT',
-      rearSuspension: 'MULTI_LINK',
-      frontBrakes: 'DISC',
-      rearBrakes: 'DISC',
-      wheelSize: '17',
-      tireSize: '225/45R17'
-    },
-    dimensions: {
-      length: 4500,  // mm
-      width: 1800,   // mm
-      height: 1450,  // mm
-      wheelbase: 2700,  // mm
-      groundClearance: 150,  // mm
-      dragCoefficient: 0.3,
-      weight: 1500,  // kg
-      distribution: '50/50'
+      redlineRpm: 0,
+      idleRpm: 0,
+      position: '',
+      orientation: '',
+      engineType: '',
+      powerOutput: 0,
+      compressionRatio: 8.5, // default compression ratio
+      bore: 85, // default bore
+      stroke: 90, // default stroke
+      weight: 0, // default weight
+      oilCapacity: 0, // default oil capacity
+      coolingSystem: '', // default cooling system
     },
     transmission: {
-      type: 'AUTOMATIC',
-      gears: 6,
-      clutchType: 'AUTOMATIC', 
-      driveType: 'FRONT_WHEEL_DRIVE', 
-      differential: 'OPEN'
+      type: '',
+      gears: undefined,
+      clutchType: '',
+      driveType: '',
+      differential: ''
+    },
+    performance: {
+      powerToWeightRatio: 0,
+      topSpeed: 0,
+      acceleration060: 0,
+      acceleration0100: 0,
+      quarterMile: 0,
+      quarterMileSpeed: 0,
+      lateralG: 0,
+      nurburgringTime: '',
+      passingAcceleration: 0,
+      elasticity: 0,
+      launchControl: false,
+      performanceMode: [],
+      brakingDistance: 0
+    },
+    chassis: {
+      bodyType: '',
+      platform: '',
+      frontSuspension: '',
+      rearSuspension: '',
+      frontBrakes: '',
+      rearBrakes: '',
+      wheelSize: '',
+      tireSize: ''
+    },
+    dimensions: {
+      length: 0,
+      width: 0,
+      height: 0,
+      wheelbase: 0,
+      groundClearance: 0,
+      dragCoefficient: 0,
+      weight: 0,
+      distribution: ''
     },
     fuel: {
-      fuelType: 'GASOLINE',
-      fuelSystem: 'DIRECT_INJECTION',
-      tankCapacity: 50,  // liters
-      cityMPG: 25,
-      highwayMPG: 35,
-      combinedMPG: 30,
-      emissionClass: 'EURO_6'
+      fuelType: '',
+      fuelSystem: '',
+      tankCapacity: 0,
+      cityMPG: 0,
+      highwayMPG: 0,
+      combinedMPG: 0,
+      emissionClass: ''
     },
     interior: {
-      seatingCapacity: 5,
-      doors: 4,
-      trunkCapacity: 500,  // liters
-      infotainmentScreen: '10.1',
-      soundSystem: 'STANDARD',
-      climateZones: 2,
-      upholsteryMaterial: 'CLOTH'
+      seatingCapacity: undefined,
+      doors: undefined,
+      trunkCapacity: 0,
+      infotainmentScreen: '',
+      soundSystem: '',
+      climateZones: undefined,
+      upholsteryMaterial: ''
     },
     safety: {
-      airbags: '6',
-      abs: true,
-      stabilityControl: true,
-      tractionControl: true,
+      airbags: '',
+      abs: false,
+      stabilityControl: false,
+      tractionControl: false,
       parkingSensors: false,
-      camera: 'REAR_VIEW',
+      camera: '',
       blindSpotMonitoring: false,
       laneDepartureWarning: false,
       collisionWarning: false,
       nightVision: false
     },
     technology: {
-      infotainmentSystem: 'BASIC',
-      screenSize: 10,
+      infotainmentSystem: '',
+      screenSize: 0,
       appleCarPlay: false,
       androidAuto: false,
       adaptiveCruiseControl: false,
@@ -123,43 +131,43 @@ const defaultCarInput = {
       nightVision: false,
       headUpDisplay: false,
       surroundViewCamera: false,
-      bluetooth: true,
+      bluetooth: false,
       wirelessCharging: false,
       wifi: false,
-      soundSystem: 'STANDARD',
-      speakers: 4,
+      soundSystem: '',
+      speakers: 0,
       digitalKey: false,
       mobileApp: false,
       overTheAirUpdates: false,
       voiceControl: false,
-      voiceAssistantName: 'NA',
+      voiceAssistantName: '',
       connectivity: {
-        bluetooth: true,
+        bluetooth: false,
         wirelessCharging: false,
         wifi: false,
-        soundSystem: 'STANDARD',
-        speakers: 4
+        soundSystem: '',
+        speakers: 0
       },
-      navigation: 'BASIC',
-      headlightType: 'LED',
+      navigation: '',
+      headlightType: '',
       keylessEntry: false,
-      startSystem: 'PUSH_BUTTON',
-      driverAssistance: ['PARKING_SENSORS']
+      startSystem: '',
+      driverAssistance: []
     },
     warranty: {
-      basic: '3 YEARS/36,000 MILES',
-      powertrain: '5 YEARS/60,000 MILES',
-      corrosion: '5 YEARS/UNLIMITED MILES',
-      roadside: '3 YEARS/36,000 MILES',
-      maintenance: '1 YEAR/12,000 MILES'
+      basic: '',
+      powertrain: '',
+      corrosion: '',
+      roadside: '',
+      maintenance: ''
     },
     features: {
-      comfort: ['AIR_CONDITIONING', 'POWER_WINDOWS'],
-      safety: ['SEATBELTS', 'CHILD_SAFETY_LOCKS'],
-      performance: ['SPORT_MODE'],
-      technology: ['BLUETOOTH_CONNECTIVITY'],
-      exterior: ['ALLOY_WHEELS'],
-      interior: ['FABRIC_SEATS']
+      comfort: [],
+      safety: [],
+      performance: [],
+      technology: [],
+      exterior: [],
+      interior: []
     }
   }
 }
@@ -168,7 +176,335 @@ export default function AdminCarForm() {
   const { id } = useParams()
   const navigate = useNavigate()
   const { user } = useAuth()
-  const [carInput, setCarInput] = useState(defaultCarInput)
+  const [carInput, setCarInput] = useState<{
+    make: string;
+    carModel: string;
+    year: number;
+    price: number;
+    images: { url: string; isFeatured: boolean; caption: string }[];
+    rating: number;
+    engineType: string;
+    transmission: string;
+    power: number;
+    acceleration: number;
+    status: string;
+    specs: {
+      engine: {
+        type: string;
+        displacement: string;
+        horsepower: number;
+        torque: number;
+        cylinders: number;
+        configuration: string;
+        fuelInjection: string;
+        turbocharger: boolean;
+        supercharger: boolean;
+        compression: string;
+        valvesPerCylinder: number;
+        valveSystem: string;
+        aspiration: string;
+        boostPressure: number;
+        redlineRpm: number;
+        idleRpm: number;
+        position: string;
+        orientation: string;
+        engineType: string;
+        powerOutput: number;
+        compressionRatio: number;
+        bore: number;
+        stroke: number;
+        weight: number;
+        oilCapacity: number;
+        coolingSystem: string;
+      };
+      transmission: {
+        type: string;
+        gears: number | undefined;
+        clutchType: string;
+        driveType: string;
+        differential: string;
+      };
+      performance: {
+        powerToWeightRatio: number;
+        topSpeed: number;
+        acceleration060: number;
+        acceleration0100: number;
+        quarterMile: number;
+        quarterMileSpeed: number;
+        lateralG: number;
+        nurburgringTime: string;
+        passingAcceleration: number;
+        elasticity: number;
+        launchControl: boolean;
+        performanceMode: string[];
+        brakingDistance: number;
+      };
+      chassis: {
+        bodyType: string;
+        platform: string;
+        frontSuspension: string;
+        rearSuspension: string;
+        frontBrakes: string;
+        rearBrakes: string;
+        wheelSize: string;
+        tireSize: string;
+      };
+      dimensions: {
+        length: number;
+        width: number;
+        height: number;
+        wheelbase: number;
+        groundClearance: number;
+        dragCoefficient: number;
+        weight: number;
+        distribution: string;
+      };
+      fuel: {
+        fuelType: string;
+        fuelSystem: string;
+        tankCapacity: number;
+        cityMPG: number;
+        highwayMPG: number;
+        combinedMPG: number;
+        emissionClass: string;
+      };
+      interior: {
+        seatingCapacity: number | undefined;
+        doors: number | undefined;
+        trunkCapacity: number;
+        infotainmentScreen: string;
+        soundSystem: string;
+        climateZones: number | undefined;
+        upholsteryMaterial: string;
+      };
+      safety: {
+        airbags: string;
+        abs: boolean;
+        stabilityControl: boolean;
+        tractionControl: boolean;
+        parkingSensors: boolean;
+        camera: string;
+        blindSpotMonitoring: boolean;
+        laneDepartureWarning: boolean;
+        collisionWarning: boolean;
+        nightVision: boolean;
+      };
+      technology: {
+        infotainmentSystem: string;
+        screenSize: number;
+        appleCarPlay: boolean;
+        androidAuto: boolean;
+        adaptiveCruiseControl: boolean;
+        laneKeepAssist: boolean;
+        blindSpotMonitoring: boolean;
+        parkingAssist: boolean;
+        nightVision: boolean;
+        headUpDisplay: boolean;
+        surroundViewCamera: boolean;
+        bluetooth: boolean;
+        wirelessCharging: boolean;
+        wifi: boolean;
+        soundSystem: string;
+        speakers: number;
+        digitalKey: boolean;
+        mobileApp: boolean;
+        overTheAirUpdates: boolean;
+        voiceControl: boolean;
+        voiceAssistantName: string;
+        connectivity: {
+          bluetooth: boolean;
+          wirelessCharging: boolean;
+          wifi: boolean;
+          soundSystem: string;
+          speakers: number;
+        };
+        navigation: string;
+        headlightType: string;
+        keylessEntry: boolean;
+        startSystem: string;
+        driverAssistance: string[];
+      };
+      warranty: {
+        basic: string;
+        powertrain: string;
+        corrosion: string;
+        roadside: string;
+        maintenance: string;
+      };
+      features: {
+        comfort: string[];
+        safety: string[];
+        performance: string[];
+        technology: string[];
+        exterior: string[];
+        interior: string[];
+      };
+    };
+  }>({
+    make: '',
+    carModel: '',
+    year: 2023,
+    price: 0,
+    images: [], 
+    rating: 0,
+    engineType: '',
+    transmission: '',
+    power: 0,
+    acceleration: 0,
+    status: 'DRAFT',
+    specs: {
+      engine: {
+        type: '',
+        displacement: '',
+        horsepower: 0,
+        torque: 0,
+        cylinders: 0,
+        configuration: '',
+        fuelInjection: '',
+        turbocharger: false,
+        supercharger: false,
+        compression: '',
+        valvesPerCylinder: 0,
+        valveSystem: '',
+        aspiration: '',
+        boostPressure: 0,
+        redlineRpm: 0,
+        idleRpm: 0,
+        position: '',
+        orientation: '',
+        engineType: '',
+        powerOutput: 0,
+        compressionRatio: 8.5,
+        bore: 85,
+        stroke: 90,
+        weight: 0,
+        oilCapacity: 0,
+        coolingSystem: '',
+      },
+      transmission: {
+        type: '',
+        gears: undefined,
+        clutchType: '',
+        driveType: '',
+        differential: ''
+      },
+      performance: {
+        powerToWeightRatio: 0,
+        topSpeed: 0,
+        acceleration060: 0,
+        acceleration0100: 0,
+        quarterMile: 0,
+        quarterMileSpeed: 0,
+        lateralG: 0,
+        nurburgringTime: '',
+        passingAcceleration: 0,
+        elasticity: 0,
+        launchControl: false,
+        performanceMode: [],
+        brakingDistance: 0
+      },
+      chassis: {
+        bodyType: '',
+        platform: '',
+        frontSuspension: '',
+        rearSuspension: '',
+        frontBrakes: '',
+        rearBrakes: '',
+        wheelSize: '',
+        tireSize: ''
+      },
+      dimensions: {
+        length: 0,
+        width: 0,
+        height: 0,
+        wheelbase: 0,
+        groundClearance: 0,
+        dragCoefficient: 0,
+        weight: 0,
+        distribution: ''
+      },
+      fuel: {
+        fuelType: '',
+        fuelSystem: '',
+        tankCapacity: 0,
+        cityMPG: 0,
+        highwayMPG: 0,
+        combinedMPG: 0,
+        emissionClass: ''
+      },
+      interior: {
+        seatingCapacity: undefined,
+        doors: undefined,
+        trunkCapacity: 0,
+        infotainmentScreen: '',
+        soundSystem: '',
+        climateZones: undefined,
+        upholsteryMaterial: ''
+      },
+      safety: {
+        airbags: '',
+        abs: false,
+        stabilityControl: false,
+        tractionControl: false,
+        parkingSensors: false,
+        camera: '',
+        blindSpotMonitoring: false,
+        laneDepartureWarning: false,
+        collisionWarning: false,
+        nightVision: false
+      },
+      technology: {
+        infotainmentSystem: '',
+        screenSize: 0,
+        appleCarPlay: false,
+        androidAuto: false,
+        adaptiveCruiseControl: false,
+        laneKeepAssist: false,
+        blindSpotMonitoring: false,
+        parkingAssist: false,
+        nightVision: false,
+        headUpDisplay: false,
+        surroundViewCamera: false,
+        bluetooth: false,
+        wirelessCharging: false,
+        wifi: false,
+        soundSystem: '',
+        speakers: 0,
+        digitalKey: false,
+        mobileApp: false,
+        overTheAirUpdates: false,
+        voiceControl: false,
+        voiceAssistantName: '',
+        connectivity: {
+          bluetooth: false,
+          wirelessCharging: false,
+          wifi: false,
+          soundSystem: '',
+          speakers: 0
+        },
+        navigation: '',
+        headlightType: '',
+        keylessEntry: false,
+        startSystem: '',
+        driverAssistance: []
+      },
+      warranty: {
+        basic: '',
+        powertrain: '',
+        corrosion: '',
+        roadside: '',
+        maintenance: ''
+      },
+      features: {
+        comfort: [],
+        safety: [],
+        performance: [],
+        technology: [],
+        exterior: [],
+        interior: []
+      },
+    },
+  })
   const [error, setError] = useState('')
   const [activeTab, setActiveTab] = useState('basic')
 
@@ -203,18 +539,69 @@ export default function AdminCarForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    
+    // Validate and set default values for enums
+    const engineType = carInput.engineType ? carInput.engineType.toUpperCase() : 'GASOLINE';
+    const engineTypeInSpecs = carInput.specs.engine.engineType ? carInput.specs.engine.engineType.toUpperCase() : 'GASOLINE';
+
+    const sanitizedCarInput = {
+      ...carInput,
+      engineType: engineType,
+      specs: {
+        ...carInput.specs,
+        engine: {
+          ...carInput.specs.engine,
+          engineType: engineTypeInSpecs
+        }
+      },
+      make: carInput.make || 'Unknown',
+      carModel: carInput.carModel || 'Unnamed Model',
+      year: carInput.year || new Date().getFullYear(),
+      price: carInput.price || 0,
+      transmission: carInput.transmission || 'AUTOMATIC',
+      power: carInput.power || 0,
+      acceleration: carInput.acceleration || 0,
+      status: 'DRAFT', 
+      specs: {
+        ...carInput.specs,
+        engine: {
+          ...carInput.specs.engine,
+          type: carInput.specs.engine.type || 'INLINE',
+          displacement: carInput.specs.engine.displacement ? parseFloat(carInput.specs.engine.displacement) : 0,
+          engineType: engineTypeInSpecs,
+          compression: carInput.specs.engine.compression ? String(carInput.specs.engine.compression) : '0',
+          configuration: carInput.specs.engine.configuration || 'INLINE',
+          horsepower: carInput.specs.engine.horsepower || 0,
+          torque: carInput.specs.engine.torque || 0,
+          compressionRatio: carInput.specs.engine.compressionRatio || 8.5,
+          bore: carInput.specs.engine.bore || 85,
+          stroke: carInput.specs.engine.stroke || 90,
+          powerOutput: carInput.specs.engine.powerOutput || 0,
+          weight: carInput.specs.engine.weight || 0,
+          oilCapacity: carInput.specs.engine.oilCapacity || 0,
+          coolingSystem: carInput.specs.engine.coolingSystem || '',
+        },
+        transmission: {
+          ...carInput.specs.transmission,
+          type: carInput.specs.transmission.type || 'AUTOMATIC',
+          clutchType: carInput.specs.transmission.clutchType || 'AUTOMATIC',
+          driveType: carInput.specs.transmission.driveType || 'FRONT_WHEEL_DRIVE',
+        }
+      }
+    }
+
     try {
       if (id) {
         await updateCar({
           variables: {
             id,
-            input: carInput
+            input: sanitizedCarInput
           }
         })
       } else {
         await createCar({
           variables: {
-            input: carInput
+            input: sanitizedCarInput
           }
         })
       }
@@ -223,8 +610,8 @@ export default function AdminCarForm() {
     }
   }
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-    const { name, value, type } = e.target
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement> | { target: { name: string; value: any; type?: string } }) => {
+    const { name, value, type } = 'target' in e ? e.target : { ...e, type: undefined }
     const path = name.split('.')
     
     setCarInput((prev) => {
@@ -237,7 +624,7 @@ export default function AdminCarForm() {
       
       const finalKey = path[path.length - 1]
       if (type === 'number' || type === 'range') {
-        current[finalKey] = parseFloat(value)
+        current[finalKey] = value === '' ? undefined : parseFloat(value)
       } else if (type === 'checkbox') {
         current[finalKey] = (e.target as HTMLInputElement).checked
       } else if (type === 'select-multiple') {
@@ -939,6 +1326,52 @@ export default function AdminCarForm() {
                     <option value="HYBRID">Hybrid</option>
                   </select>
                 </div>
+
+                <div className="col-span-6 sm:col-span-2">
+                  <label htmlFor="specs.engine.weight" className="block text-sm font-medium text-gray-700">
+                    Engine Weight (kg)
+                  </label>
+                  <input
+                    type="number"
+                    name="specs.engine.weight"
+                    id="specs.engine.weight"
+                    value={carInput.specs.engine.weight}
+                    onChange={handleInputChange}
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                  />
+                </div>
+
+                <div className="col-span-6 sm:col-span-2">
+                  <label htmlFor="specs.engine.oilCapacity" className="block text-sm font-medium text-gray-700">
+                    Oil Capacity (L)
+                  </label>
+                  <input
+                    type="number"
+                    name="specs.engine.oilCapacity"
+                    id="specs.engine.oilCapacity"
+                    value={carInput.specs.engine.oilCapacity}
+                    onChange={handleInputChange}
+                    step="0.1"
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                  />
+                </div>
+
+                <div className="col-span-6 sm:col-span-2">
+                  <label htmlFor="specs.engine.coolingSystem" className="block text-sm font-medium text-gray-700">
+                    Cooling System
+                  </label>
+                  <select
+                    name="specs.engine.coolingSystem"
+                    id="specs.engine.coolingSystem"
+                    value={carInput.specs.engine.coolingSystem}
+                    onChange={handleInputChange}
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                  >
+                    <option value="">Select Cooling System</option>
+                    <option value="water">Water Cooled</option>
+                    <option value="air">Air Cooled</option>
+                  </select>
+                </div>
               </div>
             </div>
           </div>
@@ -1453,7 +1886,7 @@ export default function AdminCarForm() {
                   type="number"
                   name="specs.transmission.gears"
                   id="specs.transmission.gears"
-                  value={carInput.specs.transmission.gears}
+                  value={carInput.specs.transmission.gears ?? ''}
                   onChange={handleInputChange}
                   min="1"
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
@@ -1656,7 +2089,7 @@ export default function AdminCarForm() {
                   type="number"
                   name="specs.interior.seatingCapacity"
                   id="specs.interior.seatingCapacity"
-                  value={carInput.specs.interior.seatingCapacity}
+                  value={carInput.specs.interior.seatingCapacity ?? ''}
                   onChange={handleInputChange}
                   min="1"
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
@@ -1671,7 +2104,7 @@ export default function AdminCarForm() {
                   type="number"
                   name="specs.interior.doors"
                   id="specs.interior.doors"
-                  value={carInput.specs.interior.doors}
+                  value={carInput.specs.interior.doors ?? ''}
                   onChange={handleInputChange}
                   min="1"
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
@@ -1731,7 +2164,7 @@ export default function AdminCarForm() {
                   type="number"
                   name="specs.interior.climateZones"
                   id="specs.interior.climateZones"
-                  value={carInput.specs.interior.climateZones}
+                  value={carInput.specs.interior.climateZones ?? ''}
                   onChange={handleInputChange}
                   min="1"
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"

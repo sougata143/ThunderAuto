@@ -147,7 +147,19 @@ export const carResolvers = {
         if (filters.make) query.make = filters.make
         if (filters.model) query.model = filters.model
         if (filters.year) query.year = filters.year
-        if (filters.engineType) query.engineType = filters.engineType
+        
+        // Convert engineType to uppercase if provided
+        if (filters.engineType) {
+          const validEngineTypes = ['GASOLINE', 'DIESEL', 'ELECTRIC', 'HYBRID', 'HYDROGEN', 'PLUG_IN_HYBRID'];
+          const uppercaseEngineType = filters.engineType.toUpperCase();
+          
+          if (validEngineTypes.includes(uppercaseEngineType)) {
+            query.engineType = uppercaseEngineType;
+          } else {
+            throw new Error(`Invalid engine type: ${filters.engineType}`);
+          }
+        }
+        
         if (filters.transmission) query.transmission = filters.transmission
 
         if (filters.minPrice || filters.maxPrice) {
