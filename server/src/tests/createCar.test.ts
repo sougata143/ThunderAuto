@@ -2,6 +2,7 @@ import { ApolloServer } from '@apollo/server';
 import { GraphQLError } from 'graphql';
 import mongoose from 'mongoose';
 import { adminResolvers as resolvers } from '../graphql/resolvers/admin.resolver';
+import { EngineType, TransmissionType, CarStatus } from '../types/enums';
 import { Car } from '../models/Car';
 import { IUser } from '../models/User';
 
@@ -37,12 +38,15 @@ describe('createCar Mutation', () => {
   });
 
   const baseCarInput = {
-    make: 'Toyota',
-    carModel: 'Camry',
+    make: 'Tesla',
+    carModel: 'Model S',
     year: 2023,
-    price: 25000,
-    engineType: 'GASOLINE',
-    transmission: 'AUTOMATIC',
+    price: 79990,
+    engineType: EngineType.ELECTRIC,
+    transmission: TransmissionType.AUTOMATIC,
+    status: CarStatus.DRAFT,
+    power: 670,
+    acceleration: 2.3,
     specs: {
       engine: {
         displacement: 0,
@@ -52,7 +56,7 @@ describe('createCar Mutation', () => {
         turbocharger: false,
         supercharger: false,
         compression: '',
-        valvesPerCylinder: 0
+        valvesPerCylinder: 4
       }
     }
   };
@@ -73,7 +77,7 @@ describe('createCar Mutation', () => {
           turbocharger: false,
           supercharger: false,
           compression: '',
-          valvesPerCylinder: 0
+          valvesPerCylinder: 4
         },
         performance: {
           powerToWeight: 0,
@@ -200,12 +204,27 @@ describe('createCar Mutation', () => {
 
     expect(result).toMatchObject(mockCreatedCar);
     expect(Car.create).toHaveBeenCalledWith(expect.objectContaining({
-      make: 'Toyota',
-      carModel: 'Camry',
+      make: 'Tesla',
+      carModel: 'Model S',
       year: 2023,
-      price: 25000,
-      engineType: 'GASOLINE',
-      transmission: 'AUTOMATIC'
+      price: 79990,
+      engineType: EngineType.ELECTRIC,
+      transmission: TransmissionType.AUTOMATIC,
+      status: CarStatus.DRAFT,
+      power: 670,
+      acceleration: 2.3,
+      specs: {
+        engine: {
+          displacement: 0,
+          cylinders: 0,
+          configuration: '',
+          fuelInjection: '',
+          turbocharger: false,
+          supercharger: false,
+          compression: '',
+          valvesPerCylinder: 4
+        }
+      }
     }));
   });
 
@@ -270,11 +289,25 @@ describe('createCar Mutation', () => {
     const { createCar } = resolvers.AdminMutation;
 
     const carInputWithPartialSpecs = {
-      ...baseCarInput,
+      make: 'Tesla',
+      carModel: 'Model S',
+      year: 2023,
+      price: 79990,
+      engineType: EngineType.ELECTRIC,
+      transmission: TransmissionType.AUTOMATIC,
+      status: CarStatus.DRAFT,
+      power: 670,
+      acceleration: 2.3,
       specs: {
         engine: {
-          displacement: 2000,
-          cylinders: 4
+          displacement: 0,
+          cylinders: 0,
+          configuration: '',
+          fuelInjection: '',
+          turbocharger: false,
+          supercharger: false,
+          compression: '',
+          valvesPerCylinder: 4
         },
         performance: {
           topSpeed: 180
@@ -286,14 +319,14 @@ describe('createCar Mutation', () => {
       ...baseCarInput,
       specs: {
         engine: {
-          displacement: 2000,
-          cylinders: 4,
+          displacement: 0,
+          cylinders: 0,
           configuration: '',
           fuelInjection: '',
           turbocharger: false,
           supercharger: false,
           compression: '',
-          valvesPerCylinder: 0
+          valvesPerCylinder: 4
         },
         performance: {
           topSpeed: 180,
@@ -309,14 +342,14 @@ describe('createCar Mutation', () => {
       ...baseCarInput,
       specs: {
         engine: {
-          displacement: 2000,
-          cylinders: 4,
+          displacement: 0,
+          cylinders: 0,
           configuration: '',
           fuelInjection: '',
           turbocharger: false,
           supercharger: false,
           compression: '',
-          valvesPerCylinder: 0
+          valvesPerCylinder: 4
         },
         performance: {
           topSpeed: 180,
@@ -339,14 +372,14 @@ describe('createCar Mutation', () => {
       ...baseCarInput,
       specs: {
         engine: {
-          displacement: 2000,
-          cylinders: 4,
+          displacement: 0,
+          cylinders: 0,
           configuration: '',
           fuelInjection: '',
           turbocharger: false,
           supercharger: false,
           compression: '',
-          valvesPerCylinder: 0
+          valvesPerCylinder: 4
         },
         performance: {
           topSpeed: 180,
@@ -364,8 +397,27 @@ describe('createCar Mutation', () => {
     const { createCar } = resolvers.AdminMutation;
 
     const carInputWithInvalidEngineType = {
-      ...baseCarInput,
-      engineType: 'INVALID_ENGINE_TYPE'
+      make: 'Tesla',
+      carModel: 'Model S',
+      year: 2023,
+      price: 79990,
+      engineType: 'STEAM',
+      transmission: TransmissionType.AUTOMATIC,
+      status: CarStatus.DRAFT,
+      power: 670,
+      acceleration: 2.3,
+      specs: {
+        engine: {
+          displacement: 0,
+          cylinders: 0,
+          configuration: '',
+          fuelInjection: '',
+          turbocharger: false,
+          supercharger: false,
+          compression: '',
+          valvesPerCylinder: 4
+        }
+      }
     };
 
     await expect(createCar(
@@ -379,8 +431,27 @@ describe('createCar Mutation', () => {
     const { createCar } = resolvers.AdminMutation;
 
     const carInputWithInvalidTransmissionType = {
-      ...baseCarInput,
-      transmission: 'INVALID_TRANSMISSION_TYPE'
+      make: 'Tesla',
+      carModel: 'Model S',
+      year: 2023,
+      price: 79990,
+      engineType: EngineType.ELECTRIC,
+      transmission: 'MANUAL_CUSTOM',
+      status: CarStatus.DRAFT,
+      power: 670,
+      acceleration: 2.3,
+      specs: {
+        engine: {
+          displacement: 0,
+          cylinders: 0,
+          configuration: '',
+          fuelInjection: '',
+          turbocharger: false,
+          supercharger: false,
+          compression: '',
+          valvesPerCylinder: 4
+        }
+      }
     };
 
     await expect(createCar(
@@ -394,8 +465,27 @@ describe('createCar Mutation', () => {
     const { createCar } = resolvers.AdminMutation;
 
     const carInputWithInvalidStatus = {
-      ...baseCarInput,
-      status: 'INVALID_STATUS'
+      make: 'Tesla',
+      carModel: 'Model S',
+      year: 2023,
+      price: 79990,
+      engineType: EngineType.ELECTRIC,
+      transmission: TransmissionType.AUTOMATIC,
+      status: 'PENDING_CUSTOM',
+      power: 670,
+      acceleration: 2.3,
+      specs: {
+        engine: {
+          displacement: 0,
+          cylinders: 0,
+          configuration: '',
+          fuelInjection: '',
+          turbocharger: false,
+          supercharger: false,
+          compression: '',
+          valvesPerCylinder: 4
+        }
+      }
     };
 
     await expect(createCar(

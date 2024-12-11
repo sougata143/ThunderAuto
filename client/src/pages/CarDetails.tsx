@@ -1183,6 +1183,22 @@ const CarDetails: React.FC = () => {
     );
   };
 
+  const defaultCarImage = '/images/default-car-image.png';
+
+  const getPrimaryImage = () => {
+    const featuredImage = car.images?.find(img => img.isFeatured);
+    
+    if (featuredImage) {
+      return featuredImage.url;
+    }
+    
+    if (car.images && car.images.length > 0) {
+      return car.images[0].url;
+    }
+    
+    return defaultCarImage;
+  };
+
   if (loading) return <Loading />;
   if (error) return <ErrorMessage message={error.message} />;
   if (!data?.car) return <ErrorMessage message="Car not found" />;
@@ -1223,7 +1239,7 @@ const CarDetails: React.FC = () => {
               <img
                 key={index}
                 src={image}
-                alt={`${car.make} ${car.model} - Image ${index + 1}`}
+                alt={`${car.make} ${car.carModel} - Image ${index + 1}`}
                 className="h-64 w-full object-cover rounded-lg"
               />
             ))}
@@ -1290,6 +1306,17 @@ const CarDetails: React.FC = () => {
             </Tab.Panels>
           </Tab.Group>
         </div>
+      </div>
+      <div className="car-details-image-container">
+        <img 
+          src={getPrimaryImage()} 
+          alt={`${car.make} ${car.carModel}`} 
+          className="car-details-primary-image"
+          onError={(e) => {
+            const imgElement = e.target as HTMLImageElement;
+            imgElement.src = defaultCarImage;
+          }}
+        />
       </div>
     </div>
   );

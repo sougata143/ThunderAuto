@@ -55,20 +55,71 @@ export class AuthService {
 
   static async loginUser(email: string, password: string): Promise<{ user: IUser; token: string }> {
     try {
-      const user = await User.findOne({ email })
-      if (!user) {
+      logger.info('Login attempt', { 
+        email, 
+        timestamp: new Date().toISOString() 
+      })
+      
+      // Comprehensive logging for user search
+      const userSearchResult = await User.findOne({ email })
+      logger.info('User search result', { 
+        email, 
+        userFound: !!userSearchResult,
+        userDetails: userSearchResult ? {
+          id: userSearchResult._id,
+          role: userSearchResult.role,
+          email: userSearchResult.email
+        } : null
+      })
+
+      if (!userSearchResult) {
+        logger.warn('Login failed: User not found', { 
+          email,
+          timestamp: new Date().toISOString() 
+        })
         throw new Error('Invalid email or password')
       }
 
-      const isValid = await user.comparePassword(password)
+      // Comprehensive password validation logging
+      const passwordValidationStart = Date.now()
+      const isValid = await userSearchResult.comparePassword(password)
+      const passwordValidationDuration = Date.now() - passwordValidationStart
+
+      logger.info('Password validation result', {
+        email,
+        isValidPassword: isValid,
+        validationDurationMs: passwordValidationDuration
+      })
+
       if (!isValid) {
+        logger.warn('Login failed: Invalid password', { 
+          email,
+          timestamp: new Date().toISOString() 
+        })
         throw new Error('Invalid email or password')
       }
 
-      const token = this.generateToken(user)
-      return { user, token }
+      // Token generation with comprehensive logging
+      const token = this.generateToken(userSearchResult)
+      logger.info('Login successful', { 
+        userId: userSearchResult._id, 
+        email: userSearchResult.email,
+        role: userSearchResult.role,
+        timestamp: new Date().toISOString()
+      })
+      
+      return { 
+        user: userSearchResult, 
+        token 
+      }
     } catch (error) {
-      logger.error('Error logging in user:', error)
+      logger.error('Comprehensive login error', { 
+        email, 
+        errorType: error instanceof Error ? error.name : 'Unknown Error',
+        errorMessage: error instanceof Error ? error.message : 'No error message',
+        errorStack: error instanceof Error ? error.stack : 'No stack trace',
+        timestamp: new Date().toISOString()
+      })
       throw error
     }
   }

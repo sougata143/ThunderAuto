@@ -1,0 +1,21 @@
+export enum EngineType {
+  GASOLINE = 'GASOLINE',
+  DIESEL = 'DIESEL',
+  ELECTRIC = 'ELECTRIC',
+  HYBRID = 'HYBRID',
+  HYDROGEN = 'HYDROGEN',
+  PLUG_IN_HYBRID = 'PLUG_IN_HYBRID'
+}
+
+export enum TransmissionType {
+  AUTOMATIC = 'AUTOMATIC',
+  MANUAL = 'MANUAL',
+  CVT = 'CVT',
+  SEMI_AUTOMATIC = 'SEMI_AUTOMATIC'
+}
+
+export enum CarStatus {
+  DRAFT = 'DRAFT',
+  PUBLISHED = 'PUBLISHED',
+  ARCHIVED = 'ARCHIVED'
+}

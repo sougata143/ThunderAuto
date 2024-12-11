@@ -165,23 +165,7 @@ export const resolvers = {
 
     loginUser: async (parent: unknown, { input }: { input: { email: string, password: string } }) => {
       try {
-        const user = await User.findOne({ email: input.email })
-        if (!user) {
-          throw new Error('User not found')
-        }
-
-        // Skip password check for guest users
-        if (user.role !== 'GUEST') {
-          const isValid = await user.comparePassword(input.password)
-          if (!isValid) {
-            throw new Error('Invalid password')
-          }
-        }
-
-        return {
-          token: AuthService.generateToken(user),
-          user
-        }
+        return await AuthService.loginUser(input.email, input.password)
       } catch (error) {
         logger.error('Error logging in:', error)
         throw error

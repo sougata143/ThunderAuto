@@ -1,0 +1,799 @@
+2024-12-10 12:47:57.744 [info]: Full Auth Header:
+2024-12-10 12:47:57.754 [info]: Attempting to verify token
+2024-12-10 12:47:57.780 [info]: Decoded Token Details:
+2024-12-10 12:47:58.146 [info]: User Found Details:
+2024-12-10 12:47:58.249 [info]: Full Auth Header:
+2024-12-10 12:47:58.252 [info]: Attempting to verify token
+2024-12-10 12:47:58.252 [info]: Decoded Token Details:
+2024-12-10 12:47:58.282 [info]: User Found Details:
+2024-12-10 12:51:07.395 [info]: Full Auth Header:
+2024-12-10 12:51:07.399 [info]: Attempting to verify token
+2024-12-10 12:51:07.410 [info]: Decoded Token Details:
+2024-12-10 12:51:07.754 [info]: User Found Details:
+2024-12-10 12:51:07.937 [info]: Full Auth Header:
+2024-12-10 12:51:07.938 [info]: Attempting to verify token
+2024-12-10 12:51:07.938 [info]: Decoded Token Details:
+2024-12-10 12:51:07.940 [info]: User Found Details:
+2024-12-10 12:51:58.962 [info]: Full Auth Header:
+2024-12-10 12:51:58.974 [warn]: No authorization header found
+2024-12-10 12:51:59.422 [info]: Full Auth Header:
+2024-12-10 12:51:59.422 [warn]: No authorization header found
+2024-12-10 12:52:00.089 [info]: Full Auth Header:
+2024-12-10 12:52:00.090 [warn]: No authorization header found
+2024-12-10 12:52:55.762 [info]: Full Auth Header:
+2024-12-10 12:52:55.765 [warn]: No authorization header found
+2024-12-10 12:57:39.757 [error]: Uncaught Exception: ⨯ Unable to compile TypeScript:
+src/graphql/resolvers/admin.resolver.ts(522,29): error TS18046: 'transformedCar._id' is of type 'unknown'.
+
+Error: ⨯ Unable to compile TypeScript:
+src/graphql/resolvers/admin.resolver.ts(522,29): error TS18046: 'transformedCar._id' is of type 'unknown'.
+
+    at Object.<anonymous> (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/server/src/graphql/resolvers/admin.resolver.ts:1:7)
+    at Module._compile (node:internal/modules/cjs/loader:1364:14)
+    at Module._compile (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/source-map-support/source-map-support.js:521:25)
+    at Module.m._compile (/private/tmp/ts-node-dev-hook-14829588630711354.js:69:33)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1422:10)
+    at require.extensions..jsx.require.extensions..js (/private/tmp/ts-node-dev-hook-14829588630711354.js:114:20)
+    at require.extensions.<computed> (/private/tmp/ts-node-dev-hook-14829588630711354.js:71:20)
+    at Object.nodeDevHook [as .ts] (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node-dev/lib/hook.js:63:13)
+    at Module.load (node:internal/modules/cjs/loader:1203:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:1019:12)
+2024-12-10 13:00:16.193 [info]: Full Auth Header:
+2024-12-10 13:00:16.196 [warn]: No authorization header found
+2024-12-10 13:10:42.544 [info]: Full Auth Header:
+2024-12-10 13:10:42.548 [warn]: No authorization header found
+2024-12-10 13:10:44.933 [info]: Full Auth Header:
+2024-12-10 13:10:44.934 [warn]: No authorization header found
+2024-12-10 13:11:52.402 [info]: Full Auth Header:
+2024-12-10 13:11:52.414 [info]: Attempting to verify token
+2024-12-10 13:11:52.491 [info]: Decoded Token Details:
+2024-12-10 13:11:54.273 [info]: User Found Details:
+2024-12-10 13:11:54.428 [info]: Full Auth Header:
+2024-12-10 13:11:54.430 [info]: Attempting to verify token
+2024-12-10 13:11:54.431 [info]: Decoded Token Details:
+2024-12-10 13:11:54.433 [info]: User Found Details:
+2024-12-10 13:18:37.532 [info]: Full Auth Header:
+2024-12-10 13:18:37.535 [warn]: No authorization header found
+2024-12-10 13:24:07.287 [error]: Uncaught Exception: ⨯ Unable to compile TypeScript:
+src/graphql/resolvers/admin.resolver.ts(375,61): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type 'AdminCarInput'.
+  No index signature with a parameter of type 'string' was found on type 'AdminCarInput'.
+
+Error: ⨯ Unable to compile TypeScript:
+src/graphql/resolvers/admin.resolver.ts(375,61): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type 'AdminCarInput'.
+  No index signature with a parameter of type 'string' was found on type 'AdminCarInput'.
+
+    at Object.<anonymous> (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/server/src/graphql/resolvers/admin.resolver.ts:1:7)
+    at Module._compile (node:internal/modules/cjs/loader:1364:14)
+    at Module._compile (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/source-map-support/source-map-support.js:521:25)
+    at Module.m._compile (/private/tmp/ts-node-dev-hook-14829588630711354.js:69:33)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1422:10)
+    at require.extensions..jsx.require.extensions..js (/private/tmp/ts-node-dev-hook-14829588630711354.js:114:20)
+    at require.extensions.<computed> (/private/tmp/ts-node-dev-hook-14829588630711354.js:71:20)
+    at Object.nodeDevHook [as .ts] (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node-dev/lib/hook.js:63:13)
+    at Module.load (node:internal/modules/cjs/loader:1203:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:1019:12)
+2024-12-10 14:01:04.315 [error]: Uncaught Exception: ⨯ Unable to compile TypeScript:
+src/graphql/resolvers/admin.resolver.ts(341,33): error TS2339: Property 'headers' does not exist on type 'IContext'.
+src/graphql/resolvers/admin.resolver.ts(342,31): error TS2339: Property 'token' does not exist on type 'IContext'.
+src/graphql/resolvers/admin.resolver.ts(351,28): error TS2339: Property 'headers' does not exist on type 'IContext'.
+src/graphql/resolvers/admin.resolver.ts(352,26): error TS2339: Property 'token' does not exist on type 'IContext'.
+src/graphql/resolvers/admin.resolver.ts(393,23): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type 'AdminCarInput'.
+  No index signature with a parameter of type 'string' was found on type 'AdminCarInput'.
+
+Error: ⨯ Unable to compile TypeScript:
+src/graphql/resolvers/admin.resolver.ts(341,33): error TS2339: Property 'headers' does not exist on type 'IContext'.
+src/graphql/resolvers/admin.resolver.ts(342,31): error TS2339: Property 'token' does not exist on type 'IContext'.
+src/graphql/resolvers/admin.resolver.ts(351,28): error TS2339: Property 'headers' does not exist on type 'IContext'.
+src/graphql/resolvers/admin.resolver.ts(352,26): error TS2339: Property 'token' does not exist on type 'IContext'.
+src/graphql/resolvers/admin.resolver.ts(393,23): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type 'AdminCarInput'.
+  No index signature with a parameter of type 'string' was found on type 'AdminCarInput'.
+
+    at Object.<anonymous> (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/server/src/graphql/resolvers/admin.resolver.ts:1:7)
+    at Module._compile (node:internal/modules/cjs/loader:1364:14)
+    at Module._compile (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/source-map-support/source-map-support.js:521:25)
+    at Module.m._compile (/private/tmp/ts-node-dev-hook-5933101851760556.js:69:33)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1422:10)
+    at require.extensions..jsx.require.extensions..js (/private/tmp/ts-node-dev-hook-5933101851760556.js:114:20)
+    at require.extensions.<computed> (/private/tmp/ts-node-dev-hook-5933101851760556.js:71:20)
+    at Object.nodeDevHook [as .ts] (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node-dev/lib/hook.js:63:13)
+    at Module.load (node:internal/modules/cjs/loader:1203:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:1019:12)
+2024-12-10 14:02:34.076 [error]: Uncaught Exception: ⨯ Unable to compile TypeScript:
+src/graphql/resolvers/admin.resolver.ts(361,33): error TS2339: Property 'headers' does not exist on type 'IContext'.
+src/graphql/resolvers/admin.resolver.ts(362,31): error TS2339: Property 'token' does not exist on type 'IContext'.
+src/graphql/resolvers/admin.resolver.ts(371,28): error TS2339: Property 'headers' does not exist on type 'IContext'.
+src/graphql/resolvers/admin.resolver.ts(372,26): error TS2339: Property 'token' does not exist on type 'IContext'.
+src/graphql/resolvers/admin.resolver.ts(527,11): error TS2322: Type 'string' is not assignable to type '"GASOLINE" | "DIESEL" | "ELECTRIC" | "HYBRID" | "HYDROGEN" | "PLUG_IN_HYBRID" | undefined'.
+src/graphql/resolvers/admin.resolver.ts(531,11): error TS2322: Type 'string' is not assignable to type '"DRAFT" | "PUBLISHED" | "ARCHIVED" | undefined'.
+src/graphql/resolvers/admin.resolver.ts(539,58): error TS2339: Property 'url' does not exist on type 'never'.
+src/graphql/resolvers/admin.resolver.ts(540,67): error TS2339: Property 'isFeatured' does not exist on type 'never'.
+src/graphql/resolvers/admin.resolver.ts(543,68): error TS2339: Property 'caption' does not exist on type 'never'.
+
+Error: ⨯ Unable to compile TypeScript:
+src/graphql/resolvers/admin.resolver.ts(361,33): error TS2339: Property 'headers' does not exist on type 'IContext'.
+src/graphql/resolvers/admin.resolver.ts(362,31): error TS2339: Property 'token' does not exist on type 'IContext'.
+src/graphql/resolvers/admin.resolver.ts(371,28): error TS2339: Property 'headers' does not exist on type 'IContext'.
+src/graphql/resolvers/admin.resolver.ts(372,26): error TS2339: Property 'token' does not exist on type 'IContext'.
+src/graphql/resolvers/admin.resolver.ts(527,11): error TS2322: Type 'string' is not assignable to type '"GASOLINE" | "DIESEL" | "ELECTRIC" | "HYBRID" | "HYDROGEN" | "PLUG_IN_HYBRID" | undefined'.
+src/graphql/resolvers/admin.resolver.ts(531,11): error TS2322: Type 'string' is not assignable to type '"DRAFT" | "PUBLISHED" | "ARCHIVED" | undefined'.
+src/graphql/resolvers/admin.resolver.ts(539,58): error TS2339: Property 'url' does not exist on type 'never'.
+src/graphql/resolvers/admin.resolver.ts(540,67): error TS2339: Property 'isFeatured' does not exist on type 'never'.
+src/graphql/resolvers/admin.resolver.ts(543,68): error TS2339: Property 'caption' does not exist on type 'never'.
+
+    at Object.<anonymous> (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/server/src/graphql/resolvers/admin.resolver.ts:1:7)
+    at Module._compile (node:internal/modules/cjs/loader:1364:14)
+    at Module._compile (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/source-map-support/source-map-support.js:521:25)
+    at Module.m._compile (/private/tmp/ts-node-dev-hook-5933101851760556.js:69:33)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1422:10)
+    at require.extensions..jsx.require.extensions..js (/private/tmp/ts-node-dev-hook-5933101851760556.js:114:20)
+    at require.extensions.<computed> (/private/tmp/ts-node-dev-hook-5933101851760556.js:71:20)
+    at Object.nodeDevHook [as .ts] (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node-dev/lib/hook.js:63:13)
+    at Module.load (node:internal/modules/cjs/loader:1203:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:1019:12)
+2024-12-10 14:07:40.225 [error]: Uncaught Exception: ⨯ Unable to compile TypeScript:
+src/graphql/resolvers/admin.resolver.ts(599,41): error TS2345: Argument of type 'CarStatus | EngineType | TransmissionType' is not assignable to parameter of type 'never'.
+  Type 'CarStatus.DRAFT' is not assignable to type 'never'.
+
+Error: ⨯ Unable to compile TypeScript:
+src/graphql/resolvers/admin.resolver.ts(599,41): error TS2345: Argument of type 'CarStatus | EngineType | TransmissionType' is not assignable to parameter of type 'never'.
+  Type 'CarStatus.DRAFT' is not assignable to type 'never'.
+
+    at Object.<anonymous> (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/server/src/graphql/resolvers/admin.resolver.ts:1:7)
+    at Module._compile (node:internal/modules/cjs/loader:1364:14)
+    at Module._compile (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/source-map-support/source-map-support.js:521:25)
+    at Module.m._compile (/private/tmp/ts-node-dev-hook-27525192926222686.js:69:33)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1422:10)
+    at require.extensions..jsx.require.extensions..js (/private/tmp/ts-node-dev-hook-27525192926222686.js:114:20)
+    at require.extensions.<computed> (/private/tmp/ts-node-dev-hook-27525192926222686.js:71:20)
+    at Object.nodeDevHook [as .ts] (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node-dev/lib/hook.js:63:13)
+    at Module.load (node:internal/modules/cjs/loader:1203:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:1019:12)
+2024-12-10 14:08:46.216 [error]: Uncaught Exception: ⨯ Unable to compile TypeScript:
+src/graphql/resolvers/admin.resolver.ts(599,41): error TS2345: Argument of type 'EngineType | TransmissionType | CarStatus' is not assignable to parameter of type 'never'.
+  Type 'EngineType.GASOLINE' is not assignable to type 'never'.
+
+Error: ⨯ Unable to compile TypeScript:
+src/graphql/resolvers/admin.resolver.ts(599,41): error TS2345: Argument of type 'EngineType | TransmissionType | CarStatus' is not assignable to parameter of type 'never'.
+  Type 'EngineType.GASOLINE' is not assignable to type 'never'.
+
+    at Object.<anonymous> (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/server/src/graphql/resolvers/admin.resolver.ts:1:7)
+    at Module._compile (node:internal/modules/cjs/loader:1364:14)
+    at Module._compile (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/source-map-support/source-map-support.js:521:25)
+    at Module.m._compile (/private/tmp/ts-node-dev-hook-27525192926222686.js:69:33)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1422:10)
+    at require.extensions..jsx.require.extensions..js (/private/tmp/ts-node-dev-hook-27525192926222686.js:114:20)
+    at require.extensions.<computed> (/private/tmp/ts-node-dev-hook-27525192926222686.js:71:20)
+    at Object.nodeDevHook [as .ts] (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node-dev/lib/hook.js:63:13)
+    at Module.load (node:internal/modules/cjs/loader:1203:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:1019:12)
+2024-12-10 14:09:28.753 [error]: Uncaught Exception: ⨯ Unable to compile TypeScript:
+src/graphql/resolvers/admin.resolver.ts(599,41): error TS2345: Argument of type 'EngineType | TransmissionType | CarStatus' is not assignable to parameter of type 'never'.
+  Type 'EngineType.GASOLINE' is not assignable to type 'never'.
+
+Error: ⨯ Unable to compile TypeScript:
+src/graphql/resolvers/admin.resolver.ts(599,41): error TS2345: Argument of type 'EngineType | TransmissionType | CarStatus' is not assignable to parameter of type 'never'.
+  Type 'EngineType.GASOLINE' is not assignable to type 'never'.
+
+    at Object.<anonymous> (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/server/src/graphql/resolvers/admin.resolver.ts:1:7)
+    at Module._compile (node:internal/modules/cjs/loader:1364:14)
+    at Module._compile (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/source-map-support/source-map-support.js:521:25)
+    at Module.m._compile (/private/tmp/ts-node-dev-hook-27525192926222686.js:69:33)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1422:10)
+    at require.extensions..jsx.require.extensions..js (/private/tmp/ts-node-dev-hook-27525192926222686.js:114:20)
+    at require.extensions.<computed> (/private/tmp/ts-node-dev-hook-27525192926222686.js:71:20)
+    at Object.nodeDevHook [as .ts] (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node-dev/lib/hook.js:63:13)
+    at Module.load (node:internal/modules/cjs/loader:1203:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:1019:12)
+2024-12-10 14:29:18.098 [error]: Uncaught Exception: ⨯ Unable to compile TypeScript:
+src/graphql/resolvers/admin.resolver.ts(602,56): error TS2345: Argument of type 'string' is not assignable to parameter of type 'never'.
+
+Error: ⨯ Unable to compile TypeScript:
+src/graphql/resolvers/admin.resolver.ts(602,56): error TS2345: Argument of type 'string' is not assignable to parameter of type 'never'.
+
+    at Object.<anonymous> (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/server/src/graphql/resolvers/admin.resolver.ts:1:7)
+    at Module._compile (node:internal/modules/cjs/loader:1364:14)
+    at Module._compile (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/source-map-support/source-map-support.js:521:25)
+    at Module.m._compile (/private/tmp/ts-node-dev-hook-3194073867163034.js:69:33)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1422:10)
+    at require.extensions..jsx.require.extensions..js (/private/tmp/ts-node-dev-hook-3194073867163034.js:114:20)
+    at require.extensions.<computed> (/private/tmp/ts-node-dev-hook-3194073867163034.js:71:20)
+    at Object.nodeDevHook [as .ts] (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node-dev/lib/hook.js:63:13)
+    at Module.load (node:internal/modules/cjs/loader:1203:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:1019:12)
+2024-12-10 14:31:35.047 [info]: Full Auth Header:
+2024-12-10 14:31:35.050 [warn]: No authorization header found
+2024-12-10 14:31:37.021 [info]: Full Auth Header:
+2024-12-10 14:31:37.022 [warn]: No authorization header found
+2024-12-10 14:31:38.022 [info]: Full Auth Header:
+2024-12-10 14:31:38.023 [warn]: No authorization header found
+2024-12-10 14:31:39.037 [info]: Full Auth Header:
+2024-12-10 14:31:39.037 [warn]: No authorization header found
+2024-12-10 14:31:40.064 [info]: Full Auth Header:
+2024-12-10 14:31:40.070 [warn]: No authorization header found
+2024-12-10 14:31:41.091 [info]: Full Auth Header:
+2024-12-10 14:31:41.095 [warn]: No authorization header found
+2024-12-10 14:31:42.099 [info]: Full Auth Header:
+2024-12-10 14:31:42.100 [warn]: No authorization header found
+2024-12-10 14:31:43.115 [info]: Full Auth Header:
+2024-12-10 14:31:43.116 [warn]: No authorization header found
+2024-12-10 14:31:44.143 [info]: Full Auth Header:
+2024-12-10 14:31:44.144 [warn]: No authorization header found
+2024-12-10 14:31:45.162 [info]: Full Auth Header:
+2024-12-10 14:31:45.163 [warn]: No authorization header found
+2024-12-10 14:32:21.191 [info]: Full Auth Header:
+2024-12-10 14:32:21.210 [info]: Attempting to verify token
+2024-12-10 14:32:21.353 [info]: Decoded Token Details:
+2024-12-10 14:32:24.026 [info]: User Found Details:
+2024-12-10 14:32:24.302 [info]: Full Auth Header:
+2024-12-10 14:32:24.303 [info]: Attempting to verify token
+2024-12-10 14:32:24.306 [info]: Decoded Token Details:
+2024-12-10 14:32:24.310 [info]: User Found Details:
+2024-12-10 14:33:07.361 [info]: Full Auth Header:
+2024-12-10 14:33:07.362 [info]: Attempting to verify token
+2024-12-10 14:33:07.365 [info]: Decoded Token Details:
+2024-12-10 14:33:07.379 [info]: User Found Details:
+2024-12-10 14:33:07.428 [info]: Full Auth Header:
+2024-12-10 14:33:07.429 [info]: Attempting to verify token
+2024-12-10 14:33:07.433 [info]: Decoded Token Details:
+2024-12-10 14:33:07.439 [info]: User Found Details:
+2024-12-10 14:34:01.862 [info]: Full Auth Header:
+2024-12-10 14:34:01.865 [info]: Attempting to verify token
+2024-12-10 14:34:01.871 [info]: Decoded Token Details:
+2024-12-10 14:34:01.903 [info]: User Found Details:
+2024-12-10 14:34:01.946 [info]: Full Auth Header:
+2024-12-10 14:34:01.948 [info]: Attempting to verify token
+2024-12-10 14:34:01.954 [info]: Decoded Token Details:
+2024-12-10 14:34:01.972 [info]: User Found Details:
+2024-12-10 14:35:37.303 [error]: Uncaught Exception: ⨯ Unable to compile TypeScript:
+src/graphql/resolvers/admin.resolver.ts(524,23): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type 'AdminCarInput'.
+  No index signature with a parameter of type 'string' was found on type 'AdminCarInput'.
+src/graphql/resolvers/admin.resolver.ts(597,20): error TS18047: 'context.user' is possibly 'null'.
+src/graphql/resolvers/admin.resolver.ts(598,24): error TS18047: 'context.user' is possibly 'null'.
+src/graphql/resolvers/admin.resolver.ts(628,19): error TS18047: 'context.user' is possibly 'null'.
+src/graphql/resolvers/admin.resolver.ts(634,19): error TS18047: 'context.user' is possibly 'null'.
+
+Error: ⨯ Unable to compile TypeScript:
+src/graphql/resolvers/admin.resolver.ts(524,23): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type 'AdminCarInput'.
+  No index signature with a parameter of type 'string' was found on type 'AdminCarInput'.
+src/graphql/resolvers/admin.resolver.ts(597,20): error TS18047: 'context.user' is possibly 'null'.
+src/graphql/resolvers/admin.resolver.ts(598,24): error TS18047: 'context.user' is possibly 'null'.
+src/graphql/resolvers/admin.resolver.ts(628,19): error TS18047: 'context.user' is possibly 'null'.
+src/graphql/resolvers/admin.resolver.ts(634,19): error TS18047: 'context.user' is possibly 'null'.
+
+    at Object.<anonymous> (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/server/src/graphql/resolvers/admin.resolver.ts:1:7)
+    at Module._compile (node:internal/modules/cjs/loader:1364:14)
+    at Module._compile (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/source-map-support/source-map-support.js:521:25)
+    at Module.m._compile (/private/tmp/ts-node-dev-hook-8537993185974855.js:69:33)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1422:10)
+    at require.extensions..jsx.require.extensions..js (/private/tmp/ts-node-dev-hook-8537993185974855.js:114:20)
+    at require.extensions.<computed> (/private/tmp/ts-node-dev-hook-8537993185974855.js:71:20)
+    at Object.nodeDevHook [as .ts] (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node-dev/lib/hook.js:63:13)
+    at Module.load (node:internal/modules/cjs/loader:1203:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:1019:12)
+2024-12-10 14:39:53.864 [error]: Uncaught Exception: ⨯ Unable to compile TypeScript:
+src/models/Car.ts(3,39): error TS2307: Cannot find module '../graphql/types/enums' or its corresponding type declarations.
+
+Error: ⨯ Unable to compile TypeScript:
+src/models/Car.ts(3,39): error TS2307: Cannot find module '../graphql/types/enums' or its corresponding type declarations.
+
+    at Object.<anonymous> (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/server/src/models/Car.ts:1:7)
+    at Module._compile (node:internal/modules/cjs/loader:1364:14)
+    at Module._compile (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/source-map-support/source-map-support.js:521:25)
+    at Module.m._compile (/private/tmp/ts-node-dev-hook-8537993185974855.js:69:33)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1422:10)
+    at require.extensions..jsx.require.extensions..js (/private/tmp/ts-node-dev-hook-8537993185974855.js:114:20)
+    at require.extensions.<computed> (/private/tmp/ts-node-dev-hook-8537993185974855.js:71:20)
+    at Object.nodeDevHook [as .ts] (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node-dev/lib/hook.js:63:13)
+    at Module.load (node:internal/modules/cjs/loader:1203:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:1019:12)
+2024-12-10 14:40:09.810 [error]: Uncaught Exception: ⨯ Unable to compile TypeScript:
+src/models/Car.ts(3,39): error TS2307: Cannot find module '../graphql/types/enums' or its corresponding type declarations.
+
+Error: ⨯ Unable to compile TypeScript:
+src/models/Car.ts(3,39): error TS2307: Cannot find module '../graphql/types/enums' or its corresponding type declarations.
+
+    at Object.<anonymous> (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/server/src/models/Car.ts:1:7)
+    at Module._compile (node:internal/modules/cjs/loader:1364:14)
+    at Module._compile (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/source-map-support/source-map-support.js:521:25)
+    at Module.m._compile (/private/tmp/ts-node-dev-hook-8537993185974855.js:69:33)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1422:10)
+    at require.extensions..jsx.require.extensions..js (/private/tmp/ts-node-dev-hook-8537993185974855.js:114:20)
+    at require.extensions.<computed> (/private/tmp/ts-node-dev-hook-8537993185974855.js:71:20)
+    at Object.nodeDevHook [as .ts] (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node-dev/lib/hook.js:63:13)
+    at Module.load (node:internal/modules/cjs/loader:1203:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:1019:12)
+2024-12-10 14:43:06.865 [info]: Full Auth Header:
+2024-12-10 14:43:06.881 [info]: Attempting to verify token
+2024-12-10 14:43:06.951 [info]: Decoded Token Details:
+2024-12-10 14:43:07.942 [info]: User Found Details:
+2024-12-10 14:43:10.256 [info]: Full Auth Header:
+2024-12-10 14:43:10.295 [info]: Attempting to verify token
+2024-12-10 14:43:10.296 [info]: Decoded Token Details:
+2024-12-10 14:43:10.335 [info]: User Found Details:
+2024-12-11 10:05:43.759 [error]: Uncaught Exception: ⨯ Unable to compile TypeScript:
+src/config/redis.ts(1,19): error TS2307: Cannot find module 'ioredis' or its corresponding type declarations.
+src/config/redis.ts(15,23): error TS7006: Parameter 'times' implicitly has an 'any' type.
+src/config/redis.ts(21,30): error TS7006: Parameter 'error' implicitly has an 'any' type.
+
+TSError: ⨯ Unable to compile TypeScript:
+src/config/redis.ts(1,19): error TS2307: Cannot find module 'ioredis' or its corresponding type declarations.
+src/config/redis.ts(15,23): error TS7006: Parameter 'times' implicitly has an 'any' type.
+src/config/redis.ts(21,30): error TS7006: Parameter 'error' implicitly has an 'any' type.
+
+    at createTSError (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1422:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1203:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:1019:12)
+    at Module.require (node:internal/modules/cjs/loader:1231:19)
+2024-12-11 10:09:26.290 [error]: Uncaught Exception: ⨯ Unable to compile TypeScript:
+src/config/redis.ts(1,19): error TS2307: Cannot find module 'ioredis' or its corresponding type declarations.
+src/config/redis.ts(15,23): error TS7006: Parameter 'times' implicitly has an 'any' type.
+src/config/redis.ts(21,30): error TS7006: Parameter 'error' implicitly has an 'any' type.
+
+TSError: ⨯ Unable to compile TypeScript:
+src/config/redis.ts(1,19): error TS2307: Cannot find module 'ioredis' or its corresponding type declarations.
+src/config/redis.ts(15,23): error TS7006: Parameter 'times' implicitly has an 'any' type.
+src/config/redis.ts(21,30): error TS7006: Parameter 'error' implicitly has an 'any' type.
+
+    at createTSError (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1422:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1203:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:1019:12)
+    at Module.require (node:internal/modules/cjs/loader:1231:19)
+2024-12-11 10:10:06.141 [error]: Uncaught Exception: ⨯ Unable to compile TypeScript:
+src/config/redis.ts(1,19): error TS2307: Cannot find module 'ioredis' or its corresponding type declarations.
+src/config/redis.ts(15,23): error TS7006: Parameter 'times' implicitly has an 'any' type.
+src/config/redis.ts(21,30): error TS7006: Parameter 'error' implicitly has an 'any' type.
+
+TSError: ⨯ Unable to compile TypeScript:
+src/config/redis.ts(1,19): error TS2307: Cannot find module 'ioredis' or its corresponding type declarations.
+src/config/redis.ts(15,23): error TS7006: Parameter 'times' implicitly has an 'any' type.
+src/config/redis.ts(21,30): error TS7006: Parameter 'error' implicitly has an 'any' type.
+
+    at createTSError (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1422:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1203:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:1019:12)
+    at Module.require (node:internal/modules/cjs/loader:1231:19)
+2024-12-11 10:12:55.000 [error]: Uncaught Exception: ⨯ Unable to compile TypeScript:
+src/config/redis.ts(1,19): error TS2307: Cannot find module 'ioredis' or its corresponding type declarations.
+src/config/redis.ts(15,23): error TS7006: Parameter 'times' implicitly has an 'any' type.
+src/config/redis.ts(21,30): error TS7006: Parameter 'error' implicitly has an 'any' type.
+
+TSError: ⨯ Unable to compile TypeScript:
+src/config/redis.ts(1,19): error TS2307: Cannot find module 'ioredis' or its corresponding type declarations.
+src/config/redis.ts(15,23): error TS7006: Parameter 'times' implicitly has an 'any' type.
+src/config/redis.ts(21,30): error TS7006: Parameter 'error' implicitly has an 'any' type.
+
+    at createTSError (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1422:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1203:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:1019:12)
+    at Module.require (node:internal/modules/cjs/loader:1231:19)
+2024-12-11 10:44:04.321 [error]: Uncaught Exception: ⨯ Unable to compile TypeScript:
+src/config/redis.ts(1,19): error TS2307: Cannot find module 'ioredis' or its corresponding type declarations.
+src/config/redis.ts(15,23): error TS7006: Parameter 'times' implicitly has an 'any' type.
+src/config/redis.ts(21,30): error TS7006: Parameter 'error' implicitly has an 'any' type.
+
+TSError: ⨯ Unable to compile TypeScript:
+src/config/redis.ts(1,19): error TS2307: Cannot find module 'ioredis' or its corresponding type declarations.
+src/config/redis.ts(15,23): error TS7006: Parameter 'times' implicitly has an 'any' type.
+src/config/redis.ts(21,30): error TS7006: Parameter 'error' implicitly has an 'any' type.
+
+    at createTSError (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1422:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1203:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:1019:12)
+    at Module.require (node:internal/modules/cjs/loader:1231:19)
+2024-12-11 10:45:13.140 [error]: Uncaught Exception: ⨯ Unable to compile TypeScript:
+src/config/messageQueue.ts(1,18): error TS2307: Cannot find module 'amqplib' or its corresponding type declarations.
+src/config/messageQueue.ts(31,49): error TS7006: Parameter 'msg' implicitly has an 'any' type.
+src/config/messageQueue.ts(45,45): error TS7006: Parameter 'msg' implicitly has an 'any' type.
+
+TSError: ⨯ Unable to compile TypeScript:
+src/config/messageQueue.ts(1,18): error TS2307: Cannot find module 'amqplib' or its corresponding type declarations.
+src/config/messageQueue.ts(31,49): error TS7006: Parameter 'msg' implicitly has an 'any' type.
+src/config/messageQueue.ts(45,45): error TS7006: Parameter 'msg' implicitly has an 'any' type.
+
+    at createTSError (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1422:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1203:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:1019:12)
+    at Module.require (node:internal/modules/cjs/loader:1231:19)
+2024-12-11 10:46:26.975 [info]: 🔍 Attempting to connect to MongoDB
+2024-12-11 10:46:27.147 [info]: 📦 Connected to MongoDB successfully
+2024-12-11 10:46:27.151 [info]: 🔄 Connected to Redis
+2024-12-11 10:46:27.453 [info]: 🐰 Connected to RabbitMQ
+2024-12-11 10:46:27.533 [info]: 🚀 Server running on port 4000
+2024-12-11 10:46:27.533 [info]: 🎯 GraphQL endpoint: http://localhost:4000/graphql
+2024-12-11 10:47:51.611 [info]: 🔍 Attempting to connect to MongoDB
+2024-12-11 10:47:51.638 [info]: 📦 Connected to MongoDB successfully
+2024-12-11 10:47:51.641 [info]: 🔄 Connected to Redis
+2024-12-11 10:47:51.679 [info]: 🐰 Connected to RabbitMQ
+2024-12-11 10:47:51.743 [info]: 🚀 Server running on port 4000
+2024-12-11 10:47:51.744 [info]: 🎯 GraphQL endpoint: http://localhost:4000/graphql
+2024-12-11 10:48:07.276 [info]: 🔍 Attempting to connect to MongoDB
+2024-12-11 10:48:07.309 [info]: 📦 Connected to MongoDB successfully
+2024-12-11 10:48:07.312 [info]: 🔄 Connected to Redis
+2024-12-11 10:48:07.371 [info]: 🐰 Connected to RabbitMQ
+2024-12-11 10:48:07.418 [info]: 🚀 Server running on port 4000
+2024-12-11 10:48:07.418 [info]: 🎯 GraphQL endpoint: http://localhost:4000/graphql
+2024-12-11 10:48:18.515 [info]: 🔍 Attempting to connect to MongoDB
+2024-12-11 10:48:18.531 [info]: 📦 Connected to MongoDB successfully
+2024-12-11 10:48:18.534 [info]: 🔄 Connected to Redis
+2024-12-11 10:48:18.543 [info]: 🐰 Connected to RabbitMQ
+2024-12-11 10:48:18.594 [info]: 🚀 Server running on port 4000
+2024-12-11 10:48:18.594 [info]: 🎯 GraphQL endpoint: http://localhost:4000/graphql
+2024-12-11 10:48:25.553 [info]: 🔍 Attempting to connect to MongoDB
+2024-12-11 10:48:25.570 [info]: 📦 Connected to MongoDB successfully
+2024-12-11 10:48:25.573 [info]: 🔄 Connected to Redis
+2024-12-11 10:48:25.587 [info]: 🐰 Connected to RabbitMQ
+2024-12-11 10:48:25.643 [info]: 🚀 Server running on port 4000
+2024-12-11 10:48:25.643 [info]: 🎯 GraphQL endpoint: http://localhost:4000/graphql
+2024-12-11 10:48:49.250 [info]: 🔍 Attempting to connect to MongoDB
+2024-12-11 10:48:49.605 [info]: 📦 Connected to MongoDB successfully
+2024-12-11 10:48:49.617 [info]: 🔄 Connected to Redis
+2024-12-11 10:48:49.872 [info]: 🐰 Connected to RabbitMQ
+2024-12-11 10:48:50.033 [info]: 🚀 Server running on port 4000
+2024-12-11 10:48:50.033 [info]: 🎯 GraphQL endpoint: http://localhost:4000/graphql
+2024-12-11 10:49:14.141 [info]: 🔍 Attempting to connect to MongoDB
+2024-12-11 10:49:14.159 [info]: 📦 Connected to MongoDB successfully
+2024-12-11 10:49:14.162 [info]: 🔄 Connected to Redis
+2024-12-11 10:49:14.649 [info]: 🐰 Connected to RabbitMQ
+2024-12-11 10:49:14.724 [info]: 🚀 Server running on port 4000
+2024-12-11 10:49:14.724 [info]: 🎯 GraphQL endpoint: http://localhost:4000/graphql
+2024-12-11 10:49:21.312 [info]: 🔍 Attempting to connect to MongoDB
+2024-12-11 10:49:21.329 [info]: 📦 Connected to MongoDB successfully
+2024-12-11 10:49:21.332 [info]: 🔄 Connected to Redis
+2024-12-11 10:49:21.346 [info]: 🐰 Connected to RabbitMQ
+2024-12-11 10:49:21.398 [info]: 🚀 Server running on port 4000
+2024-12-11 10:49:21.399 [info]: 🎯 GraphQL endpoint: http://localhost:4000/graphql
+2024-12-11 10:49:28.683 [info]: 🔍 Attempting to connect to MongoDB
+2024-12-11 10:49:28.698 [info]: 📦 Connected to MongoDB successfully
+2024-12-11 10:49:28.701 [info]: 🔄 Connected to Redis
+2024-12-11 10:49:28.711 [info]: 🐰 Connected to RabbitMQ
+2024-12-11 10:49:28.762 [info]: 🚀 Server running on port 4000
+2024-12-11 10:49:28.762 [info]: 🎯 GraphQL endpoint: http://localhost:4000/graphql
+2024-12-11 10:49:39.520 [info]: 🔍 Attempting to connect to MongoDB
+2024-12-11 10:49:39.536 [info]: 📦 Connected to MongoDB successfully
+2024-12-11 10:49:39.539 [info]: 🔄 Connected to Redis
+2024-12-11 10:49:39.553 [info]: 🐰 Connected to RabbitMQ
+2024-12-11 10:49:39.612 [info]: 🚀 Server running on port 4000
+2024-12-11 10:49:39.612 [info]: 🎯 GraphQL endpoint: http://localhost:4000/graphql
+2024-12-11 10:49:47.043 [info]: 🔍 Attempting to connect to MongoDB
+2024-12-11 10:49:47.059 [info]: 📦 Connected to MongoDB successfully
+2024-12-11 10:49:47.062 [info]: 🔄 Connected to Redis
+2024-12-11 10:49:47.073 [info]: 🐰 Connected to RabbitMQ
+2024-12-11 10:49:47.125 [info]: 🚀 Server running on port 4000
+2024-12-11 10:49:47.125 [info]: 🎯 GraphQL endpoint: http://localhost:4000/graphql
+2024-12-11 10:51:02.193 [info]: 🔍 Attempting to connect to MongoDB
+2024-12-11 10:51:02.222 [info]: 📦 Connected to MongoDB successfully
+2024-12-11 10:51:02.226 [info]: 🔄 Connected to Redis
+2024-12-11 10:51:02.275 [info]: 🐰 Connected to RabbitMQ
+2024-12-11 10:51:02.335 [info]: 🚀 Server running on port 4000
+2024-12-11 10:51:02.335 [info]: 🎯 GraphQL endpoint: http://localhost:4000/graphql
+2024-12-11 10:51:10.399 [info]: 🔍 Attempting to connect to MongoDB
+2024-12-11 10:51:10.433 [info]: 📦 Connected to MongoDB successfully
+2024-12-11 10:51:10.445 [info]: 🔄 Connected to Redis
+2024-12-11 10:51:10.488 [info]: 🐰 Connected to RabbitMQ
+2024-12-11 10:51:10.558 [info]: 🚀 Server running on port 4000
+2024-12-11 10:51:10.558 [info]: 🎯 GraphQL endpoint: http://localhost:4000/graphql
+2024-12-11 10:51:25.398 [info]: 🔍 Attempting to connect to MongoDB
+2024-12-11 10:51:25.422 [info]: 📦 Connected to MongoDB successfully
+2024-12-11 10:51:25.424 [info]: 🔄 Connected to Redis
+2024-12-11 10:51:25.443 [info]: 🐰 Connected to RabbitMQ
+2024-12-11 10:51:25.504 [info]: 🚀 Server running on port 4000
+2024-12-11 10:51:25.504 [info]: 🎯 GraphQL endpoint: http://localhost:4000/graphql
+2024-12-11 10:51:45.636 [info]: 🔍 Attempting to connect to MongoDB
+2024-12-11 10:51:45.657 [info]: 📦 Connected to MongoDB successfully
+2024-12-11 10:51:45.661 [info]: 🔄 Connected to Redis
+2024-12-11 10:51:45.683 [info]: 🐰 Connected to RabbitMQ
+2024-12-11 10:51:45.755 [info]: 🚀 Server running on port 4000
+2024-12-11 10:51:45.756 [info]: 🎯 GraphQL endpoint: http://localhost:4000/graphql
+2024-12-11 10:55:06.874 [info]: 🔍 Attempting to connect to MongoDB
+2024-12-11 10:55:06.903 [info]: 📦 Connected to MongoDB successfully
+2024-12-11 10:55:06.906 [info]: 🔄 Connected to Redis
+2024-12-11 10:55:06.961 [info]: 🐰 Connected to RabbitMQ
+2024-12-11 10:55:07.030 [info]: 🚀 Server running on port 4000
+2024-12-11 10:55:07.030 [info]: 🎯 GraphQL endpoint: http://localhost:4000/graphql
+2024-12-11 10:55:17.925 [info]: 🔍 Attempting to connect to MongoDB
+2024-12-11 10:55:17.940 [info]: 📦 Connected to MongoDB successfully
+2024-12-11 10:55:17.943 [info]: 🔄 Connected to Redis
+2024-12-11 10:55:17.958 [info]: 🐰 Connected to RabbitMQ
+2024-12-11 10:55:18.020 [info]: 🚀 Server running on port 4000
+2024-12-11 10:55:18.020 [info]: 🎯 GraphQL endpoint: http://localhost:4000/graphql
+2024-12-11 10:56:59.004 [info]: 🔍 Attempting to connect to MongoDB
+2024-12-11 10:56:59.027 [info]: 📦 Connected to MongoDB successfully
+2024-12-11 10:56:59.029 [info]: 🔄 Connected to Redis
+2024-12-11 10:56:59.166 [info]: 🐰 Connected to RabbitMQ
+2024-12-11 10:56:59.234 [info]: 🚀 Server running on port 4000
+2024-12-11 10:56:59.235 [info]: 🎯 GraphQL endpoint: http://localhost:4000/graphql
+2024-12-11 10:57:28.765 [info]: 🔍 Attempting to connect to MongoDB
+2024-12-11 10:57:28.780 [info]: 📦 Connected to MongoDB successfully
+2024-12-11 10:57:28.783 [info]: 🔄 Connected to Redis
+2024-12-11 10:57:28.808 [info]: 🐰 Connected to RabbitMQ
+2024-12-11 10:57:28.856 [info]: 🚀 Server running on port 4000
+2024-12-11 10:57:28.856 [info]: 🎯 GraphQL endpoint: http://localhost:4000/graphql
+2024-12-11 10:59:14.584 [info]: 🔍 Attempting to connect to MongoDB
+2024-12-11 10:59:14.614 [info]: 📦 Connected to MongoDB successfully
+2024-12-11 10:59:14.617 [info]: 🔄 Connected to Redis
+2024-12-11 10:59:14.678 [info]: 🐰 Connected to RabbitMQ
+2024-12-11 10:59:14.733 [info]: 🚀 Server running on port 4000
+2024-12-11 10:59:14.733 [info]: 🎯 GraphQL endpoint: http://localhost:4000/graphql
+2024-12-11 10:59:31.224 [info]: 🔍 Attempting to connect to MongoDB
+2024-12-11 10:59:31.241 [info]: 📦 Connected to MongoDB successfully
+2024-12-11 10:59:31.244 [info]: 🔄 Connected to Redis
+2024-12-11 10:59:31.266 [info]: 🐰 Connected to RabbitMQ
+2024-12-11 10:59:31.324 [info]: 🚀 Server running on port 4000
+2024-12-11 10:59:31.324 [info]: 🎯 GraphQL endpoint: http://localhost:4000/graphql
+2024-12-11 11:00:16.745 [error]: Uncaught Exception: ⨯ Unable to compile TypeScript:
+src/graphql/resolvers/admin.resolver.ts(674,29): error TS18047: 'context.user' is possibly 'null'.
+
+TSError: ⨯ Unable to compile TypeScript:
+src/graphql/resolvers/admin.resolver.ts(674,29): error TS18047: 'context.user' is possibly 'null'.
+
+    at createTSError (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1422:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1203:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:1019:12)
+    at Module.require (node:internal/modules/cjs/loader:1231:19)
+2024-12-11 11:00:28.479 [error]: Uncaught Exception: ⨯ Unable to compile TypeScript:
+src/graphql/resolvers/admin.resolver.ts(674,29): error TS18047: 'context.user' is possibly 'null'.
+
+TSError: ⨯ Unable to compile TypeScript:
+src/graphql/resolvers/admin.resolver.ts(674,29): error TS18047: 'context.user' is possibly 'null'.
+
+    at createTSError (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1422:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1203:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:1019:12)
+    at Module.require (node:internal/modules/cjs/loader:1231:19)
+2024-12-11 11:00:35.871 [error]: Uncaught Exception: ⨯ Unable to compile TypeScript:
+src/graphql/resolvers/admin.resolver.ts(674,29): error TS18047: 'context.user' is possibly 'null'.
+
+TSError: ⨯ Unable to compile TypeScript:
+src/graphql/resolvers/admin.resolver.ts(674,29): error TS18047: 'context.user' is possibly 'null'.
+
+    at createTSError (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1422:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1203:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:1019:12)
+    at Module.require (node:internal/modules/cjs/loader:1231:19)
+2024-12-11 11:01:39.278 [info]: 🔍 Attempting to connect to MongoDB
+2024-12-11 11:01:39.400 [info]: 📦 Connected to MongoDB successfully
+2024-12-11 11:01:39.418 [info]: 🔄 Connected to Redis
+2024-12-11 11:01:39.470 [info]: 🐰 Connected to RabbitMQ
+2024-12-11 11:01:39.540 [info]: 🚀 Server running on port 4000
+2024-12-11 11:01:39.541 [info]: 🎯 GraphQL endpoint: http://localhost:4000/graphql
+2024-12-11 11:01:50.139 [info]: 🔍 Attempting to connect to MongoDB
+2024-12-11 11:01:50.155 [info]: 📦 Connected to MongoDB successfully
+2024-12-11 11:01:50.158 [info]: 🔄 Connected to Redis
+2024-12-11 11:01:50.170 [info]: 🐰 Connected to RabbitMQ
+2024-12-11 11:01:50.217 [info]: 🚀 Server running on port 4000
+2024-12-11 11:01:50.217 [info]: 🎯 GraphQL endpoint: http://localhost:4000/graphql
+2024-12-11 11:04:13.566 [info]: 🔍 Attempting to connect to MongoDB
+2024-12-11 11:04:13.596 [info]: 📦 Connected to MongoDB successfully
+2024-12-11 11:04:13.599 [info]: 🔄 Connected to Redis
+2024-12-11 11:04:13.678 [info]: 🐰 Connected to RabbitMQ
+2024-12-11 11:04:13.740 [info]: 🚀 Server running on port 4000
+2024-12-11 11:04:13.740 [info]: 🎯 GraphQL endpoint: http://localhost:4000/graphql
+2024-12-11 11:06:01.975 [info]: 🔍 Attempting to connect to MongoDB
+2024-12-11 11:06:01.998 [info]: 📦 Connected to MongoDB successfully
+2024-12-11 11:06:02.001 [info]: 🔄 Connected to Redis
+2024-12-11 11:06:02.060 [info]: 🐰 Connected to RabbitMQ
+2024-12-11 11:06:02.106 [info]: 🚀 Server running on port 4000
+2024-12-11 11:06:02.106 [info]: 🎯 GraphQL endpoint: http://localhost:4000/graphql
+2024-12-11 11:06:11.396 [info]: 🔍 Attempting to connect to MongoDB
+2024-12-11 11:06:11.438 [info]: 📦 Connected to MongoDB successfully
+2024-12-11 11:06:11.443 [info]: 🔄 Connected to Redis
+2024-12-11 11:06:11.464 [info]: 🐰 Connected to RabbitMQ
+2024-12-11 11:06:11.564 [info]: 🚀 Server running on port 4000
+2024-12-11 11:06:11.565 [info]: 🎯 GraphQL endpoint: http://localhost:4000/graphql
+2024-12-11 11:06:48.200 [info]: 🔍 Attempting to connect to MongoDB
+2024-12-11 11:06:48.383 [info]: 📦 Connected to MongoDB successfully
+2024-12-11 11:06:48.387 [info]: 🔄 Connected to Redis
+2024-12-11 11:06:48.540 [info]: 🐰 Connected to RabbitMQ
+2024-12-11 11:06:48.838 [info]: 🚀 Server running on port 4000
+2024-12-11 11:06:48.839 [info]: 🎯 GraphQL endpoint: http://localhost:4000/graphql
+2024-12-11 11:10:46.542 [info]: 🔍 Attempting to connect to MongoDB
+2024-12-11 11:10:47.077 [info]: 📦 Connected to MongoDB successfully
+2024-12-11 11:10:47.084 [info]: 🔄 Connected to Redis
+2024-12-11 11:10:47.178 [info]: 🐰 Connected to RabbitMQ
+2024-12-11 11:10:47.419 [info]: 🚀 Server running on port 4000
+2024-12-11 11:10:47.419 [info]: 🎯 GraphQL endpoint: http://localhost:4000/graphql
+2024-12-11 11:11:55.877 [info]: 🔍 Attempting to connect to MongoDB
+2024-12-11 11:11:55.898 [info]: 📦 Connected to MongoDB successfully
+2024-12-11 11:11:55.900 [info]: 🔄 Connected to Redis
+2024-12-11 11:11:56.039 [info]: 🐰 Connected to RabbitMQ
+2024-12-11 11:11:56.212 [info]: 🚀 Server running on port 4000
+2024-12-11 11:11:56.212 [info]: 🎯 GraphQL endpoint: http://localhost:4000/graphql
+2024-12-11 11:12:12.189 [error]: Uncaught Exception: ⨯ Unable to compile TypeScript:
+src/models/User.ts(3,20): error TS2307: Cannot find module '../logger' or its corresponding type declarations.
+
+TSError: ⨯ Unable to compile TypeScript:
+src/models/User.ts(3,20): error TS2307: Cannot find module '../logger' or its corresponding type declarations.
+
+    at createTSError (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1422:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1203:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:1019:12)
+    at Module.require (node:internal/modules/cjs/loader:1231:19)
+2024-12-11 11:12:19.504 [info]: 🔍 Attempting to connect to MongoDB
+2024-12-11 11:12:19.522 [info]: 📦 Connected to MongoDB successfully
+2024-12-11 11:12:19.526 [info]: 🔄 Connected to Redis
+2024-12-11 11:12:19.571 [info]: 🐰 Connected to RabbitMQ
+2024-12-11 11:12:19.648 [info]: 🚀 Server running on port 4000
+2024-12-11 11:12:19.648 [info]: 🎯 GraphQL endpoint: http://localhost:4000/graphql
+2024-12-11 11:13:43.273 [info]: 🔍 Attempting to connect to MongoDB
+2024-12-11 11:13:43.297 [info]: 📦 Connected to MongoDB successfully
+2024-12-11 11:13:43.299 [info]: 🔄 Connected to Redis
+2024-12-11 11:13:43.394 [info]: 🐰 Connected to RabbitMQ
+2024-12-11 11:13:43.445 [info]: 🚀 Server running on port 4000
+2024-12-11 11:13:43.445 [info]: 🎯 GraphQL endpoint: http://localhost:4000/graphql
+2024-12-11 11:14:43.658 [info]: 🔍 Attempting to connect to MongoDB
+2024-12-11 11:14:43.681 [info]: 📦 Connected to MongoDB successfully
+2024-12-11 11:14:43.684 [info]: 🔄 Connected to Redis
+2024-12-11 11:14:43.791 [info]: 🐰 Connected to RabbitMQ
+2024-12-11 11:14:43.992 [info]: 🚀 Server running on port 4001
+2024-12-11 11:14:43.992 [info]: 🎯 GraphQL endpoint: http://localhost:4001/graphql
+2024-12-11 11:15:26.087 [info]: 🔍 Attempting to connect to MongoDB
+2024-12-11 11:15:26.126 [info]: 📦 Connected to MongoDB successfully
+2024-12-11 11:15:26.129 [info]: 🔄 Connected to Redis
+2024-12-11 11:15:26.165 [info]: 🐰 Connected to RabbitMQ
+2024-12-11 11:15:26.237 [info]: 🚀 Server running on port 4001
+2024-12-11 11:15:26.237 [info]: 🎯 GraphQL endpoint: http://localhost:4001/graphql
+2024-12-11 11:15:34.207 [info]: 🔍 Attempting to connect to MongoDB
+2024-12-11 11:15:34.223 [info]: 📦 Connected to MongoDB successfully
+2024-12-11 11:15:34.226 [info]: 🔄 Connected to Redis
+2024-12-11 11:15:34.235 [info]: 🐰 Connected to RabbitMQ
+2024-12-11 11:15:34.289 [info]: 🚀 Server running on port 4001
+2024-12-11 11:15:34.289 [info]: 🎯 GraphQL endpoint: http://localhost:4001/graphql
+2024-12-11 11:15:34.289 [info]: Server Configuration Details
+2024-12-11 11:15:57.512 [info]: 🔍 Attempting to connect to MongoDB
+2024-12-11 11:15:57.547 [info]: 📦 Connected to MongoDB successfully
+2024-12-11 11:15:57.560 [info]: 🔄 Connected to Redis
+2024-12-11 11:15:57.586 [info]: 🐰 Connected to RabbitMQ
+2024-12-11 11:15:57.659 [info]: 🚀 Server running on port 4001
+2024-12-11 11:15:57.659 [info]: 🎯 GraphQL endpoint: http://localhost:4001/graphql
+2024-12-11 11:15:57.660 [info]: Server Configuration Details
+2024-12-11 11:16:11.203 [info]: Full Auth Header:
+2024-12-11 11:16:11.203 [warn]: No authorization header found
+2024-12-11T05:46:11.216Z [info]: Login attempt
+2024-12-11T05:46:21.229Z [error]: Comprehensive login error
+2024-12-11 11:16:21.237 [error]: Error logging in: Operation `users.findOne()` buffering timed out after 10000ms
+MongooseError: Operation `users.findOne()` buffering timed out after 10000ms
+    at Timeout.<anonymous> (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:185:23)
+    at listOnTimeout (node:internal/timers:569:17)
+    at processTimers (node:internal/timers:512:7)
+2024-12-11 11:16:31.258 [info]: 🔍 Attempting to connect to MongoDB
+2024-12-11 11:16:31.275 [info]: 📦 Connected to MongoDB successfully
+2024-12-11 11:16:31.278 [info]: 🔄 Connected to Redis
+2024-12-11 11:16:31.281 [error]: Failed to setup message queue: connect ECONNREFUSED ::1:5672
+Error: connect ECONNREFUSED ::1:5672
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1555:16)
+2024-12-11 11:18:07.553 [info]: 🔍 Attempting to connect to MongoDB
+2024-12-11 11:18:07.895 [info]: 📦 Connected to MongoDB successfully
+2024-12-11 11:18:07.903 [info]: 🔄 Connected to Redis
+2024-12-11 11:18:07.905 [error]: Failed to setup message queue: connect ECONNREFUSED ::1:5672
+Error: connect ECONNREFUSED ::1:5672
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1555:16)
+2024-12-11 11:18:33.671 [info]: 🔍 Attempting to connect to MongoDB
+2024-12-11 11:18:33.707 [info]: 📦 Connected to MongoDB successfully
+2024-12-11 11:18:33.710 [info]: 🔄 Connected to Redis
+2024-12-11 11:18:33.712 [error]: Failed to setup message queue: connect ECONNREFUSED ::1:5672
+Error: connect ECONNREFUSED ::1:5672
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1555:16)
+2024-12-11 11:20:55.185 [info]: 🔍 Attempting to connect to MongoDB
+2024-12-11 11:20:55.261 [warn]: RabbitMQ is disabled. Skipping message queue setup.
+2024-12-11 11:20:55.262 [warn]: Message Queue setup skipped or failed
+2024-12-11 11:20:55.341 [info]: 🚀 Server running on port 4001
+2024-12-11 11:20:55.341 [info]: 🎯 GraphQL endpoint: http://localhost:4001/graphql
+2024-12-11 11:20:55.341 [info]: Server Configuration Details
+2024-12-11 11:20:55.344 [info]: 🔄 Connected to Redis
+2024-12-11 11:21:06.989 [info]: Full Auth Header:
+2024-12-11 11:21:06.990 [warn]: No authorization header found
+2024-12-11T05:51:07.006Z [info]: Login attempt
+2024-12-11 11:21:07.092 [info]: User search result
+2024-12-11 11:21:07.166 [info]: Password comparison result
+2024-12-11 11:21:07.166 [info]: Password validation result
+2024-12-11T05:51:07.173Z [info]: Login successful
+2024-12-11 11:21:07.217 [info]: Full Auth Header:
+2024-12-11 11:21:07.218 [info]: Attempting to verify token
+2024-12-11 11:21:07.219 [info]: Decoded Token Details:
+2024-12-11 11:21:07.269 [info]: Full Auth Header:
+2024-12-11 11:21:07.270 [info]: Attempting to verify token
+2024-12-11 11:21:07.270 [info]: Decoded Token Details:
+2024-12-11 11:21:07.272 [info]: User Found Details:
+2024-12-11 11:21:07.278 [info]: User Found Details:
+2024-12-11 11:21:07.289 [info]: Full Auth Header:
+2024-12-11 11:21:07.290 [info]: Attempting to verify token
+2024-12-11 11:21:07.291 [info]: Decoded Token Details:
+2024-12-11 11:21:07.295 [info]: User Found Details:
+2024-12-11 11:21:31.133 [info]: Full Auth Header:
+2024-12-11 11:21:31.136 [info]: Attempting to verify token
+2024-12-11 11:21:31.144 [info]: Decoded Token Details:
+2024-12-11 11:21:31.172 [info]: User Found Details:
+2024-12-11 11:21:31.216 [info]: Full Auth Header:
+2024-12-11 11:21:31.219 [info]: Attempting to verify token
+2024-12-11 11:21:31.220 [info]: Decoded Token Details:
+2024-12-11 11:21:31.228 [info]: User Found Details:
+2024-12-11 11:22:54.906 [info]: Full Auth Header:
+2024-12-11 11:22:54.911 [info]: Attempting to verify token
+2024-12-11 11:22:54.937 [info]: Decoded Token Details:
+2024-12-11 11:22:55.496 [info]: User Found Details:
+2024-12-11 11:23:00.931 [info]: Full Auth Header:
+2024-12-11 11:23:00.937 [info]: Attempting to verify token
+2024-12-11 11:23:00.970 [info]: Decoded Token Details:
+2024-12-11 11:23:00.973 [info]: User Found Details:
+2024-12-11 11:23:08.720 [info]: Full Auth Header:
+2024-12-11 11:23:08.721 [info]: Attempting to verify token
+2024-12-11 11:23:08.723 [info]: Decoded Token Details:
+2024-12-11 11:23:08.747 [info]: User Found Details:
+2024-12-11 11:23:08.833 [info]: Full Auth Header:
+2024-12-11 11:23:08.834 [info]: Attempting to verify token
+2024-12-11 11:23:08.836 [info]: Decoded Token Details:
+2024-12-11 11:23:08.839 [info]: User Found Details:
+2024-12-11 11:23:16.673 [info]: Full Auth Header:
+2024-12-11 11:23:16.676 [info]: Attempting to verify token
+2024-12-11 11:23:16.678 [info]: Decoded Token Details:
+2024-12-11 11:23:16.683 [info]: User Found Details:
+2024-12-11 11:23:59.044 [info]: Full Auth Header:
+2024-12-11 11:23:59.049 [info]: Attempting to verify token
+2024-12-11 11:23:59.066 [info]: Decoded Token Details:
+2024-12-11 11:23:59.325 [info]: User Found Details:
+2024-12-11 11:24:03.887 [info]: Full Auth Header:
+2024-12-11 11:24:03.889 [info]: Attempting to verify token
+2024-12-11 11:24:03.892 [info]: Decoded Token Details:
+2024-12-11 11:24:03.901 [info]: User Found Details:
+2024-12-11 11:58:09.506 [warn]: Mongoose disconnected from MongoDB. Attempting to reconnect...
+2024-12-11 11:58:10.561 [info]: 📦 Connected to MongoDB successfully
