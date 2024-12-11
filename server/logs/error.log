@@ -1,0 +1,419 @@
+2024-12-10 12:57:39.757 [error]: Uncaught Exception: ⨯ Unable to compile TypeScript:
+src/graphql/resolvers/admin.resolver.ts(522,29): error TS18046: 'transformedCar._id' is of type 'unknown'.
+
+Error: ⨯ Unable to compile TypeScript:
+src/graphql/resolvers/admin.resolver.ts(522,29): error TS18046: 'transformedCar._id' is of type 'unknown'.
+
+    at Object.<anonymous> (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/server/src/graphql/resolvers/admin.resolver.ts:1:7)
+    at Module._compile (node:internal/modules/cjs/loader:1364:14)
+    at Module._compile (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/source-map-support/source-map-support.js:521:25)
+    at Module.m._compile (/private/tmp/ts-node-dev-hook-14829588630711354.js:69:33)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1422:10)
+    at require.extensions..jsx.require.extensions..js (/private/tmp/ts-node-dev-hook-14829588630711354.js:114:20)
+    at require.extensions.<computed> (/private/tmp/ts-node-dev-hook-14829588630711354.js:71:20)
+    at Object.nodeDevHook [as .ts] (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node-dev/lib/hook.js:63:13)
+    at Module.load (node:internal/modules/cjs/loader:1203:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:1019:12)
+2024-12-10 13:24:07.287 [error]: Uncaught Exception: ⨯ Unable to compile TypeScript:
+src/graphql/resolvers/admin.resolver.ts(375,61): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type 'AdminCarInput'.
+  No index signature with a parameter of type 'string' was found on type 'AdminCarInput'.
+
+Error: ⨯ Unable to compile TypeScript:
+src/graphql/resolvers/admin.resolver.ts(375,61): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type 'AdminCarInput'.
+  No index signature with a parameter of type 'string' was found on type 'AdminCarInput'.
+
+    at Object.<anonymous> (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/server/src/graphql/resolvers/admin.resolver.ts:1:7)
+    at Module._compile (node:internal/modules/cjs/loader:1364:14)
+    at Module._compile (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/source-map-support/source-map-support.js:521:25)
+    at Module.m._compile (/private/tmp/ts-node-dev-hook-14829588630711354.js:69:33)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1422:10)
+    at require.extensions..jsx.require.extensions..js (/private/tmp/ts-node-dev-hook-14829588630711354.js:114:20)
+    at require.extensions.<computed> (/private/tmp/ts-node-dev-hook-14829588630711354.js:71:20)
+    at Object.nodeDevHook [as .ts] (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node-dev/lib/hook.js:63:13)
+    at Module.load (node:internal/modules/cjs/loader:1203:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:1019:12)
+2024-12-10 14:01:04.315 [error]: Uncaught Exception: ⨯ Unable to compile TypeScript:
+src/graphql/resolvers/admin.resolver.ts(341,33): error TS2339: Property 'headers' does not exist on type 'IContext'.
+src/graphql/resolvers/admin.resolver.ts(342,31): error TS2339: Property 'token' does not exist on type 'IContext'.
+src/graphql/resolvers/admin.resolver.ts(351,28): error TS2339: Property 'headers' does not exist on type 'IContext'.
+src/graphql/resolvers/admin.resolver.ts(352,26): error TS2339: Property 'token' does not exist on type 'IContext'.
+src/graphql/resolvers/admin.resolver.ts(393,23): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type 'AdminCarInput'.
+  No index signature with a parameter of type 'string' was found on type 'AdminCarInput'.
+
+Error: ⨯ Unable to compile TypeScript:
+src/graphql/resolvers/admin.resolver.ts(341,33): error TS2339: Property 'headers' does not exist on type 'IContext'.
+src/graphql/resolvers/admin.resolver.ts(342,31): error TS2339: Property 'token' does not exist on type 'IContext'.
+src/graphql/resolvers/admin.resolver.ts(351,28): error TS2339: Property 'headers' does not exist on type 'IContext'.
+src/graphql/resolvers/admin.resolver.ts(352,26): error TS2339: Property 'token' does not exist on type 'IContext'.
+src/graphql/resolvers/admin.resolver.ts(393,23): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type 'AdminCarInput'.
+  No index signature with a parameter of type 'string' was found on type 'AdminCarInput'.
+
+    at Object.<anonymous> (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/server/src/graphql/resolvers/admin.resolver.ts:1:7)
+    at Module._compile (node:internal/modules/cjs/loader:1364:14)
+    at Module._compile (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/source-map-support/source-map-support.js:521:25)
+    at Module.m._compile (/private/tmp/ts-node-dev-hook-5933101851760556.js:69:33)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1422:10)
+    at require.extensions..jsx.require.extensions..js (/private/tmp/ts-node-dev-hook-5933101851760556.js:114:20)
+    at require.extensions.<computed> (/private/tmp/ts-node-dev-hook-5933101851760556.js:71:20)
+    at Object.nodeDevHook [as .ts] (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node-dev/lib/hook.js:63:13)
+    at Module.load (node:internal/modules/cjs/loader:1203:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:1019:12)
+2024-12-10 14:02:34.076 [error]: Uncaught Exception: ⨯ Unable to compile TypeScript:
+src/graphql/resolvers/admin.resolver.ts(361,33): error TS2339: Property 'headers' does not exist on type 'IContext'.
+src/graphql/resolvers/admin.resolver.ts(362,31): error TS2339: Property 'token' does not exist on type 'IContext'.
+src/graphql/resolvers/admin.resolver.ts(371,28): error TS2339: Property 'headers' does not exist on type 'IContext'.
+src/graphql/resolvers/admin.resolver.ts(372,26): error TS2339: Property 'token' does not exist on type 'IContext'.
+src/graphql/resolvers/admin.resolver.ts(527,11): error TS2322: Type 'string' is not assignable to type '"GASOLINE" | "DIESEL" | "ELECTRIC" | "HYBRID" | "HYDROGEN" | "PLUG_IN_HYBRID" | undefined'.
+src/graphql/resolvers/admin.resolver.ts(531,11): error TS2322: Type 'string' is not assignable to type '"DRAFT" | "PUBLISHED" | "ARCHIVED" | undefined'.
+src/graphql/resolvers/admin.resolver.ts(539,58): error TS2339: Property 'url' does not exist on type 'never'.
+src/graphql/resolvers/admin.resolver.ts(540,67): error TS2339: Property 'isFeatured' does not exist on type 'never'.
+src/graphql/resolvers/admin.resolver.ts(543,68): error TS2339: Property 'caption' does not exist on type 'never'.
+
+Error: ⨯ Unable to compile TypeScript:
+src/graphql/resolvers/admin.resolver.ts(361,33): error TS2339: Property 'headers' does not exist on type 'IContext'.
+src/graphql/resolvers/admin.resolver.ts(362,31): error TS2339: Property 'token' does not exist on type 'IContext'.
+src/graphql/resolvers/admin.resolver.ts(371,28): error TS2339: Property 'headers' does not exist on type 'IContext'.
+src/graphql/resolvers/admin.resolver.ts(372,26): error TS2339: Property 'token' does not exist on type 'IContext'.
+src/graphql/resolvers/admin.resolver.ts(527,11): error TS2322: Type 'string' is not assignable to type '"GASOLINE" | "DIESEL" | "ELECTRIC" | "HYBRID" | "HYDROGEN" | "PLUG_IN_HYBRID" | undefined'.
+src/graphql/resolvers/admin.resolver.ts(531,11): error TS2322: Type 'string' is not assignable to type '"DRAFT" | "PUBLISHED" | "ARCHIVED" | undefined'.
+src/graphql/resolvers/admin.resolver.ts(539,58): error TS2339: Property 'url' does not exist on type 'never'.
+src/graphql/resolvers/admin.resolver.ts(540,67): error TS2339: Property 'isFeatured' does not exist on type 'never'.
+src/graphql/resolvers/admin.resolver.ts(543,68): error TS2339: Property 'caption' does not exist on type 'never'.
+
+    at Object.<anonymous> (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/server/src/graphql/resolvers/admin.resolver.ts:1:7)
+    at Module._compile (node:internal/modules/cjs/loader:1364:14)
+    at Module._compile (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/source-map-support/source-map-support.js:521:25)
+    at Module.m._compile (/private/tmp/ts-node-dev-hook-5933101851760556.js:69:33)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1422:10)
+    at require.extensions..jsx.require.extensions..js (/private/tmp/ts-node-dev-hook-5933101851760556.js:114:20)
+    at require.extensions.<computed> (/private/tmp/ts-node-dev-hook-5933101851760556.js:71:20)
+    at Object.nodeDevHook [as .ts] (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node-dev/lib/hook.js:63:13)
+    at Module.load (node:internal/modules/cjs/loader:1203:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:1019:12)
+2024-12-10 14:07:40.225 [error]: Uncaught Exception: ⨯ Unable to compile TypeScript:
+src/graphql/resolvers/admin.resolver.ts(599,41): error TS2345: Argument of type 'CarStatus | EngineType | TransmissionType' is not assignable to parameter of type 'never'.
+  Type 'CarStatus.DRAFT' is not assignable to type 'never'.
+
+Error: ⨯ Unable to compile TypeScript:
+src/graphql/resolvers/admin.resolver.ts(599,41): error TS2345: Argument of type 'CarStatus | EngineType | TransmissionType' is not assignable to parameter of type 'never'.
+  Type 'CarStatus.DRAFT' is not assignable to type 'never'.
+
+    at Object.<anonymous> (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/server/src/graphql/resolvers/admin.resolver.ts:1:7)
+    at Module._compile (node:internal/modules/cjs/loader:1364:14)
+    at Module._compile (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/source-map-support/source-map-support.js:521:25)
+    at Module.m._compile (/private/tmp/ts-node-dev-hook-27525192926222686.js:69:33)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1422:10)
+    at require.extensions..jsx.require.extensions..js (/private/tmp/ts-node-dev-hook-27525192926222686.js:114:20)
+    at require.extensions.<computed> (/private/tmp/ts-node-dev-hook-27525192926222686.js:71:20)
+    at Object.nodeDevHook [as .ts] (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node-dev/lib/hook.js:63:13)
+    at Module.load (node:internal/modules/cjs/loader:1203:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:1019:12)
+2024-12-10 14:08:46.216 [error]: Uncaught Exception: ⨯ Unable to compile TypeScript:
+src/graphql/resolvers/admin.resolver.ts(599,41): error TS2345: Argument of type 'EngineType | TransmissionType | CarStatus' is not assignable to parameter of type 'never'.
+  Type 'EngineType.GASOLINE' is not assignable to type 'never'.
+
+Error: ⨯ Unable to compile TypeScript:
+src/graphql/resolvers/admin.resolver.ts(599,41): error TS2345: Argument of type 'EngineType | TransmissionType | CarStatus' is not assignable to parameter of type 'never'.
+  Type 'EngineType.GASOLINE' is not assignable to type 'never'.
+
+    at Object.<anonymous> (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/server/src/graphql/resolvers/admin.resolver.ts:1:7)
+    at Module._compile (node:internal/modules/cjs/loader:1364:14)
+    at Module._compile (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/source-map-support/source-map-support.js:521:25)
+    at Module.m._compile (/private/tmp/ts-node-dev-hook-27525192926222686.js:69:33)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1422:10)
+    at require.extensions..jsx.require.extensions..js (/private/tmp/ts-node-dev-hook-27525192926222686.js:114:20)
+    at require.extensions.<computed> (/private/tmp/ts-node-dev-hook-27525192926222686.js:71:20)
+    at Object.nodeDevHook [as .ts] (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node-dev/lib/hook.js:63:13)
+    at Module.load (node:internal/modules/cjs/loader:1203:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:1019:12)
+2024-12-10 14:09:28.753 [error]: Uncaught Exception: ⨯ Unable to compile TypeScript:
+src/graphql/resolvers/admin.resolver.ts(599,41): error TS2345: Argument of type 'EngineType | TransmissionType | CarStatus' is not assignable to parameter of type 'never'.
+  Type 'EngineType.GASOLINE' is not assignable to type 'never'.
+
+Error: ⨯ Unable to compile TypeScript:
+src/graphql/resolvers/admin.resolver.ts(599,41): error TS2345: Argument of type 'EngineType | TransmissionType | CarStatus' is not assignable to parameter of type 'never'.
+  Type 'EngineType.GASOLINE' is not assignable to type 'never'.
+
+    at Object.<anonymous> (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/server/src/graphql/resolvers/admin.resolver.ts:1:7)
+    at Module._compile (node:internal/modules/cjs/loader:1364:14)
+    at Module._compile (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/source-map-support/source-map-support.js:521:25)
+    at Module.m._compile (/private/tmp/ts-node-dev-hook-27525192926222686.js:69:33)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1422:10)
+    at require.extensions..jsx.require.extensions..js (/private/tmp/ts-node-dev-hook-27525192926222686.js:114:20)
+    at require.extensions.<computed> (/private/tmp/ts-node-dev-hook-27525192926222686.js:71:20)
+    at Object.nodeDevHook [as .ts] (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node-dev/lib/hook.js:63:13)
+    at Module.load (node:internal/modules/cjs/loader:1203:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:1019:12)
+2024-12-10 14:29:18.098 [error]: Uncaught Exception: ⨯ Unable to compile TypeScript:
+src/graphql/resolvers/admin.resolver.ts(602,56): error TS2345: Argument of type 'string' is not assignable to parameter of type 'never'.
+
+Error: ⨯ Unable to compile TypeScript:
+src/graphql/resolvers/admin.resolver.ts(602,56): error TS2345: Argument of type 'string' is not assignable to parameter of type 'never'.
+
+    at Object.<anonymous> (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/server/src/graphql/resolvers/admin.resolver.ts:1:7)
+    at Module._compile (node:internal/modules/cjs/loader:1364:14)
+    at Module._compile (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/source-map-support/source-map-support.js:521:25)
+    at Module.m._compile (/private/tmp/ts-node-dev-hook-3194073867163034.js:69:33)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1422:10)
+    at require.extensions..jsx.require.extensions..js (/private/tmp/ts-node-dev-hook-3194073867163034.js:114:20)
+    at require.extensions.<computed> (/private/tmp/ts-node-dev-hook-3194073867163034.js:71:20)
+    at Object.nodeDevHook [as .ts] (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node-dev/lib/hook.js:63:13)
+    at Module.load (node:internal/modules/cjs/loader:1203:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:1019:12)
+2024-12-10 14:35:37.303 [error]: Uncaught Exception: ⨯ Unable to compile TypeScript:
+src/graphql/resolvers/admin.resolver.ts(524,23): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type 'AdminCarInput'.
+  No index signature with a parameter of type 'string' was found on type 'AdminCarInput'.
+src/graphql/resolvers/admin.resolver.ts(597,20): error TS18047: 'context.user' is possibly 'null'.
+src/graphql/resolvers/admin.resolver.ts(598,24): error TS18047: 'context.user' is possibly 'null'.
+src/graphql/resolvers/admin.resolver.ts(628,19): error TS18047: 'context.user' is possibly 'null'.
+src/graphql/resolvers/admin.resolver.ts(634,19): error TS18047: 'context.user' is possibly 'null'.
+
+Error: ⨯ Unable to compile TypeScript:
+src/graphql/resolvers/admin.resolver.ts(524,23): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type 'AdminCarInput'.
+  No index signature with a parameter of type 'string' was found on type 'AdminCarInput'.
+src/graphql/resolvers/admin.resolver.ts(597,20): error TS18047: 'context.user' is possibly 'null'.
+src/graphql/resolvers/admin.resolver.ts(598,24): error TS18047: 'context.user' is possibly 'null'.
+src/graphql/resolvers/admin.resolver.ts(628,19): error TS18047: 'context.user' is possibly 'null'.
+src/graphql/resolvers/admin.resolver.ts(634,19): error TS18047: 'context.user' is possibly 'null'.
+
+    at Object.<anonymous> (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/server/src/graphql/resolvers/admin.resolver.ts:1:7)
+    at Module._compile (node:internal/modules/cjs/loader:1364:14)
+    at Module._compile (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/source-map-support/source-map-support.js:521:25)
+    at Module.m._compile (/private/tmp/ts-node-dev-hook-8537993185974855.js:69:33)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1422:10)
+    at require.extensions..jsx.require.extensions..js (/private/tmp/ts-node-dev-hook-8537993185974855.js:114:20)
+    at require.extensions.<computed> (/private/tmp/ts-node-dev-hook-8537993185974855.js:71:20)
+    at Object.nodeDevHook [as .ts] (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node-dev/lib/hook.js:63:13)
+    at Module.load (node:internal/modules/cjs/loader:1203:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:1019:12)
+2024-12-10 14:39:53.864 [error]: Uncaught Exception: ⨯ Unable to compile TypeScript:
+src/models/Car.ts(3,39): error TS2307: Cannot find module '../graphql/types/enums' or its corresponding type declarations.
+
+Error: ⨯ Unable to compile TypeScript:
+src/models/Car.ts(3,39): error TS2307: Cannot find module '../graphql/types/enums' or its corresponding type declarations.
+
+    at Object.<anonymous> (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/server/src/models/Car.ts:1:7)
+    at Module._compile (node:internal/modules/cjs/loader:1364:14)
+    at Module._compile (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/source-map-support/source-map-support.js:521:25)
+    at Module.m._compile (/private/tmp/ts-node-dev-hook-8537993185974855.js:69:33)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1422:10)
+    at require.extensions..jsx.require.extensions..js (/private/tmp/ts-node-dev-hook-8537993185974855.js:114:20)
+    at require.extensions.<computed> (/private/tmp/ts-node-dev-hook-8537993185974855.js:71:20)
+    at Object.nodeDevHook [as .ts] (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node-dev/lib/hook.js:63:13)
+    at Module.load (node:internal/modules/cjs/loader:1203:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:1019:12)
+2024-12-10 14:40:09.810 [error]: Uncaught Exception: ⨯ Unable to compile TypeScript:
+src/models/Car.ts(3,39): error TS2307: Cannot find module '../graphql/types/enums' or its corresponding type declarations.
+
+Error: ⨯ Unable to compile TypeScript:
+src/models/Car.ts(3,39): error TS2307: Cannot find module '../graphql/types/enums' or its corresponding type declarations.
+
+    at Object.<anonymous> (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/server/src/models/Car.ts:1:7)
+    at Module._compile (node:internal/modules/cjs/loader:1364:14)
+    at Module._compile (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/source-map-support/source-map-support.js:521:25)
+    at Module.m._compile (/private/tmp/ts-node-dev-hook-8537993185974855.js:69:33)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1422:10)
+    at require.extensions..jsx.require.extensions..js (/private/tmp/ts-node-dev-hook-8537993185974855.js:114:20)
+    at require.extensions.<computed> (/private/tmp/ts-node-dev-hook-8537993185974855.js:71:20)
+    at Object.nodeDevHook [as .ts] (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node-dev/lib/hook.js:63:13)
+    at Module.load (node:internal/modules/cjs/loader:1203:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:1019:12)
+2024-12-11 10:05:43.759 [error]: Uncaught Exception: ⨯ Unable to compile TypeScript:
+src/config/redis.ts(1,19): error TS2307: Cannot find module 'ioredis' or its corresponding type declarations.
+src/config/redis.ts(15,23): error TS7006: Parameter 'times' implicitly has an 'any' type.
+src/config/redis.ts(21,30): error TS7006: Parameter 'error' implicitly has an 'any' type.
+
+TSError: ⨯ Unable to compile TypeScript:
+src/config/redis.ts(1,19): error TS2307: Cannot find module 'ioredis' or its corresponding type declarations.
+src/config/redis.ts(15,23): error TS7006: Parameter 'times' implicitly has an 'any' type.
+src/config/redis.ts(21,30): error TS7006: Parameter 'error' implicitly has an 'any' type.
+
+    at createTSError (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1422:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1203:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:1019:12)
+    at Module.require (node:internal/modules/cjs/loader:1231:19)
+2024-12-11 10:09:26.290 [error]: Uncaught Exception: ⨯ Unable to compile TypeScript:
+src/config/redis.ts(1,19): error TS2307: Cannot find module 'ioredis' or its corresponding type declarations.
+src/config/redis.ts(15,23): error TS7006: Parameter 'times' implicitly has an 'any' type.
+src/config/redis.ts(21,30): error TS7006: Parameter 'error' implicitly has an 'any' type.
+
+TSError: ⨯ Unable to compile TypeScript:
+src/config/redis.ts(1,19): error TS2307: Cannot find module 'ioredis' or its corresponding type declarations.
+src/config/redis.ts(15,23): error TS7006: Parameter 'times' implicitly has an 'any' type.
+src/config/redis.ts(21,30): error TS7006: Parameter 'error' implicitly has an 'any' type.
+
+    at createTSError (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1422:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1203:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:1019:12)
+    at Module.require (node:internal/modules/cjs/loader:1231:19)
+2024-12-11 10:10:06.141 [error]: Uncaught Exception: ⨯ Unable to compile TypeScript:
+src/config/redis.ts(1,19): error TS2307: Cannot find module 'ioredis' or its corresponding type declarations.
+src/config/redis.ts(15,23): error TS7006: Parameter 'times' implicitly has an 'any' type.
+src/config/redis.ts(21,30): error TS7006: Parameter 'error' implicitly has an 'any' type.
+
+TSError: ⨯ Unable to compile TypeScript:
+src/config/redis.ts(1,19): error TS2307: Cannot find module 'ioredis' or its corresponding type declarations.
+src/config/redis.ts(15,23): error TS7006: Parameter 'times' implicitly has an 'any' type.
+src/config/redis.ts(21,30): error TS7006: Parameter 'error' implicitly has an 'any' type.
+
+    at createTSError (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1422:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1203:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:1019:12)
+    at Module.require (node:internal/modules/cjs/loader:1231:19)
+2024-12-11 10:12:55.000 [error]: Uncaught Exception: ⨯ Unable to compile TypeScript:
+src/config/redis.ts(1,19): error TS2307: Cannot find module 'ioredis' or its corresponding type declarations.
+src/config/redis.ts(15,23): error TS7006: Parameter 'times' implicitly has an 'any' type.
+src/config/redis.ts(21,30): error TS7006: Parameter 'error' implicitly has an 'any' type.
+
+TSError: ⨯ Unable to compile TypeScript:
+src/config/redis.ts(1,19): error TS2307: Cannot find module 'ioredis' or its corresponding type declarations.
+src/config/redis.ts(15,23): error TS7006: Parameter 'times' implicitly has an 'any' type.
+src/config/redis.ts(21,30): error TS7006: Parameter 'error' implicitly has an 'any' type.
+
+    at createTSError (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1422:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1203:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:1019:12)
+    at Module.require (node:internal/modules/cjs/loader:1231:19)
+2024-12-11 10:44:04.321 [error]: Uncaught Exception: ⨯ Unable to compile TypeScript:
+src/config/redis.ts(1,19): error TS2307: Cannot find module 'ioredis' or its corresponding type declarations.
+src/config/redis.ts(15,23): error TS7006: Parameter 'times' implicitly has an 'any' type.
+src/config/redis.ts(21,30): error TS7006: Parameter 'error' implicitly has an 'any' type.
+
+TSError: ⨯ Unable to compile TypeScript:
+src/config/redis.ts(1,19): error TS2307: Cannot find module 'ioredis' or its corresponding type declarations.
+src/config/redis.ts(15,23): error TS7006: Parameter 'times' implicitly has an 'any' type.
+src/config/redis.ts(21,30): error TS7006: Parameter 'error' implicitly has an 'any' type.
+
+    at createTSError (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1422:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1203:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:1019:12)
+    at Module.require (node:internal/modules/cjs/loader:1231:19)
+2024-12-11 10:45:13.140 [error]: Uncaught Exception: ⨯ Unable to compile TypeScript:
+src/config/messageQueue.ts(1,18): error TS2307: Cannot find module 'amqplib' or its corresponding type declarations.
+src/config/messageQueue.ts(31,49): error TS7006: Parameter 'msg' implicitly has an 'any' type.
+src/config/messageQueue.ts(45,45): error TS7006: Parameter 'msg' implicitly has an 'any' type.
+
+TSError: ⨯ Unable to compile TypeScript:
+src/config/messageQueue.ts(1,18): error TS2307: Cannot find module 'amqplib' or its corresponding type declarations.
+src/config/messageQueue.ts(31,49): error TS7006: Parameter 'msg' implicitly has an 'any' type.
+src/config/messageQueue.ts(45,45): error TS7006: Parameter 'msg' implicitly has an 'any' type.
+
+    at createTSError (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1422:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1203:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:1019:12)
+    at Module.require (node:internal/modules/cjs/loader:1231:19)
+2024-12-11 11:00:16.745 [error]: Uncaught Exception: ⨯ Unable to compile TypeScript:
+src/graphql/resolvers/admin.resolver.ts(674,29): error TS18047: 'context.user' is possibly 'null'.
+
+TSError: ⨯ Unable to compile TypeScript:
+src/graphql/resolvers/admin.resolver.ts(674,29): error TS18047: 'context.user' is possibly 'null'.
+
+    at createTSError (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1422:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1203:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:1019:12)
+    at Module.require (node:internal/modules/cjs/loader:1231:19)
+2024-12-11 11:00:28.479 [error]: Uncaught Exception: ⨯ Unable to compile TypeScript:
+src/graphql/resolvers/admin.resolver.ts(674,29): error TS18047: 'context.user' is possibly 'null'.
+
+TSError: ⨯ Unable to compile TypeScript:
+src/graphql/resolvers/admin.resolver.ts(674,29): error TS18047: 'context.user' is possibly 'null'.
+
+    at createTSError (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1422:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1203:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:1019:12)
+    at Module.require (node:internal/modules/cjs/loader:1231:19)
+2024-12-11 11:00:35.871 [error]: Uncaught Exception: ⨯ Unable to compile TypeScript:
+src/graphql/resolvers/admin.resolver.ts(674,29): error TS18047: 'context.user' is possibly 'null'.
+
+TSError: ⨯ Unable to compile TypeScript:
+src/graphql/resolvers/admin.resolver.ts(674,29): error TS18047: 'context.user' is possibly 'null'.
+
+    at createTSError (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1422:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1203:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:1019:12)
+    at Module.require (node:internal/modules/cjs/loader:1231:19)
+2024-12-11 11:12:12.189 [error]: Uncaught Exception: ⨯ Unable to compile TypeScript:
+src/models/User.ts(3,20): error TS2307: Cannot find module '../logger' or its corresponding type declarations.
+
+TSError: ⨯ Unable to compile TypeScript:
+src/models/User.ts(3,20): error TS2307: Cannot find module '../logger' or its corresponding type declarations.
+
+    at createTSError (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:859:12)
+    at reportTSError (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:863:19)
+    at getOutput (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:1077:36)
+    at Object.compile (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:1433:41)
+    at Module.m._compile (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:1617:30)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1422:10)
+    at Object.require.extensions.<computed> [as .ts] (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/ts-node/src/index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1203:32)
+    at Function.Module._load (node:internal/modules/cjs/loader:1019:12)
+    at Module.require (node:internal/modules/cjs/loader:1231:19)
+2024-12-11T05:46:21.229Z [error]: Comprehensive login error
+2024-12-11 11:16:21.237 [error]: Error logging in: Operation `users.findOne()` buffering timed out after 10000ms
+MongooseError: Operation `users.findOne()` buffering timed out after 10000ms
+    at Timeout.<anonymous> (/Users/sougataroy/Documents/Developer/Code/ThunderAuto/node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:185:23)
+    at listOnTimeout (node:internal/timers:569:17)
+    at processTimers (node:internal/timers:512:7)
+2024-12-11 11:16:31.281 [error]: Failed to setup message queue: connect ECONNREFUSED ::1:5672
+Error: connect ECONNREFUSED ::1:5672
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1555:16)
+2024-12-11 11:18:07.905 [error]: Failed to setup message queue: connect ECONNREFUSED ::1:5672
+Error: connect ECONNREFUSED ::1:5672
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1555:16)
+2024-12-11 11:18:33.712 [error]: Failed to setup message queue: connect ECONNREFUSED ::1:5672
+Error: connect ECONNREFUSED ::1:5672
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1555:16)

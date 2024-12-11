@@ -1,9 +1,9 @@
 type CarImage {
-  url: String!
-  isFeatured: Boolean!
+  url: String
+  isFeatured: Boolean
   caption: String
-  uploadedBy: User!
-  uploadedAt: DateTime!
+  uploadedBy: User
+  uploadedAt: DateTime
 }
 
 input CarInput {

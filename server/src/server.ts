@@ -47,6 +47,15 @@ async function startServer() {
     expressMiddleware(server, {
       context: async ({ req }) => {
         const authReq = req as AuthRequest;
+        console.log('GraphQL Context Creation:', {
+          hasAuthHeader: !!authReq.headers.authorization,
+          hasUser: !!authReq.user,
+          userDetails: authReq.user ? {
+            id: authReq.user._id,
+            role: authReq.user.role,
+            email: authReq.user.email
+          } : 'No User'
+        });
         return {
           req: authReq,
           user: authReq.user

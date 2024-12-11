@@ -1,7 +1,9 @@
-import mongoose, { Document, Schema } from 'mongoose'
+import mongoose, { Document, Schema, Types } from 'mongoose'
 import bcrypt from 'bcryptjs'
+import { logger } from '../utils/logger'
 
 export interface IUser extends Document {
+  _id: Types.ObjectId;
   email: string;
   password: string;
   firstName: string;
@@ -72,7 +74,18 @@ userSchema.pre('save', async function(next) {
 
 // Method to compare password
 userSchema.methods.comparePassword = async function(candidatePassword: string): Promise<boolean> {
-  return bcrypt.compare(candidatePassword, this.password);
+  const startTime = Date.now()
+  const isMatch = await bcrypt.compare(candidatePassword, this.password)
+  const duration = Date.now() - startTime
+
+  logger.info('Password comparison result', {
+    userId: this._id,
+    email: this.email,
+    isMatch,
+    comparisonDurationMs: duration
+  })
+
+  return isMatch
 };
 
 export const User = mongoose.model<IUser>('User', userSchema);

@@ -1,8 +1,8 @@
 /// <reference types="jest" />
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
-import { connectDB } from '../config/database.js';
-import { User } from '../models/User.js';
+import { connectDB } from '../config/database';
+import { User } from '../models/User';
 import { beforeAll, afterAll, afterEach } from '@jest/globals';
 
 let mongoServer: MongoMemoryServer;

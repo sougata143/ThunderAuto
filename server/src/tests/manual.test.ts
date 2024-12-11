@@ -1,15 +1,12 @@
 import mongoose from 'mongoose';
-import { resolvers } from '../graphql/resolvers/admin.resolver';
+import { adminResolvers } from '../graphql/resolvers';
 import { Car } from '../models/Car';
 import { GraphQLError } from 'graphql';
 
 describe('Manual Car Creation Test', () => {
   beforeAll(async () => {
     // Connect to test database
-    await mongoose.connect('mongodb://localhost:27017/thunderauto_test', {
-      useNewUrlParser: true,
-      useUnifiedTopology: true
-    });
+    await mongoose.connect('mongodb://localhost:27017/thunderauto_test');
   });
 
   afterAll(async () => {
@@ -38,7 +35,7 @@ describe('Manual Car Creation Test', () => {
     };
 
     try {
-      const result = await resolvers.AdminMutation.createCar(
+      const result = await adminResolvers.AdminMutation.createCar(
         null, 
         { input: baseCarInput }, 
         mockContext
@@ -80,7 +77,7 @@ describe('Manual Car Creation Test', () => {
       transmission: 'AUTOMATIC'
     };
 
-    await expect(resolvers.AdminMutation.createCar(
+    await expect(adminResolvers.AdminMutation.createCar(
       null, 
       { input: invalidCarInput }, 
       mockContext
@@ -107,7 +104,7 @@ describe('Manual Car Creation Test', () => {
       transmission: 'AUTOMATIC'
     };
 
-    await expect(resolvers.AdminMutation.createCar(
+    await expect(adminResolvers.AdminMutation.createCar(
       null, 
       { input: baseCarInput }, 
       mockContext

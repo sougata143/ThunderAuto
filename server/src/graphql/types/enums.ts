@@ -1,0 +1,33 @@
+export enum EngineType {
+  GASOLINE = 'GASOLINE',
+  DIESEL = 'DIESEL',
+  ELECTRIC = 'ELECTRIC',
+  HYBRID = 'HYBRID',
+  HYDROGEN = 'HYDROGEN',
+  PLUG_IN_HYBRID = 'PLUG_IN_HYBRID'
+}
+
+export enum CarStatus {
+  DRAFT = 'DRAFT',
+  PUBLISHED = 'PUBLISHED',
+  ARCHIVED = 'ARCHIVED'
+}
+
+export enum TransmissionType {
+  MANUAL = 'MANUAL',
+  AUTOMATIC = 'AUTOMATIC', 
+  SEMI_AUTOMATIC = 'SEMI_AUTOMATIC',
+  CVT = 'CVT'
+}
+
+export enum ClutchType {
+  MANUAL = 'MANUAL',
+  AUTOMATIC = 'AUTOMATIC', 
+  SINGLE_CLUTCH = 'SINGLE_CLUTCH'
+}
+
+export enum DriveType {
+  FRONT_WHEEL_DRIVE = 'FRONT_WHEEL_DRIVE',
+  REAR_WHEEL_DRIVE = 'REAR_WHEEL_DRIVE', 
+  ALL_WHEEL_DRIVE = 'ALL_WHEEL_DRIVE'
+}

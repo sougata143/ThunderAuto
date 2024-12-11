@@ -1,5 +1,6 @@
 import mongoose, { Document, Model } from 'mongoose'
 import { IUser } from './User'
+import { EngineType, CarStatus } from '../graphql/types/enums'
 
 export interface ICar extends mongoose.Document {
   make?: string
@@ -10,15 +11,15 @@ export interface ICar extends mongoose.Document {
     url: string
     isFeatured: boolean
     caption?: string
-    uploadedBy: mongoose.Types.ObjectId | IUser
+    uploadedBy?: mongoose.Types.ObjectId | IUser
     uploadedAt: Date
   }[]
   rating?: number
-  engineType?: 'GASOLINE' | 'DIESEL' | 'ELECTRIC' | 'HYBRID' | 'HYDROGEN' | 'PLUG_IN_HYBRID'
+  engineType?: EngineType
   transmission?: string
   power?: number
   acceleration?: number
-  status?: 'DRAFT' | 'PUBLISHED' | 'ARCHIVED'
+  status?: CarStatus
   createdBy?: mongoose.Types.ObjectId | IUser
   lastUpdatedBy?: mongoose.Types.ObjectId | IUser
   specs?: {
@@ -192,16 +193,16 @@ const carSchema = new mongoose.Schema({
   rating: { type: Number, default: 0 },
   engineType: {
     type: String,
-    enum: ['GASOLINE', 'DIESEL', 'ELECTRIC', 'HYBRID', 'HYDROGEN', 'PLUG_IN_HYBRID'],
-    default: 'GASOLINE'
+    enum: Object.values(EngineType),
+    default: EngineType.GASOLINE
   },
   transmission: { type: String, default: '' },
   power: { type: Number, default: 0 },
   acceleration: { type: Number, default: 0 },
   status: {
     type: String,
-    enum: ['DRAFT', 'PUBLISHED', 'ARCHIVED'],
-    default: 'DRAFT'
+    enum: Object.values(CarStatus),
+    default: CarStatus.DRAFT
   },
   createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null },
   lastUpdatedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null },

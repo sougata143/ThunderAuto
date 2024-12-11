@@ -1,23 +1,23 @@
 type Car {
-  id: ID!
-  make: String!
-  carModel: String!
-  year: Int!
-  price: Float!
-  images: [CarImage!]!
-  rating: Float!
-  engineType: EngineType!
-  transmission: TransmissionType!
-  power: Float!
-  acceleration: Float!
-  status: CarStatus!
-  createdBy: User!
-  lastUpdatedBy: User!
+  id: ID
+  make: String
+  carModel: String
+  year: Int
+  price: Float # Price in Indian Rupees (INR)
+  images: [CarImage]
+  rating: Float
+  engineType: EngineType
+  transmission: TransmissionType
+  power: Float
+  acceleration: Float
+  status: CarStatus
+  createdBy: User
+  lastUpdatedBy: User
   specs: CarSpecs
-  reviews: [Review!]!
-  fullName: String!
-  createdAt: DateTime!
-  updatedAt: DateTime!
+  reviews: [Review]
+  fullName: String
+  createdAt: DateTime
+  updatedAt: DateTime
 }
 
 type CarSpecs {
@@ -405,7 +405,7 @@ input CarInput {
   make: String!
   carModel: String!
   year: Int!
-  price: Float!
+  price: Float! # Price in Indian Rupees (INR)
   engineType: EngineType!
   transmission: TransmissionType!
   power: Float!
@@ -472,7 +472,7 @@ extend type Mutation {
   createReview(input: ReviewInput!): Review!
   updateReview(id: ID!, rating: Float!, comment: String!): Review!
   deleteReview(id: ID!): Boolean!
-  createCar(input: CarInput!): Car! @auth(requires: ADMIN)
-  updateCar(id: ID!, input: CarInput!): Car! @auth(requires: ADMIN)
-  deleteCar(id: ID!): Car! @auth(requires: ADMIN)
+  createCar(input: CarInput!): Car @auth(requires: ADMIN)
+  updateCar(id: ID!, input: CarInput!): Car @auth(requires: ADMIN)
+  deleteCar(id: ID!): Car @auth(requires: ADMIN)
 }

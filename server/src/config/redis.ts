@@ -3,7 +3,7 @@ import { logger } from '../utils/logger'
 
 let redisClient: Redis | null = null
 
-export async function createRedisClient() {
+export async function createRedisClient(): Promise<Redis> {
   if (redisClient) {
     return redisClient
   }
@@ -12,13 +12,13 @@ export async function createRedisClient() {
 
   try {
     redisClient = new Redis(REDIS_URL, {
-      retryStrategy: (times) => {
+      retryStrategy: (times: number) => {
         const delay = Math.min(times * 50, 2000)
         return delay
       },
     })
 
-    redisClient.on('error', (error) => {
+    redisClient.on('error', (error: Error) => {
       logger.error('Redis connection error:', error)
     })
 
@@ -27,13 +27,13 @@ export async function createRedisClient() {
     })
 
     return redisClient
-  } catch (error) {
+  } catch (error: unknown) {
     logger.error('Failed to create Redis client:', error)
     throw error
   }
 }
 
-export async function closeRedisConnection() {
+export async function closeRedisConnection(): Promise<void> {
   if (redisClient) {
     await redisClient.quit()
     redisClient = null
